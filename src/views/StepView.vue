@@ -56,6 +56,8 @@ main {
   flex-direction: column;
   justify-content: center;
   gap: 3rem;
+  position: sticky;
+  top: 125px;
 }
 
 .step-container {

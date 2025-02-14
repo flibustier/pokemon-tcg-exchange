@@ -2,26 +2,28 @@
   <div class="container">
     <div class="set" v-for="(set, index) in sets" :key="index">
       <img
-        :src="`/images/sets/LOGO_expansion_${set.set}_en_US.webp`"
+        :src="`/images/sets/LOGO_expansion_${set.code}_en_US.webp`"
         :alt="set.label.en"
         class="set-logo"
       />
       <div class="card-grid">
-        <div class="card" v-for="(card, index) in filteredCards(set.set)" :key="index">
+        <div class="card" v-for="(card, index) in filteredCards(set.code)" :key="index">
           <h3>
-            {{ card.label.eng }}
+            {{ shorten(card.label.eng) }}
             <span class="card-number">{{ card.number.padStart(3, '0') }}</span>
           </h3>
           <img v-if="false" src="/images/wanted.png" alt="wanted" class="corner-icon" />
           <img
-            :src="'images/cards/' + card.imageName"
+            :src="'/images/cards/' + card.imageName"
             :alt="card.label.slug"
             class="card-image"
-            :class="{ disabled: isWantedCard(card) }"
+            :class="{ disabled: isWantedCard(card) || isRestricted(card) }"
             @click="increase(card)"
             loading="lazy"
+            :title="title(card)"
           />
-          <NumberInput v-if="!isWantedCard(card)" v-model="cardCountById[cardId(card)]" />
+          <span v-if="isRestricted(card)" class="card-decoration" :title="title(card)">🚫</span>
+          <NumberInput v-else-if="!isWantedCard(card)" v-model="cardCountById[cardId(card)]" />
         </div>
       </div>
     </div>
@@ -31,44 +33,26 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import cards from 'pokemon-tcg-pocket-database/dist/cards.json' with { type: 'json' }
-import NumberInput from './atoms/NumberInput.vue'
+import sets from 'pokemon-tcg-pocket-database/dist/sets.json' with { type: 'json' }
+
 import { getGivingCards, getWantedCards, setGivingCards, setWantedCards } from '@/services/store'
+
+import NumberInput from './atoms/NumberInput.vue'
 
 type Card = (typeof cards)[0]
 
-const sets = [
-  {
-    set: 'A1',
-    releaseDate: '2024-10-30',
-    count: 226,
-    label: {
-      en: 'Genetic Apex',
-    },
-  },
-  {
-    set: 'A1a',
-    releaseDate: '2024-12-17',
-    count: 68,
-    label: {
-      en: 'Mythical Island',
-    },
-  },
-  {
-    set: 'A2',
-    releaseDate: '2025-01-29',
-    count: 155,
-    label: {
-      en: 'Space-Time Smackdown',
-    },
-  },
-  {
-    set: 'PROMO-A',
-    releaseDate: '2024-10-30',
-    label: {
-      en: 'Promo A',
-    },
-  },
-]
+const isRestricted = (card: Card) => {
+  return !['C', 'U', 'R', 'RR', 'AR'].includes(card.rarityCode) || !['A1', 'A1A'].includes(card.set)
+}
+
+const title = (card: Card) => {
+  if (isRestricted(card)) {
+    return 'Cannot be exchange due to Pokemon TCG Pocket rules'
+  } else if (isWantedCard(card)) {
+    return 'Already in your want list'
+  }
+  return card.label.eng
+}
 
 const stepCompleted = defineModel<boolean>()
 
@@ -77,6 +61,10 @@ const props = defineProps<{
 }>()
 
 const filteredCards = (set: string) => cards.filter((card) => card.set === set.toUpperCase())
+
+const shorten = (text: string) => {
+  return text.length > 10 ? text.slice(0, 10) + '…' : text
+}
 
 const cardCountById = ref<Record<string, number>>({})
 
@@ -118,7 +106,7 @@ const isWantedCard = (card: Card) => {
 const cardId = (card: Card) => `${card.set}-${card.number}`
 
 const increase = (card: Card) => {
-  if (!isWantedCard(card)) {
+  if (!isWantedCard(card) && !isRestricted(card)) {
     cardCountById.value[cardId(card)] = (cardCountById.value[cardId(card)] || 0) + 1
   }
 }
@@ -187,6 +175,14 @@ h3 {
 .card-image.disabled {
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+.card-decoration {
+  position: relative;
+  bottom: 55%;
+  height: 0;
+  font-size: 32px;
+  cursor: not-allowed;
 }
 
 .corner-icon {

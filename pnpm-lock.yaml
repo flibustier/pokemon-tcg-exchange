@@ -56,8 +56,8 @@ devDependencies:
     specifier: ^7.0.2
     version: 7.0.2
   pokemon-tcg-pocket-database:
-    specifier: ^1.0.1
-    version: 1.0.1
+    specifier: ^1.0.4
+    version: 1.0.4
   prettier:
     specifier: ^3.4.2
     version: 3.4.2
@@ -2548,8 +2548,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /pokemon-tcg-pocket-database@1.0.1:
-    resolution: {integrity: sha512-q6Hyl6CF8poz8Km+NV3S9YJu4VUfg9Y9dO8hMyo1D4hhz2QlkB/qfAar9yU3HFHooN+2MBQN5zoW2u2+OE/K2Q==}
+  /pokemon-tcg-pocket-database@1.0.4:
+    resolution: {integrity: sha512-bqSPKKe74oimWbrvQGAxqpia92U09IjBdXyB020OVOW6NZKvCjZ2c0dkA6oz60wmTiDc7Atujv64HwAPoR77Vg==}
     dev: true
 
   /postcss-selector-parser@6.1.2:

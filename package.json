@@ -33,7 +33,7 @@
     "eslint-plugin-vue": "^9.32.0",
     "jiti": "^2.4.2",
     "npm-run-all2": "^7.0.2",
-    "pokemon-tcg-pocket-database": "^1.0.1",
+    "pokemon-tcg-pocket-database": "^1.0.4",
     "prettier": "^3.4.2",
     "typescript": "~5.7.3",
     "vite": "^6.0.11",
