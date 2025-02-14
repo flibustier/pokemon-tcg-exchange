@@ -80,19 +80,19 @@
 @font-face {
   font-family: 'Grotesque';
   font-weight: normal;
-  src: url('fonts/Brandon_Grotesque_regular.otf') format('opentype');
+  src: url('/fonts/Brandon_Grotesque_regular.otf') format('opentype');
 }
 
 @font-face {
   font-family: 'Grotesque';
   font-weight: medium;
-  src: url('fonts/Brandon_Grotesque_medium.otf') format('opentype');
+  src: url('/fonts/Brandon_Grotesque_medium.otf') format('opentype');
 }
 
 @font-face {
   font-family: 'Grotesque';
   font-weight: bold;
-  src: url('fonts/Brandon_Grotesque_bold.otf') format('opentype');
+  src: url('/fonts/Brandon_Grotesque_bold.otf') format('opentype');
 }
 
 body {
