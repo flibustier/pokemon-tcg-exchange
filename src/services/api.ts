@@ -6,6 +6,10 @@ import {
   getCredentials,
 } from './store'
 
+const isProduction = import.meta.env.PROD
+
+const endpoint = isProduction ? 'https://api.pokemon-tcg.exchange' : 'http://localhost:8090'
+
 interface UserInfo {
   email: string
   password: string
@@ -14,7 +18,7 @@ interface UserInfo {
 
 export const createUser = async (user: UserInfo) => {
   try {
-    const response = await fetch('http://localhost:8090/user', {
+    const response = await fetch(endpoint + '/user', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -47,7 +51,7 @@ export const createUser = async (user: UserInfo) => {
 
 export const getProposals = async () => {
   try {
-    const response = await fetch('http://localhost:8090/user/proposals', {
+    const response = await fetch(endpoint + '/user/proposals', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
