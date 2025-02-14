@@ -20,6 +20,7 @@ const form = reactive({
 })
 
 const submitError = ref()
+const submitting = ref(false)
 
 const formIncomplete = computed(() => {
   if (!form.email || !form.password) {
@@ -35,6 +36,7 @@ const formIncomplete = computed(() => {
 })
 
 const submit = async () => {
+  submitting.value = true
   try {
     const success = await createUser(form)
 
@@ -46,6 +48,8 @@ const submit = async () => {
   } catch (error) {
     console.log(error)
     submitError.value = error
+  } finally {
+    submitting.value = false
   }
 }
 </script>
@@ -92,8 +96,8 @@ const submit = async () => {
         placeholder="Enter your password"
       />
     </div>
-    <button type="submit" class="submit-button" :disabled="formIncomplete">
-      {{ props.withoutId ? 'Sign In' : 'Access Proposals' }}
+    <button type="submit" class="submit-button" :disabled="formIncomplete || submitting">
+      {{ submitting ? 'Loading…' : props.withoutId ? 'Sign In' : 'Access Proposals' }}
     </button>
     <span class="error-message" v-if="submitError">Error: {{ submitError }}</span>
   </form>
