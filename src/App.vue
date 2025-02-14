@@ -29,7 +29,7 @@ import PrimaryButton from '@/components/atoms/PrimaryButton.vue'
 
     <div class="actions">
       <PrimaryButton v-if="isLogged()" @click="router.push('/proposals')">Proposals</PrimaryButton>
-      <PrimaryButton v-else @click="router.push('/login')">Sign In</PrimaryButton>
+      <!--PrimaryButton v-else @click="router.push('/login')">Sign In</!--PrimaryButton-->
     </div>
   </header>
   <div class="separator"></div>
