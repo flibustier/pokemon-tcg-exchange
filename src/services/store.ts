@@ -38,17 +38,19 @@ export const setGivingCards = (cards: Record<string, number>) => {
 }
 
 const getCardsAsArray = (cardsStore: Record<string, number>) => {
-  return Object.entries(cardsStore).map(([id, count]) => {
-    const [set, number] = id.split('-')
+  return Object.entries(cardsStore)
+    .map(([id, count]) => {
+      const [set, number] = id.split('-')
 
-    return {
-      id,
-      set,
-      number: parseInt(number),
-      count,
-      rarity: cards.find((card) => card.set === set && card.number === number)?.rarityCode,
-    }
-  })
+      return {
+        id,
+        set,
+        number: parseInt(number),
+        count,
+        rarity: cards.find((card) => card.set === set && card.number === number)?.rarityCode,
+      }
+    })
+    .filter((card) => card.count > 0)
 }
 
 export const getWantedCardsAsArray = () => {
