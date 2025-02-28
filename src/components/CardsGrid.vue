@@ -5,12 +5,13 @@
         :src="`/images/sets/LOGO_expansion_${set.code}_en_US.webp`"
         :alt="set.label.en"
         class="set-logo"
+        :id="set.code"
       />
       <div class="card-grid">
         <div class="card" v-for="(card, index) in filteredCards(set.code)" :key="index">
           <h3>
             {{ shorten(card.label.eng) }}
-            <span class="card-number">{{ card.number.padStart(3, '0') }}</span>
+            <span class="card-number">{{ card.number.toString().padStart(3, '0') }}</span>
           </h3>
           <img v-if="false" src="/images/wanted.png" alt="wanted" class="corner-icon" />
           <img
@@ -131,6 +132,12 @@ const increase = (card: Card) => {
   gap: 1rem;
   margin-bottom: 2rem;
   max-width: 850px;
+}
+
+.set-logo {
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .card-grid {

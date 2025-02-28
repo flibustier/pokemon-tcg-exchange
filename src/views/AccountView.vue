@@ -18,7 +18,7 @@ const data = ref([] as Proposal[])
 
 const findCard = (id: string) => {
   const [set, number] = id.split('-')
-  return cards.find((card) => card.set === set && card.number === number)
+  return cards.find((card) => card.set === set && card.number === parseInt(number))
 }
 
 const formatFriendID = (friendID: string) => {
