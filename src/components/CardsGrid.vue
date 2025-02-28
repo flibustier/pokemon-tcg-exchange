@@ -42,7 +42,10 @@ import NumberInput from './atoms/NumberInput.vue'
 type Card = (typeof cards)[0]
 
 const isRestricted = (card: Card) => {
-  return !['C', 'U', 'R', 'RR', 'AR'].includes(card.rarityCode) || !['A1', 'A1A'].includes(card.set)
+  return (
+    !['C', 'U', 'R', 'RR', 'AR'].includes(card.rarityCode) ||
+    !['A1', 'A1A', 'A2'].includes(card.set)
+  )
 }
 
 const title = (card: Card) => {
