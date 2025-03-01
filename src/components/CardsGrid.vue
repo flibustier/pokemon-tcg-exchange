@@ -1,13 +1,30 @@
 <template>
   <div class="container">
     <div class="set" v-for="(set, index) in sets" :key="index">
-      <img
-        :src="`/images/sets/LOGO_expansion_${set.code}_en_US.webp`"
-        :alt="set.label.en"
-        class="set-logo"
-        :id="set.code"
-      />
-      <div class="card-grid">
+      <div class="set-logo">
+        <a v-if="index > 0" :href="'#' + sets[index - 1].code">
+          <img
+            :src="`/images/sets/LOGO_expansion_${sets[index - 1].code}_en_US.webp`"
+            :alt="sets[index - 1].label.en"
+            height="60"
+          />
+          <img src="/images/double-arrow-left.png" alt="«" height="50" />
+        </a>
+        <div v-else style="width: 20%"></div>
+        <div>
+          <img :src="`/images/sets/LOGO_expansion_${set.code}_en_US.webp`" :alt="set.label.en" />
+        </div>
+        <a v-if="index < sets.length - 1" :href="'#' + sets[index + 1].code">
+          <img src="/images/double-arrow-right.png" alt="»" height="50" />
+          <img
+            :src="`/images/sets/LOGO_expansion_${sets[index + 1].code}_en_US.webp`"
+            :alt="sets[index + 1].label.en"
+            height="60"
+          />
+        </a>
+        <div v-else style="width: 20%"></div>
+      </div>
+      <div class="card-grid" :id="set.code">
         <div class="card" v-for="(card, index) in filteredCards(set.code)" :key="index">
           <h3>
             {{ shorten(card.label.eng) }}
@@ -138,6 +155,15 @@ const increase = (card: Card) => {
   position: sticky;
   top: 0;
   z-index: 10;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  a {
+    height: 100%;
+  }
 }
 
 .card-grid {
