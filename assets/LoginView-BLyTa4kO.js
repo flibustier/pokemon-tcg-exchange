@@ -1,0 +1,1 @@
+import{d as e,c as o,a as t,L as a,o as s}from"./index-9GCcVdJx.js";const n={class:"about"},d=e({__name:"LoginView",setup(c){return(r,i)=>(s(),o("div",n,[t(a,{"without-id":""})]))}});export{d as default};
