@@ -62,7 +62,7 @@ type Card = (typeof cards)[0]
 const isRestricted = (card: Card) => {
   return (
     !['C', 'U', 'R', 'RR', 'AR'].includes(card.rarityCode) ||
-    !['A1', 'A1A', 'A2'].includes(card.set)
+    !['A1', 'A1A', 'A2', 'A2A'].includes(card.set)
   )
 }
 
