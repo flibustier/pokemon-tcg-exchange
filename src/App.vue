@@ -76,7 +76,7 @@ main {
 }
 
 .container {
-  max-width: 1280px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: 0 1rem;
 }
