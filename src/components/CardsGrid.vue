@@ -49,10 +49,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import cards from 'pokemon-tcg-pocket-database/dist/cards.json' with { type: 'json' }
-import sets from 'pokemon-tcg-pocket-database/dist/sets.json' with { type: 'json' }
+import allSets from 'pokemon-tcg-pocket-database/dist/sets.json' with { type: 'json' }
 
+import { AUTHORIZED_RARITIES, AUTHORIZED_SETS } from '@/../config.json' with { type: 'json' }
 import { getGivingCards, getWantedCards, setGivingCards, setWantedCards } from '@/services/store'
 
 import NumberInput from './atoms/NumberInput.vue'
@@ -60,10 +61,7 @@ import NumberInput from './atoms/NumberInput.vue'
 type Card = (typeof cards)[0]
 
 const isRestricted = (card: Card) => {
-  return (
-    !['C', 'U', 'R', 'RR', 'AR'].includes(card.rarityCode) ||
-    !['A1', 'A1A', 'A2', 'A2A'].includes(card.set)
-  )
+  return !AUTHORIZED_RARITIES.includes(card.rarityCode) || !AUTHORIZED_SETS.includes(card.set)
 }
 
 const title = (card: Card) => {
@@ -80,6 +78,8 @@ const stepCompleted = defineModel<boolean>()
 const props = defineProps<{
   step: number
 }>()
+
+const sets = computed(() => allSets.filter((set) => set.code !== 'PROMO-A'))
 
 const filteredCards = (set: string) => cards.filter((card) => card.set === set.toUpperCase())
 
