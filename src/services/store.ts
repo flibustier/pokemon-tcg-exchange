@@ -1,3 +1,4 @@
+import { ref, watch, computed } from 'vue'
 import cards from 'pokemon-tcg-pocket-database/dist/cards.json' assert { type: 'json' }
 
 enum ObjectName {
@@ -30,12 +31,25 @@ export const getGivingCards = () => {
   return JSON.parse(localStorage.getItem(ObjectName.GivingCards) || '{}')
 }
 
+export const wantedCardsCountById = ref<Record<string, number>>(getWantedCards())
+export const givingCardsCountById = ref<Record<string, number>>(getGivingCards())
+
 export const setWantedCards = (cards: Record<string, number>) => {
   localStorage.setItem(ObjectName.WantedCards, JSON.stringify(cards))
 }
 export const setGivingCards = (cards: Record<string, number>) => {
   localStorage.setItem(ObjectName.GivingCards, JSON.stringify(cards))
 }
+
+watch(wantedCardsCountById, (newStore) => setWantedCards(newStore), { deep: true })
+watch(givingCardsCountById, (newStore) => setGivingCards(newStore), { deep: true })
+
+export const isWantedStepCompleted = computed(() =>
+  Object.values(wantedCardsCountById.value).some((value) => value > 0),
+)
+export const isGivingStepCompleted = computed(() =>
+  Object.values(givingCardsCountById.value).some((value) => value > 0),
+)
 
 const getCardsAsArray = (cardsStore: Record<string, number>) => {
   return Object.entries(cardsStore)
@@ -54,12 +68,8 @@ const getCardsAsArray = (cardsStore: Record<string, number>) => {
     .filter((card) => card.count > 0)
 }
 
-export const getWantedCardsAsArray = () => {
-  return getCardsAsArray(getWantedCards())
-}
-export const getGivingCardsAsArray = () => {
-  return getCardsAsArray(getGivingCards())
-}
+export const getWantedCardsAsArray = computed(() => getCardsAsArray(wantedCardsCountById.value))
+export const getGivingCardsAsArray = computed(() => getCardsAsArray(givingCardsCountById.value))
 
 async function passwordToSha512(password: string) {
   const msgUint8 = new TextEncoder().encode(password)

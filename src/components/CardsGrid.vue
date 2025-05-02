@@ -49,12 +49,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
+import { computed } from 'vue'
 import cards from 'pokemon-tcg-pocket-database/dist/cards.json' with { type: 'json' }
 import allSets from 'pokemon-tcg-pocket-database/dist/sets.json' with { type: 'json' }
 
 import { AUTHORIZED_RARITIES, AUTHORIZED_SETS } from '@/../config.json' with { type: 'json' }
-import { getGivingCards, getWantedCards, setGivingCards, setWantedCards } from '@/services/store'
+import { wantedCardsCountById, givingCardsCountById } from '@/services/store'
 
 import NumberInput from './atoms/NumberInput.vue'
 
@@ -73,8 +73,6 @@ const title = (card: Card) => {
   return card.label.eng
 }
 
-const stepCompleted = defineModel<boolean>()
-
 const props = defineProps<{
   step: number
 }>()
@@ -87,38 +85,17 @@ const shorten = (text: string) => {
   return text.length > 10 ? text.slice(0, 10) + '…' : text
 }
 
-const cardCountById = ref<Record<string, number>>({})
-
-watch(
-  cardCountById,
-  (newStore) => {
-    if (props.step === 1) {
-      setWantedCards(newStore)
-    } else {
-      setGivingCards(newStore)
-    }
-    stepCompleted.value = Object.values(newStore).some((value) => value > 0)
-  },
-  { deep: true },
-)
-
-watch(
-  () => props.step,
-  () => {
-    if (props.step === 1) {
-      cardCountById.value = getWantedCards()
-    } else {
-      cardCountById.value = getGivingCards()
-    }
-  },
-  { immediate: true },
-)
+const cardCountById = computed(() => {
+  if (props.step === 1) {
+    return wantedCardsCountById.value
+  } else {
+    return givingCardsCountById.value
+  }
+})
 
 const isWantedCard = (card: Card) => {
   if (props.step === 2) {
-    const wantedCards = getWantedCards()
-
-    return wantedCards[cardId(card)] > 0
+    return wantedCardsCountById.value[cardId(card)] > 0
   }
 
   return false

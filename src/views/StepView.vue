@@ -1,10 +1,22 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import CardsGrid from '../components/CardsGrid.vue'
+import { ref, computed } from 'vue'
+
+import CardsGrid from '@/components/CardsGrid.vue'
 import PrimaryButton from '@/components/atoms/PrimaryButton.vue'
 import LoginForm from '@/components/LoginForm.vue'
+import PricesTable from '@/components/PricesTable.vue'
 
-const stepCompleted = ref(false)
+import { isWantedStepCompleted, isGivingStepCompleted } from '@/services/store'
+
+const stepCompleted = computed(() => {
+  if (activeStep.value === 1) {
+    return isWantedStepCompleted.value
+  } else if (activeStep.value === 2) {
+    return isGivingStepCompleted.value
+  } else {
+    return false
+  }
+})
 const activeStep = ref(1)
 </script>
 
@@ -36,6 +48,7 @@ const activeStep = ref(1)
           Next Step
         </button>
       </div>
+      <PricesTable v-if="activeStep < 3" />
     </div>
     <CardsGrid v-if="activeStep < 3" v-model="stepCompleted" :step="activeStep" />
     <div v-else class="aside" style="flex-grow: 1"><LoginForm /></div>
