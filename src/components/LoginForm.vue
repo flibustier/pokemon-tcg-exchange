@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
 
-import { createUser } from '@/services/api'
-
-const router = useRouter()
+import { createUser, fetchUser } from '@/services/api'
+import { getFriendId } from '@/services/store'
 
 const props = defineProps({
   withoutId: {
@@ -13,8 +11,10 @@ const props = defineProps({
   },
 })
 
+const emit = defineEmits(['error'])
+
 const form = reactive({
-  friendId: '',
+  friendId: getFriendId(),
   email: '',
   password: '',
 })
@@ -38,16 +38,23 @@ const formIncomplete = computed(() => {
 const submit = async () => {
   submitting.value = true
   try {
-    const success = await createUser(form)
+    let success = false
+    if (props.withoutId) {
+      success = await fetchUser(form)
+    } else {
+      success = await createUser(form)
+    }
 
     console.log(success)
 
     if (success) {
-      router.push('/proposals')
+      window.location.replace('/account/proposals')
     }
   } catch (error) {
-    console.log(error)
-    submitError.value = error
+    if (error !== 'user not found') {
+      submitError.value = error
+    }
+    emit('error', error)
   } finally {
     submitting.value = false
   }
@@ -97,7 +104,7 @@ const submit = async () => {
       />
     </div>
     <button type="submit" class="submit-button" :disabled="formIncomplete || submitting">
-      {{ submitting ? 'Loading…' : props.withoutId ? 'Sign In' : 'Access Proposals' }}
+      {{ submitting ? 'Loading…' : props.withoutId ? 'Sign In' : 'Create Account' }}
     </button>
     <span class="error-message" v-if="submitError">Error: {{ submitError }}</span>
   </form>

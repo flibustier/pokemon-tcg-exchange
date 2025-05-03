@@ -6,6 +6,7 @@ enum ObjectName {
   WantedCards = 'wanted_cards',
   GivingCards = 'giving_cards',
   LogIn = 'token',
+  FriendId = 'friend_id',
 }
 
 export const getClientID = () => {
@@ -22,6 +23,14 @@ export const getClientID = () => {
   localStorage.setItem(ObjectName.ClientID, clientID)
 
   return clientID
+}
+
+export const setFriendId = (friendId: string) => {
+  localStorage.setItem(ObjectName.FriendId, friendId)
+}
+
+export const getFriendId = () => {
+  return localStorage.getItem(ObjectName.FriendId) || ''
 }
 
 export const getWantedCards = () => {
@@ -71,6 +80,27 @@ const getCardsAsArray = (cardsStore: Record<string, number>) => {
 export const getWantedCardsAsArray = computed(() => getCardsAsArray(wantedCardsCountById.value))
 export const getGivingCardsAsArray = computed(() => getCardsAsArray(givingCardsCountById.value))
 
+type Card = {
+  id: string
+  count: number
+}
+export const importCards = (wanted: Card[], giving: Card[]) => {
+  wantedCardsCountById.value = wanted.reduce(
+    (acc, card) => {
+      acc[card.id] = card.count
+      return acc
+    },
+    {} as Record<string, number>,
+  )
+  givingCardsCountById.value = giving.reduce(
+    (acc, card) => {
+      acc[card.id] = card.count
+      return acc
+    },
+    {} as Record<string, number>,
+  )
+}
+
 async function passwordToSha512(password: string) {
   const msgUint8 = new TextEncoder().encode(password)
   const hashBuffer = await window.crypto.subtle.digest('SHA-512', msgUint8)
@@ -86,7 +116,12 @@ export const setLogin = async (email: string, password: string) => {
   localStorage.setItem(ObjectName.LogIn, btoa(email + ':' + hashedPassword))
 }
 
-export const setLogOut = () => localStorage.removeItem(ObjectName.LogIn)
+export const setLogOut = () => {
+  localStorage.removeItem(ObjectName.LogIn)
+  localStorage.removeItem(ObjectName.FriendId)
+  localStorage.removeItem(ObjectName.WantedCards)
+  localStorage.removeItem(ObjectName.GivingCards)
+}
 
 interface Credentials {
   email: string

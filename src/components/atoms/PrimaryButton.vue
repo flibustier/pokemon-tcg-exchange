@@ -15,7 +15,7 @@ const emit = defineEmits(['click'])
   border-radius: 25px;
   border: none;
   font-size: 16px;
-  box-shadow: 0 0 0 2px #00e5ff;
+  box-shadow: 0 0 0 2px #5fd5ff;
   text-align: center;
   cursor: pointer;
 }
