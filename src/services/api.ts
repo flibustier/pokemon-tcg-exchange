@@ -27,8 +27,8 @@ export const createUser = async (user: UserInfo) => {
         client_id: getClientID(),
         email: user.email,
         password: user.password,
-        wanted: getWantedCardsAsArray(),
-        giving: getGivingCardsAsArray(),
+        wanted: getWantedCardsAsArray.value,
+        giving: getGivingCardsAsArray.value,
         friend_id: user.friendId,
       }),
     })

@@ -77,7 +77,7 @@ const props = defineProps<{
   step: number
 }>()
 
-const sets = computed(() => allSets.filter((set) => set.code !== 'PROMO-A'))
+const sets = computed(() => allSets) //.filter((set) => set.code !== 'PROMO-A'))
 
 const filteredCards = (set: string) => cards.filter((card) => card.set === set.toUpperCase())
 

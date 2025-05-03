@@ -48,7 +48,7 @@ const activeStep = ref(1)
           Next Step
         </button>
       </div>
-      <PricesTable v-if="activeStep < 3" />
+      <PricesTable v-if="activeStep < 3" :showGiving="activeStep === 2" />
     </div>
     <CardsGrid v-if="activeStep < 3" v-model="stepCompleted" :step="activeStep" />
     <div v-else class="aside" style="flex-grow: 1"><LoginForm /></div>
