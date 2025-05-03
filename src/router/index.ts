@@ -25,12 +25,24 @@ const router = createRouter({
     {
       path: '/account',
       name: 'account',
-      component: () => import('../views/ProposalsView.vue'),
-    },
-    {
-      path: '/account/proposals',
-      name: 'proposals',
-      component: () => import('../views/ProposalsView.vue'),
+      component: () => import('../views/AccountView.vue'),
+      children: [
+        {
+          path: 'wishlist',
+          name: 'wishlist',
+          component: () => import('../views/AccountView.vue'),
+        },
+        {
+          path: 'offers',
+          name: 'offers',
+          component: () => import('../views/AccountView.vue'),
+        },
+        {
+          path: 'proposals',
+          name: 'proposals',
+          component: () => import('../views/AccountView.vue'),
+        },
+      ],
     },
   ],
 })

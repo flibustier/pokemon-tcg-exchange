@@ -1,6 +1,8 @@
 import { ref, watch, computed } from 'vue'
 import cards from 'pokemon-tcg-pocket-database/dist/cards.json' assert { type: 'json' }
 
+import { debouncedUpdateUser } from './api'
+
 enum ObjectName {
   ClientID = 'client_id',
   WantedCards = 'wanted_cards',
@@ -50,14 +52,32 @@ export const setGivingCards = (cards: Record<string, number>) => {
   localStorage.setItem(ObjectName.GivingCards, JSON.stringify(cards))
 }
 
-watch(wantedCardsCountById, (newStore) => setWantedCards(newStore), { deep: true })
-watch(givingCardsCountById, (newStore) => setGivingCards(newStore), { deep: true })
+watch(
+  wantedCardsCountById,
+  (newStore) => {
+    setWantedCards(newStore)
+    debouncedUpdateUser()
+  },
+  { deep: true },
+)
+watch(
+  givingCardsCountById,
+  (newStore) => {
+    setGivingCards(newStore)
+    debouncedUpdateUser()
+  },
+  { deep: true },
+)
 
 export const isWantedStepCompleted = computed(() =>
   Object.values(wantedCardsCountById.value).some((value) => value > 0),
 )
 export const isGivingStepCompleted = computed(() =>
   Object.values(givingCardsCountById.value).some((value) => value > 0),
+)
+
+export const isAccountIncomplete = computed(
+  () => !isWantedStepCompleted.value || !isGivingStepCompleted.value,
 )
 
 const getCardsAsArray = (cardsStore: Record<string, number>) => {

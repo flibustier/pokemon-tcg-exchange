@@ -6,7 +6,19 @@ import {
   getCredentials,
   importCards,
   setFriendId,
+  getFriendId,
+  isLogged,
 } from './store'
+
+function debounce<T extends (...args: unknown[]) => void>(func: T, timeout = 300) {
+  let timer: ReturnType<typeof setTimeout> | undefined
+  return (...args: Parameters<T>) => {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      func(...args)
+    }, timeout)
+  }
+}
 
 const isProduction = import.meta.env.PROD
 
@@ -72,6 +84,38 @@ export const createUser = async (user: UserInfo) => {
       await setLogin(user.email, user.password)
       setFriendId(user.friendId)
 
+      return true
+    } else {
+      throw result
+    }
+  } catch (error) {
+    console.error('Error:', error)
+
+    throw error
+  }
+}
+
+export const debouncedUpdateUser = debounce(() => updateUser(), 1000)
+export const updateUser = async () => {
+  if (!isLogged()) return
+  try {
+    const response = await fetch(endpoint + '/user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        client_id: getClientID(),
+        ...getCredentials(),
+        wanted: getWantedCardsAsArray.value,
+        giving: getGivingCardsAsArray.value,
+        friend_id: getFriendId(),
+      }),
+    })
+
+    const result = await response.text()
+
+    if (result === 'updated') {
       return true
     } else {
       throw result

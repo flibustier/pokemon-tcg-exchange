@@ -2,7 +2,7 @@
 import { computed, reactive, ref } from 'vue'
 
 import { createUser, fetchUser } from '@/services/api'
-import { getFriendId } from '@/services/store'
+import { getFriendId, isAccountIncomplete } from '@/services/store'
 
 const props = defineProps({
   withoutId: {
@@ -48,7 +48,9 @@ const submit = async () => {
     console.log(success)
 
     if (success) {
-      window.location.replace('/account/proposals')
+      window.location.replace(
+        isAccountIncomplete.value ? '/account/wishlist' : '/account/proposals',
+      )
     }
   } catch (error) {
     if (error !== 'user not found') {

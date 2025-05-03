@@ -4,6 +4,8 @@ import cards from 'pokemon-tcg-pocket-database/dist/cards.json' with { type: 'js
 
 import { getProposals } from '@/services/api'
 
+import CenteredLayout from '@/layouts/CenteredLayout.vue'
+
 type Card = (typeof cards)[0]
 
 interface Proposal {
@@ -49,9 +51,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="about">
+  <CenteredLayout>
     <div v-if="data.length > 0" class="list">
-      <h1>Matching Proposals!</h1>
+      <h2>You’ve got a match!</h2>
       <div class="exchange-tile" v-for="(proposal, index) in data" :key="index">
         <span class="tile-title">Friend ID : {{ formatFriendID(proposal.friend_id) }}</span>
         <div class="card-container">
@@ -77,18 +79,10 @@ onMounted(async () => {
       <br />
       Please come back later!
     </p>
-  </div>
+  </CenteredLayout>
 </template>
 
 <style>
-.about {
-  min-height: 80vh;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: center;
-}
-
 .list {
   width: 100%;
   display: flex;
@@ -96,7 +90,7 @@ onMounted(async () => {
   gap: 3rem;
 }
 
-h1 {
+h2 {
   text-align: center;
 }
 
@@ -116,11 +110,13 @@ h1 {
 
 .card-container {
   width: 200px;
-  height: 280px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-image {
-  width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 12px;
