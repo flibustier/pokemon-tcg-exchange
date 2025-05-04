@@ -10,7 +10,7 @@ import PrimaryButton from '@/components/atoms/PrimaryButton.vue'
 
 <template>
   <header class="container">
-    <div class="brand" @click="router.push('/')">
+    <div class="brand" @click="router.push(isLogged() ? '/account' : '/')">
       <img
         alt="Pokemon Trading Card Game Pocket"
         class="logo"
@@ -28,8 +28,8 @@ import PrimaryButton from '@/components/atoms/PrimaryButton.vue'
     </div>
 
     <div class="actions">
-      <PrimaryButton v-if="isLogged()" @click="router.push('/proposals')">Proposals</PrimaryButton>
-      <!--PrimaryButton v-else @click="router.push('/login')">Sign In</!--PrimaryButton-->
+      <PrimaryButton v-if="isLogged()" @click="router.push('/logout')">Logout</PrimaryButton>
+      <PrimaryButton v-else @click="router.push('/login')">Sign In</PrimaryButton>
     </div>
   </header>
   <div class="separator"></div>

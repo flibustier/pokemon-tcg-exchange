@@ -1,11 +1,14 @@
 import { ref, watch, computed } from 'vue'
 import cards from 'pokemon-tcg-pocket-database/dist/cards.json' assert { type: 'json' }
 
+import { debouncedUpdateUser } from './api'
+
 enum ObjectName {
   ClientID = 'client_id',
   WantedCards = 'wanted_cards',
   GivingCards = 'giving_cards',
   LogIn = 'token',
+  FriendId = 'friend_id',
 }
 
 export const getClientID = () => {
@@ -22,6 +25,14 @@ export const getClientID = () => {
   localStorage.setItem(ObjectName.ClientID, clientID)
 
   return clientID
+}
+
+export const setFriendId = (friendId: string) => {
+  localStorage.setItem(ObjectName.FriendId, friendId)
+}
+
+export const getFriendId = () => {
+  return localStorage.getItem(ObjectName.FriendId) || ''
 }
 
 export const getWantedCards = () => {
@@ -41,14 +52,32 @@ export const setGivingCards = (cards: Record<string, number>) => {
   localStorage.setItem(ObjectName.GivingCards, JSON.stringify(cards))
 }
 
-watch(wantedCardsCountById, (newStore) => setWantedCards(newStore), { deep: true })
-watch(givingCardsCountById, (newStore) => setGivingCards(newStore), { deep: true })
+watch(
+  wantedCardsCountById,
+  (newStore) => {
+    setWantedCards(newStore)
+    debouncedUpdateUser()
+  },
+  { deep: true },
+)
+watch(
+  givingCardsCountById,
+  (newStore) => {
+    setGivingCards(newStore)
+    debouncedUpdateUser()
+  },
+  { deep: true },
+)
 
 export const isWantedStepCompleted = computed(() =>
   Object.values(wantedCardsCountById.value).some((value) => value > 0),
 )
 export const isGivingStepCompleted = computed(() =>
   Object.values(givingCardsCountById.value).some((value) => value > 0),
+)
+
+export const isAccountIncomplete = computed(
+  () => !isWantedStepCompleted.value || !isGivingStepCompleted.value,
 )
 
 const getCardsAsArray = (cardsStore: Record<string, number>) => {
@@ -71,6 +100,27 @@ const getCardsAsArray = (cardsStore: Record<string, number>) => {
 export const getWantedCardsAsArray = computed(() => getCardsAsArray(wantedCardsCountById.value))
 export const getGivingCardsAsArray = computed(() => getCardsAsArray(givingCardsCountById.value))
 
+type Card = {
+  id: string
+  count: number
+}
+export const importCards = (wanted: Card[], giving: Card[]) => {
+  wantedCardsCountById.value = wanted.reduce(
+    (acc, card) => {
+      acc[card.id] = card.count
+      return acc
+    },
+    {} as Record<string, number>,
+  )
+  givingCardsCountById.value = giving.reduce(
+    (acc, card) => {
+      acc[card.id] = card.count
+      return acc
+    },
+    {} as Record<string, number>,
+  )
+}
+
 async function passwordToSha512(password: string) {
   const msgUint8 = new TextEncoder().encode(password)
   const hashBuffer = await window.crypto.subtle.digest('SHA-512', msgUint8)
@@ -86,7 +136,12 @@ export const setLogin = async (email: string, password: string) => {
   localStorage.setItem(ObjectName.LogIn, btoa(email + ':' + hashedPassword))
 }
 
-export const setLogOut = () => localStorage.removeItem(ObjectName.LogIn)
+export const setLogOut = () => {
+  localStorage.removeItem(ObjectName.LogIn)
+  localStorage.removeItem(ObjectName.FriendId)
+  localStorage.removeItem(ObjectName.WantedCards)
+  localStorage.removeItem(ObjectName.GivingCards)
+}
 
 interface Credentials {
   email: string
