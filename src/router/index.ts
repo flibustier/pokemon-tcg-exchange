@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/StepView.vue'
+import { isLogged } from '@/services/store'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +9,13 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      beforeEnter: (to, from, next) => {
+        if (isLogged()) {
+          next('/account/proposals')
+        } else {
+          next()
+        }
+      },
     },
     {
       path: '/login',
