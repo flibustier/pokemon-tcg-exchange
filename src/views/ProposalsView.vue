@@ -82,7 +82,7 @@ onMounted(async () => {
   </CenteredLayout>
 </template>
 
-<style>
+<style scoped>
 .list {
   width: 100%;
   display: flex;
