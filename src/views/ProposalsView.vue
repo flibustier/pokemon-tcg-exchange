@@ -38,10 +38,10 @@ const proposalsByRarityAndFriendId = computed(() => {
       (group) => group.rarity === rarity && group.friendID === friendID,
     )
     if (existingGroup) {
-      if (!existingGroup.wantedCards.includes(proposal.card1)) {
+      if (existingGroup.wantedCards.every((card) => card.id !== proposal.card1.id)) {
         existingGroup.wantedCards.push(proposal.card1)
       }
-      if (!existingGroup.givenCards.includes(proposal.card2)) {
+      if (existingGroup.givenCards.every((card) => card.id !== proposal.card2.id)) {
         existingGroup.givenCards.push(proposal.card2)
       }
     } else {
