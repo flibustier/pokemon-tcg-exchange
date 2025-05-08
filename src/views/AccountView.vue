@@ -50,7 +50,7 @@ main {
   gap: 3rem;
   position: sticky;
   top: 125px;
-  min-width: 350px;
+  min-width: 300px;
 }
 
 nav {

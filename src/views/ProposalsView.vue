@@ -3,10 +3,14 @@ import { ref, onMounted, computed } from 'vue'
 import cards from 'pokemon-tcg-pocket-database/dist/cards.json' with { type: 'json' }
 
 import { getProposals } from '@/services/api'
+import { givingCardsCountById } from '@/services/store'
 
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
 
-type Card = (typeof cards)[0]
+type RawCard = (typeof cards)[0]
+interface Card extends RawCard {
+  id: string
+}
 
 interface Proposal {
   friend_id: string
@@ -52,9 +56,14 @@ const proposalsByRarityAndFriendId = computed(() => {
   }, [])
 })
 
+const countGivenCard = (cardId: string) => givingCardsCountById.value[cardId] || 0
+
 const findCard = (id: string) => {
   const [set, number] = id.split('-')
-  return cards.find((card) => card.set === set && card.number === parseInt(number))
+  return {
+    id,
+    ...cards.find((card) => card.set === set && card.number === parseInt(number)),
+  }
 }
 
 const formatFriendID = (friendID: string) => {
@@ -114,6 +123,7 @@ onMounted(async () => {
                 :alt="card.label.eng"
                 class="card-image"
               />
+              <span class="card-count">{{ countGivenCard(card.id) }}</span>
             </div>
           </div>
           <div class="tile-footer">
@@ -175,16 +185,26 @@ h2 {
 }
 
 .card-container {
-  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
 .card-image {
-  height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
+  height: 188px;
+}
+
+.card-count {
+  position: relative;
+  height: 25px;
+  width: 30px;
+  bottom: 25px;
+  right: -53px;
+  border-radius: 25% 0%;
+  text-align: center;
+  color: white;
+  background: #666d;
 }
 
 .exchange-icon {
