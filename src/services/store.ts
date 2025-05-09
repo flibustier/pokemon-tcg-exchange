@@ -1,7 +1,6 @@
 import { ref, watch, computed } from 'vue'
-import cards from 'pokemon-tcg-pocket-database/dist/cards.json' assert { type: 'json' }
-
 import { debouncedUpdateUser } from './api'
+import { cards } from './cards'
 
 enum ObjectName {
   ClientID = 'client_id',

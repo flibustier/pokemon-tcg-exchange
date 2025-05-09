@@ -3,6 +3,8 @@ import { computed } from 'vue'
 
 import { getGivingCardsAsArray, getWantedCardsAsArray } from '@/services/store'
 
+import RarityImage from '@/components/atoms/RarityImage.vue'
+
 const props = defineProps({
   showGiving: {
     type: Boolean,
@@ -14,19 +16,6 @@ const costByRarity = {
   R: 120,
   RR: 500,
   AR: 400,
-}
-
-const numberOfLosangeByRarity = {
-  C: 1,
-  U: 2,
-  R: 3,
-  RR: 4,
-}
-
-const numberOfStarByRarity = {
-  AR: 1,
-  SR: 2,
-  IM: 3,
 }
 
 const countByRarity = (array: { rarity?: string; count: number }[]): Record<string, number> => {
@@ -71,20 +60,7 @@ const totalCost = computed(() => {
       <span v-else>{{ countWantedByRarity[rarity] }}</span>
       <span>x</span>
       <div class="rarity">
-        <img
-          src="/images/rarity/Losange.png"
-          alt="🔹"
-          width="15px"
-          v-for="i in numberOfLosangeByRarity[rarity as keyof typeof numberOfLosangeByRarity]"
-          :key="i"
-        />
-        <img
-          src="/images/rarity/Star.png"
-          alt="⭐️"
-          width="20px"
-          v-for="i in numberOfStarByRarity[rarity as keyof typeof numberOfStarByRarity]"
-          :key="i"
-        />
+        <RarityImage :rarity="rarity" />
       </div>
     </div>
   </div>
