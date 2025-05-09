@@ -26,11 +26,13 @@ const isCardManaging = computed(() =>
         <MenuButton label="Proposals" icon="exchange" :active="activeRoute === 'proposals'" />
         <MenuButton label="Account" icon="gear" :active="activeRoute === 'account'" />
       </nav>
-      <PricesTable v-if="isCardManaging" :showGiving="activeRoute === 'offers'" />
+      <PricesTable id="prices" v-if="isCardManaging" :showGiving="activeRoute === 'offers'" />
     </div>
-    <CardsGrid v-if="isCardManaging" :step="activeRoute === 'wishlist' ? 1 : 2" />
-    <ProposalsView v-if="activeRoute === 'proposals'" />
-    <SettingsForm v-if="activeRoute === 'account'" />
+    <div class="content">
+      <CardsGrid v-if="isCardManaging" :step="activeRoute === 'wishlist' ? 1 : 2" />
+      <ProposalsView v-if="activeRoute === 'proposals'" />
+      <SettingsForm v-if="activeRoute === 'account'" />
+    </div>
   </main>
 </template>
 
@@ -40,6 +42,10 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+}
+
+.content {
+  width: 100%;
 }
 
 .aside {
@@ -58,5 +64,34 @@ nav {
   flex-direction: column;
   align-items: center;
   gap: 16px;
+}
+
+@media (max-width: 1111px) {
+  main {
+    flex-direction: column;
+    align-items: center;
+  }
+  .aside {
+    position: fixed;
+    height: auto;
+    top: auto;
+    bottom: 0;
+    z-index: 11;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 1rem;
+
+    #prices {
+      display: none;
+    }
+  }
+  .content {
+    margin-bottom: 80px;
+  }
+  nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 }
 </style>

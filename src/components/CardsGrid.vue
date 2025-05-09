@@ -34,10 +34,10 @@ const props = defineProps<{
 
 const sets = computed(() => allSets) //.filter((set) => set.code !== 'PROMO-A'))
 
-const filteredCards = (set: string) =>
+const filteredCards = (set?: string) =>
   cards.filter(
     (card) =>
-      card.set === set.toUpperCase() &&
+      (!set || card.set === set.toUpperCase()) &&
       (!filters.hideEmpty || cardCountById.value[cardId(card)] > 0) &&
       (!filters.hideUnavailable ||
         (!isRestricted(card) && (!isWantedCard(card) || props.step === 1))) &&
@@ -83,6 +83,7 @@ const increase = (card: Card) => {
               :src="`/images/sets/LOGO_expansion_${sets[index - 1].code}_en_US.webp`"
               :alt="sets[index - 1].label.en"
               height="60"
+              class="hidden-sm"
             />
             <img src="/images/double-arrow-left.png" alt="«" height="50" />
           </a>
@@ -96,6 +97,7 @@ const increase = (card: Card) => {
               :src="`/images/sets/LOGO_expansion_${sets[index + 1].code}_en_US.webp`"
               :alt="sets[index + 1].label.en"
               height="60"
+              class="hidden-sm"
             />
           </a>
           <div v-else style="width: 20%"></div>
@@ -123,6 +125,10 @@ const increase = (card: Card) => {
         </div>
       </div>
     </div>
+    <template v-if="filteredCards().length === 0">
+      <CardsFilters v-model="filters" :cards="cards" />
+      <p class="no-results">No results :/<br />Please adjust your filters</p>
+    </template>
   </div>
 </template>
 
@@ -140,7 +146,6 @@ const increase = (card: Card) => {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 2rem;
   max-width: 850px;
   width: 100%;
 }
@@ -149,8 +154,7 @@ const increase = (card: Card) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -205,6 +209,12 @@ h3 {
   font-weight: medium;
 }
 
+.no-results {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 2rem;
+}
+
 .card-number {
   margin-left: 1rem;
   font-size: 1.2rem;
@@ -230,5 +240,11 @@ h3 {
 .corner-icon {
   position: relative;
   width: 10px;
+}
+
+@media (max-width: 700px) {
+  .hidden-sm {
+    display: none;
+  }
 }
 </style>
