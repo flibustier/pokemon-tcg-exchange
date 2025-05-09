@@ -3,6 +3,7 @@ import { computed } from 'vue'
 
 import RarityImage from '@/components/atoms/RarityImage.vue'
 
+import { rarityLabels } from '@/services/cards'
 import type { Card } from '@/services/cards'
 
 const props = defineProps<{
@@ -40,6 +41,7 @@ const toggle = (rarity: string) => {
       }"
       v-for="rarity in rarityOptions"
       :key="rarity"
+      :title="rarityLabels[rarity as keyof typeof rarityLabels] || ''"
       @click="toggle(rarity)"
     >
       <RarityImage :rarity="rarity" />
@@ -47,6 +49,7 @@ const toggle = (rarity: string) => {
     <div
       class="badge badge--unavailable"
       :class="{ 'is-active': !filters.hideUnavailable }"
+      title="Display restricted cards or cards you’re already looking for"
       @click="filters.hideUnavailable = !filters.hideUnavailable"
     >
       🚫
@@ -54,6 +57,7 @@ const toggle = (rarity: string) => {
     <div
       class="badge badge--unavailable"
       :class="{ 'is-active': !filters.hideEmpty }"
+      title="Display cards you haven’t already selected"
       @click="filters.hideEmpty = !filters.hideEmpty"
     >
       0️⃣
