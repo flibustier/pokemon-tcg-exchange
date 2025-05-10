@@ -23,7 +23,7 @@ const activeStep = ref(1)
 
 <template>
   <main>
-    <div class="aside">
+    <div class="aside" :class="{ 'hidden-sm': activeStep === 3 }">
       <div class="step-container">
         <div class="step-number" :class="{ active: activeStep === 1 }">1</div>
         <span class="step-text">Select the cards you are looking for </span>
@@ -39,15 +39,25 @@ const activeStep = ref(1)
         <span class="step-text">Enter your ID and match with other players !</span>
       </div>
       <div class="buttons">
-        <PrimaryButton v-if="activeStep > 1" @click="activeStep--"> Previous </PrimaryButton>
         <PlainButton v-if="activeStep < 3" :disabled="!stepCompleted" @click="activeStep++">
           Next Step
         </PlainButton>
+        <PrimaryButton v-if="activeStep === 2" @click="activeStep--"> Previous </PrimaryButton>
       </div>
-      <PricesTable v-if="activeStep < 3 && isWantedStepCompleted" :showGiving="activeStep === 2" />
+      <PricesTable
+        id="prices"
+        v-if="activeStep < 3 && isWantedStepCompleted"
+        :showGiving="activeStep === 2"
+      />
     </div>
     <CardsGrid v-if="activeStep < 3" v-model="stepCompleted" :step="activeStep" />
-    <div v-else class="aside" style="flex-grow: 1"><LoginForm /></div>
+    <div v-else class="content">
+      <h2 class="hidden-xl">Enter your ID and match with other players !</h2>
+      <LoginForm />
+      <div class="buttons" style="max-width: 335px">
+        <PrimaryButton @click="activeStep--"> Previous </PrimaryButton>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -57,6 +67,7 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 2rem;
 }
 
 .aside {
@@ -67,6 +78,7 @@ main {
   gap: 3rem;
   position: sticky;
   top: 125px;
+  min-width: 360px;
 }
 
 .step-container {
@@ -109,5 +121,57 @@ main {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
+}
+
+.content {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hidden-xl {
+  display: none;
+}
+
+@media (max-width: 1111px) {
+  main {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .aside {
+    position: fixed;
+    height: auto;
+    top: auto;
+    bottom: 0;
+    z-index: 11;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    width: 100%;
+    min-width: 100%;
+    background-color: white;
+
+    #prices {
+      display: none;
+    }
+  }
+  .content {
+    margin-bottom: 80px;
+  }
+  .hidden-xl {
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .hidden-sm {
+    display: none;
+  }
 }
 </style>

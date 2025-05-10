@@ -42,6 +42,7 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 1rem;
 }
 
 .content {
@@ -56,7 +57,7 @@ main {
   gap: 3rem;
   position: sticky;
   top: 125px;
-  min-width: 300px;
+  min-width: 310px;
 }
 
 nav {
@@ -70,6 +71,7 @@ nav {
   main {
     flex-direction: column;
     align-items: center;
+    gap: 0;
   }
   .aside {
     position: fixed;
@@ -81,6 +83,8 @@ nav {
     flex-direction: row;
     justify-content: center;
     margin-bottom: 1rem;
+    width: 100%;
+    min-width: 100%;
 
     #prices {
       display: none;

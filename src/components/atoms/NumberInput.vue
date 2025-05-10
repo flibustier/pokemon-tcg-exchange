@@ -91,7 +91,6 @@ input {
   box-shadow: 0 0 0 2px rgba(95, 99, 104, 0.1);
 
   padding: 0;
-  margin: 0 4px;
   -moz-appearance: textfield;
 }
 
@@ -113,5 +112,15 @@ input:disabled {
   background: #f1f1f1;
   color: #ccc;
   cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+  .wrap {
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+  input {
+    width: 100%;
+  }
 }
 </style>

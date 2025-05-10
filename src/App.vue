@@ -16,14 +16,9 @@ import PrimaryButton from '@/components/atoms/PrimaryButton.vue'
         class="logo"
         src="/images/tcgpocketlogo_en.png"
         height="125"
+        id="tcg-pocket-logo"
       />
-      <img
-        alt="Exchange"
-        class="logo"
-        src="/images/exchange.png"
-        height="75"
-        style="margin: 0 0.5rem"
-      />
+      <img alt="Exchange" class="logo" src="/images/exchange.png" id="exchange-logo" height="75" />
       <h1>Exchange Center</h1>
     </div>
 
@@ -66,6 +61,22 @@ header {
 .brand:hover {
   background-color: #e9f2f782;
   border-radius: 10px;
+}
+
+#exchange-logo {
+  margin: 0 0.5rem;
+}
+
+@media (max-width: 600px) {
+  #tcg-pocket-logo {
+    height: 75px;
+  }
+  #exchange-logo {
+    height: 50px;
+  }
+  h1 {
+    font-size: 1.5rem;
+  }
 }
 
 main {

@@ -87,7 +87,7 @@ const increase = (card: Card) => {
             />
             <img src="/images/double-arrow-left.png" alt="«" height="50" />
           </a>
-          <div v-else style="width: 20%"></div>
+          <div v-else class="bumper"></div>
           <div>
             <img :src="`/images/sets/LOGO_expansion_${set.code}_en_US.webp`" :alt="set.label.en" />
           </div>
@@ -100,7 +100,7 @@ const increase = (card: Card) => {
               class="hidden-sm"
             />
           </a>
-          <div v-else style="width: 20%"></div>
+          <div v-else class="bumper"></div>
         </div>
         <CardsFilters v-model="filters" :cards="cards" />
       </div>
@@ -146,7 +146,6 @@ const increase = (card: Card) => {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  max-width: 850px;
   width: 100%;
 }
 
@@ -173,6 +172,10 @@ const increase = (card: Card) => {
   a {
     height: 100%;
   }
+}
+
+.bumper {
+  width: 20%;
 }
 
 .card-grid {
@@ -245,6 +248,10 @@ h3 {
 @media (max-width: 700px) {
   .hidden-sm {
     display: none;
+  }
+
+  .bumper {
+    width: 9%;
   }
 }
 </style>
