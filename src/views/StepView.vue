@@ -50,7 +50,7 @@ const activeStep = ref(1)
         :showGiving="activeStep === 2"
       />
     </div>
-    <CardsGrid v-if="activeStep < 3" v-model="stepCompleted" :step="activeStep" />
+    <CardsGrid v-if="activeStep < 3" v-model="stepCompleted" :step="activeStep" id="cards-grid" />
     <div v-else class="content">
       <h2 class="hidden-xl">Enter your ID and match with other players !</h2>
       <LoginForm />
@@ -163,8 +163,8 @@ main {
       display: none;
     }
   }
-  .content {
-    margin-bottom: 80px;
+  #cards-grid {
+    margin-bottom: 180px;
   }
   .hidden-xl {
     display: block;
