@@ -108,7 +108,7 @@ onMounted(async () => {
           <div class="cards">
             <div class="card-container" v-for="(card, index) in group.wantedCards" :key="index">
               <img
-                :src="`/images/cards/${card.imageName}`"
+                :src="`/images/cards/thumbnails/${card.imageName}`"
                 :alt="card.label.eng"
                 class="card-image"
               />
@@ -119,7 +119,7 @@ onMounted(async () => {
           <div class="cards">
             <div class="card-container" v-for="(card, index) in group.givenCards" :key="index">
               <img
-                :src="`/images/cards/${card.imageName}`"
+                :src="`/images/cards/thumbnails/${card.imageName}`"
                 :alt="card.label.eng"
                 class="card-image"
               />

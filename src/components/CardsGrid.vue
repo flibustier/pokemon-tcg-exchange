@@ -112,7 +112,7 @@ const increase = (card: Card) => {
           </h3>
           <img v-if="false" src="/images/wanted.png" alt="wanted" class="corner-icon" />
           <img
-            :src="'/images/cards/' + card.imageName"
+            :src="'/images/cards/thumbnails/' + card.imageName"
             :alt="card.label.slug"
             class="card-image"
             :class="{ disabled: isWantedCard(card) || isRestricted(card) }"
