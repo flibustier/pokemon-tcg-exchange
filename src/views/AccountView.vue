@@ -7,6 +7,8 @@ import SettingsForm from '@/components/SettingsForm.vue'
 import PricesTable from '@/components/PricesTable.vue'
 import ProposalsView from '@/views/ProposalsView.vue'
 import CardsGrid from '@/components/CardsGrid.vue'
+import PacksInformations from '@/components/PacksInformations.vue'
+import CenteredLayout from '@/layouts/CenteredLayout.vue'
 
 const route = useRoute()
 
@@ -31,7 +33,11 @@ const isCardManaging = computed(() =>
     <div class="content">
       <CardsGrid v-if="isCardManaging" :step="activeRoute === 'wishlist' ? 1 : 2" />
       <ProposalsView v-if="activeRoute === 'proposals'" />
-      <SettingsForm v-if="activeRoute === 'account'" />
+      <CenteredLayout v-if="activeRoute === 'account'" style="gap: 2rem">
+        <h2>Settings</h2>
+        <SettingsForm />
+        <PacksInformations />
+      </CenteredLayout>
     </div>
   </main>
 </template>

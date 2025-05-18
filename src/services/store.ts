@@ -85,12 +85,17 @@ const getCardsAsArray = (cardsStore: Record<string, number>) => {
       const [set, numberString] = id.split('-')
       const number = parseInt(numberString)
 
+      const additionalInformations = cards.find(
+        (card) => card.set === set && card.number === number,
+      )
+
       return {
         id,
         set,
         number,
         count,
-        rarity: cards.find((card) => card.set === set && card.number === number)?.rarityCode,
+        rarity: additionalInformations?.rarityCode,
+        packs: additionalInformations?.packs,
       }
     })
     .filter((card) => card.count > 0)

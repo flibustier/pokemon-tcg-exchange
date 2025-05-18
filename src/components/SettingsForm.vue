@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 
 import PlainButton from '@/components/atoms/PlainButton.vue'
-import CenteredLayout from '@/layouts/CenteredLayout.vue'
 
 import { getFriendId, setFriendId } from '@/services/store'
 import { updateUser } from '@/services/api'
@@ -16,25 +15,22 @@ const save = async () => {
 </script>
 
 <template>
-  <CenteredLayout>
-    <h2>Settings</h2>
-    <form class="friend-form" @submit.prevent="save">
-      <div class="form-group">
-        <label for="friendId" class="form-label">Friend ID (16 digits without "-")</label>
-        <input
-          v-model="friendId"
-          required
-          type="text"
-          id="friendId"
-          class="friend-id"
-          placeholder="0000000000000000"
-          pattern="\d{16}"
-          maxlength="16"
-        />
-      </div>
-      <PlainButton type="submit" role="button">Save</PlainButton>
-    </form>
-  </CenteredLayout>
+  <form class="friend-form" @submit.prevent="save">
+    <div class="form-group">
+      <label for="friendId" class="form-label">Friend ID (16 digits without "-")</label>
+      <input
+        v-model="friendId"
+        required
+        type="text"
+        id="friendId"
+        class="friend-id"
+        placeholder="0000000000000000"
+        pattern="\d{16}"
+        maxlength="16"
+      />
+    </div>
+    <PlainButton type="submit" role="button">Save</PlainButton>
+  </form>
 </template>
 
 <style scoped>
