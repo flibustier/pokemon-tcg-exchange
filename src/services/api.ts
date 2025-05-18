@@ -8,6 +8,7 @@ import {
   setFriendId,
   getFriendId,
   isLogged,
+  getUserInfo,
 } from './store'
 
 function debounce<T extends (...args: unknown[]) => void>(func: T, timeout = 300) {
@@ -28,6 +29,8 @@ interface UserInfo {
   email: string
   password: string
   friendId: string
+  pseudo?: string
+  icon?: string
 }
 
 export const fetchUser = async (user: UserInfo) => {
@@ -109,6 +112,7 @@ export const updateUser = async () => {
         ...getCredentials(),
         wanted: getWantedCardsAsArray.value,
         giving: getGivingCardsAsArray.value,
+        ...getUserInfo(),
         friend_id: getFriendId(),
       }),
     })

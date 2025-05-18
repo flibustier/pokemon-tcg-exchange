@@ -8,6 +8,7 @@ enum ObjectName {
   GivingCards = 'giving_cards',
   LogIn = 'token',
   FriendId = 'friend_id',
+  User = 'user',
 }
 
 export const getClientID = () => {
@@ -26,12 +27,31 @@ export const getClientID = () => {
   return clientID
 }
 
+export const getFriendId = () => {
+  return localStorage.getItem(ObjectName.FriendId) || ''
+}
 export const setFriendId = (friendId: string) => {
   localStorage.setItem(ObjectName.FriendId, friendId)
 }
 
-export const getFriendId = () => {
-  return localStorage.getItem(ObjectName.FriendId) || ''
+export const getUserInfo = () => {
+  return JSON.parse(localStorage.getItem(ObjectName.User) || '{}')
+}
+
+type User = {
+  friend_id: string
+  pseudo: string
+  icon: string
+}
+
+export const setUserInfo = (user: User) => {
+  localStorage.setItem(
+    ObjectName.User,
+    JSON.stringify({
+      ...getUserInfo(),
+      ...user,
+    }),
+  )
 }
 
 export const getWantedCards = () => {
