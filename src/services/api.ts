@@ -5,10 +5,10 @@ import {
   setLogin,
   getCredentials,
   importCards,
-  setFriendId,
   getFriendId,
   isLogged,
   getUserInfo,
+  setUserInfo,
 } from './store'
 
 function debounce<T extends (...args: unknown[]) => void>(func: T, timeout = 300) {
@@ -47,11 +47,11 @@ export const fetchUser = async (user: UserInfo) => {
       }),
     })
     if (response.ok) {
-      const { friend_id, wanted, giving } = await response.json()
+      const { wanted, giving, ...info } = await response.json()
 
       await setLogin(user.email, user.password)
       importCards(JSON.parse(wanted), JSON.parse(giving))
-      setFriendId(friend_id)
+      setUserInfo(info)
 
       return true
     } else {
@@ -85,7 +85,9 @@ export const createUser = async (user: UserInfo) => {
 
     if (result === 'created' || result === 'updated') {
       await setLogin(user.email, user.password)
-      setFriendId(user.friendId)
+      setUserInfo({
+        friend_id: user.friendId,
+      })
 
       return true
     } else {

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 
 import PlainButton from '@/components/atoms/PlainButton.vue'
 
-import { getFriendId, getUserInfo, setFriendId, setUserInfo } from '@/services/store'
+import { getFriendId, getUserInfo, setUserInfo } from '@/services/store'
 import { updateUser } from '@/services/api'
 
 const user = reactive<{
@@ -11,12 +11,20 @@ const user = reactive<{
   pseudo: string
   icon: string
 }>({
-  friend_id: getFriendId(),
   pseudo: '',
   icon: '000',
   ...getUserInfo(),
+  friend_id: getFriendId(),
 })
 const showIconList = ref(false)
+const success = ref(false)
+
+watch(
+  () => [user.friend_id, user.pseudo, user.icon],
+  () => {
+    success.value = false
+  },
+)
 
 const selectedIconUrl = computed(() => `/images/avatars/${user.icon}.png`)
 
@@ -27,8 +35,7 @@ const selectIcon = (iconNumber: number) => {
 
 const save = async () => {
   setUserInfo(user)
-  setFriendId(user.friend_id)
-  await updateUser()
+  success.value = (await updateUser()) || false
 }
 </script>
 
@@ -63,7 +70,9 @@ const save = async () => {
       </div>
     </div>
 
-    <PlainButton type="submit" role="button">Save</PlainButton>
+    <PlainButton type="submit" role="button" :disabled="success">{{
+      success ? 'Saved!' : 'Save'
+    }}</PlainButton>
   </form>
 </template>
 

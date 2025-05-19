@@ -28,7 +28,7 @@ export const getClientID = () => {
 }
 
 export const getFriendId = () => {
-  return localStorage.getItem(ObjectName.FriendId) || ''
+  return getUserInfo().friend_id || localStorage.getItem(ObjectName.FriendId) || ''
 }
 export const setFriendId = (friendId: string) => {
   localStorage.setItem(ObjectName.FriendId, friendId)
@@ -40,8 +40,8 @@ export const getUserInfo = () => {
 
 type User = {
   friend_id: string
-  pseudo: string
-  icon: string
+  pseudo?: string
+  icon?: string
 }
 
 export const setUserInfo = (user: User) => {
@@ -165,6 +165,7 @@ export const setLogOut = () => {
   localStorage.removeItem(ObjectName.FriendId)
   localStorage.removeItem(ObjectName.WantedCards)
   localStorage.removeItem(ObjectName.GivingCards)
+  localStorage.removeItem(ObjectName.User)
 }
 
 interface Credentials {
