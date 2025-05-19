@@ -20,7 +20,7 @@ const countWantedByPack = computed(() => countByPack(getWantedCardsAsArray.value
 </script>
 
 <template>
-  <div class="prices">
+  <div class="prices" v-if="getWantedCardsAsArray.length > 0">
     <h3>ℹ️ Best packs matching your wishes :</h3>
 
     <div class="price" v-for="(index, pack) in countWantedByPack" :key="index">
