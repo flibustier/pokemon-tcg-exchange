@@ -16,14 +16,16 @@ const countByPack = (array: { packs?: string[]; count: number }[]): Record<strin
   )
 }
 
-const countWantedByPack = computed(() => countByPack(getWantedCardsAsArray.value))
+const countWantedByPack = computed(() =>
+  Object.entries(countByPack(getWantedCardsAsArray.value)).sort((a, b) => b[1] - a[1]),
+)
 </script>
 
 <template>
   <div class="prices" v-if="getWantedCardsAsArray.length > 0">
     <h3>ℹ️ Best packs matching your wishes :</h3>
 
-    <div class="price" v-for="(index, pack) in countWantedByPack" :key="index">
+    <div class="price" v-for="[pack, count] of countWantedByPack" :key="pack">
       <div class="rarity">
         <img
           :src="`/images/packs/${pack}.webp`"
@@ -32,7 +34,7 @@ const countWantedByPack = computed(() => countByPack(getWantedCardsAsArray.value
           :title="pack + ' booster pack'"
         />
       </div>
-      <span>{{ countWantedByPack[pack] }} cards wanted inside</span>
+      <span>{{ count }} cards wanted inside</span>
     </div>
   </div>
 </template>

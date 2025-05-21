@@ -14,7 +14,7 @@ set -e
 
 cdate=$(date +"%m-%d-%Y")
 
-yarn build
+yarn build-only
 
 cd dist
 
