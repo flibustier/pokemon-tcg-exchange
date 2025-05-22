@@ -91,6 +91,10 @@ header {
   h1 {
     font-size: 1.5rem;
   }
+  .btn-primary {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
 }
 
 main {

@@ -102,6 +102,12 @@ nav {
   nav {
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .portfolio-btn:deep() {
+    width: 5.5rem;
+    height: 6rem;
   }
 }
 </style>
