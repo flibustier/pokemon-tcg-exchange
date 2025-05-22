@@ -9,6 +9,7 @@ import {
   isLogged,
   getUserInfo,
   setUserInfo,
+  type Credentials,
 } from './store'
 
 function debounce<T extends (...args: unknown[]) => void>(func: T, timeout = 300) {
@@ -33,7 +34,7 @@ interface UserInfo {
   icon?: string
 }
 
-export const fetchUser = async (user: UserInfo) => {
+export const fetchUser = async ({ email, password }: Credentials = getCredentials()) => {
   try {
     const response = await fetch(endpoint + '/user/signin', {
       method: 'POST',
@@ -42,14 +43,13 @@ export const fetchUser = async (user: UserInfo) => {
       },
       body: JSON.stringify({
         client_id: getClientID(),
-        email: user.email,
-        password: user.password,
+        email,
+        password,
       }),
     })
     if (response.ok) {
       const { wanted, giving, ...info } = await response.json()
 
-      await setLogin(user.email, user.password)
       importCards(JSON.parse(wanted), JSON.parse(giving))
       setUserInfo(info)
 

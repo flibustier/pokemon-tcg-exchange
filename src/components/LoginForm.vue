@@ -2,7 +2,7 @@
 import { computed, reactive, ref } from 'vue'
 
 import { createUser, fetchUser } from '@/services/api'
-import { getFriendId, isAccountIncomplete } from '@/services/store'
+import { getFriendId, isAccountIncomplete, setLogin } from '@/services/store'
 
 const props = defineProps({
   withoutId: {
@@ -45,9 +45,9 @@ const submit = async () => {
       success = await createUser(form)
     }
 
-    console.log(success)
-
     if (success) {
+      await setLogin(form.email, form.password)
+
       window.location.replace(
         isAccountIncomplete.value ? '/account/wishlist' : '/account/proposals',
       )

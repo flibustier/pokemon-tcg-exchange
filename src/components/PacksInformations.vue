@@ -6,7 +6,6 @@ import { getWantedCardsAsArray } from '@/services/store'
 const countByPack = (array: { packs?: string[]; count: number }[]): Record<string, number> => {
   return array.reduce(
     (acc, card) => {
-      console.log(card)
       for (const pack of card.packs || []) {
         acc[pack || ''] = (acc[pack || ''] || 0) + card.count
       }

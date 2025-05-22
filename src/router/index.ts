@@ -31,6 +31,13 @@ const router = createRouter({
       path: '/account',
       name: 'account',
       component: () => import('../views/AccountView.vue'),
+      beforeEnter: (to, from, next) => {
+        if (isLogged()) {
+          next()
+        } else {
+          next('/login')
+        }
+      },
       children: [
         {
           path: 'wishlist',

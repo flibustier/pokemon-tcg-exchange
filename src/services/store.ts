@@ -168,7 +168,7 @@ export const setLogOut = () => {
   localStorage.removeItem(ObjectName.User)
 }
 
-interface Credentials {
+export interface Credentials {
   email: string
   password: string
 }

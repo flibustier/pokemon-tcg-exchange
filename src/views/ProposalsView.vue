@@ -6,6 +6,7 @@ import { getProposals } from '@/services/api'
 import { givingCardsCountById } from '@/services/store'
 
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
+import PlainButton from '@/components/atoms/PlainButton.vue'
 
 type RawCard = (typeof cards)[0]
 interface Card extends RawCard {
@@ -21,6 +22,8 @@ interface Proposal {
 }
 
 const data = ref([] as Proposal[])
+const loading = ref(true)
+const error = ref()
 
 type ProposalGroup = {
   rarity: string
@@ -82,20 +85,35 @@ const exchangeTokenCost = (rarity: string) => {
   return 0
 }
 
-onMounted(async () => {
-  const response = await getProposals()
+const reload = () => {
+  window.location.reload()
+}
 
-  data.value = response.map((proposal: Proposal) => ({
-    ...proposal,
-    card1: findCard(proposal.card_wanted),
-    card2: findCard(proposal.card_to_give),
-  }))
+onMounted(async () => {
+  loading.value = true
+  try {
+    const response = await getProposals()
+    data.value = response.map((proposal: Proposal) => ({
+      ...proposal,
+      card1: findCard(proposal.card_wanted),
+      card2: findCard(proposal.card_to_give),
+    }))
+  } catch (err) {
+    error.value = err
+  }
+
+  loading.value = false
 })
 </script>
 
 <template>
   <CenteredLayout style="padding: 2rem 0">
-    <template v-if="data.length > 0">
+    <h2 v-if="loading">Loading your proposals…</h2>
+    <template v-else-if="error">
+      <h2 style="margin-bottom: 2rem">{{ error }}</h2>
+      <PlainButton @click="reload">Refresh</PlainButton>
+    </template>
+    <template v-else-if="data.length > 0">
       <h2>You’ve got a match!</h2>
 
       <div class="list">

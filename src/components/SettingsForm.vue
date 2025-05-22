@@ -26,7 +26,7 @@ watch(
   },
 )
 
-const selectedIconUrl = computed(() => `/images/avatars/${user.icon}.png`)
+const selectedIconUrl = computed(() => `/images/avatars/${user.icon || '000'}.png`)
 
 const selectIcon = (iconNumber: number) => {
   user.icon = String(iconNumber).padStart(3, '0')

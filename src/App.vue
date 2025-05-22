@@ -1,11 +1,25 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
 
 const router = useRouter()
 
-import { isLogged } from '@/services/store'
+import { fetchUser } from '@/services/api'
+import { isLogged, setLogOut } from '@/services/store'
 
 import PrimaryButton from '@/components/atoms/PrimaryButton.vue'
+
+onMounted(async () => {
+  if (isLogged()) {
+    try {
+      await fetchUser()
+    } catch (e) {
+      console.log(e)
+      setLogOut()
+      window.location.reload()
+    }
+  }
+})
 </script>
 
 <template>
