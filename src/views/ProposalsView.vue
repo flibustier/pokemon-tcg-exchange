@@ -14,6 +14,8 @@ interface Card extends RawCard {
 }
 
 interface Proposal {
+  icon?: string
+  pseudo?: string
   friend_id: string
   card_wanted: string
   card_to_give: string
@@ -26,6 +28,8 @@ const loading = ref(true)
 const error = ref()
 
 type ProposalGroup = {
+  icon?: string
+  pseudo?: string
   rarity: string
   friendID: string
   wantedCards: Card[]
@@ -35,7 +39,7 @@ type ProposalGroup = {
 const proposalsByRarityAndFriendId = computed(() => {
   return data.value.reduce((acc: ProposalGroup[], proposal: Proposal): ProposalGroup[] => {
     const rarity = proposal.card1.rarityCode
-    const friendID = proposal.friend_id
+    const { friend_id: friendID, icon, pseudo } = proposal
 
     const existingGroup = acc.find(
       (group) => group.rarity === rarity && group.friendID === friendID,
@@ -51,6 +55,8 @@ const proposalsByRarityAndFriendId = computed(() => {
       acc.push({
         rarity,
         friendID,
+        icon,
+        pseudo,
         wantedCards: [proposal.card1],
         givenCards: [proposal.card2],
       })
@@ -122,7 +128,18 @@ onMounted(async () => {
           v-for="(group, index) in proposalsByRarityAndFriendId"
           :key="index"
         >
-          <span class="tile-title">Friend ID : {{ formatFriendID(group.friendID) }}</span>
+          <div class="tile-title">
+            <img
+              v-if="group.icon && group.icon !== '000'"
+              :src="`/images/avatars/${group.icon}.png`"
+              height="40px"
+              alt=""
+            />
+            <div>
+              <div v-if="group.pseudo">{{ group.pseudo }}</div>
+              <div>ID {{ formatFriendID(group.friendID) }}</div>
+            </div>
+          </div>
           <div class="cards">
             <div class="card-container" v-for="(card, index) in group.wantedCards" :key="index">
               <img
@@ -185,7 +202,7 @@ h2 {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 32px;
+  padding: 42px 32px 7px;
   background: linear-gradient(to bottom, #f1f9f1, #e8f3e8);
   border-radius: 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -245,7 +262,7 @@ h2 {
 
 .tile-footer {
   position: absolute;
-  top: 515px;
+  top: 500px;
   transform: none;
   background: white;
   padding: 4px 16px;
@@ -261,15 +278,18 @@ h2 {
 
 .tile-title {
   position: absolute;
-  top: -12px;
+  top: -18px;
   transform: none;
   background: white;
-  padding: 4px 16px;
+  padding: 4px 10px;
   border-radius: 12px;
   font-size: 14px;
   color: #5f6368;
   font-weight: 500;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .trade-token {
