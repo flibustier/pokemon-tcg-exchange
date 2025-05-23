@@ -37,6 +37,7 @@ onMounted(async () => {
     </div>
 
     <div class="actions">
+      <RouterLink to="/help"> Help & FAQ </RouterLink>
       <PrimaryButton v-if="isLogged()" @click="router.push('/logout')">Logout</PrimaryButton>
       <PrimaryButton v-else @click="router.push('/login')">Sign In</PrimaryButton>
     </div>
@@ -138,5 +139,17 @@ main {
   box-sizing: border-box;
   z-index: 1000;
   flex-shrink: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+a {
+  color: var(--text-primary);
+  text-decoration: none;
 }
 </style>

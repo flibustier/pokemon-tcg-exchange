@@ -28,6 +28,11 @@ const router = createRouter({
       component: () => import('../views/LogoutView.vue'),
     },
     {
+      path: '/help',
+      name: 'help',
+      component: () => import('../views/HelpView.vue'),
+    },
+    {
       path: '/account',
       name: 'account',
       component: () => import('../views/AccountView.vue'),
