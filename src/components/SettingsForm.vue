@@ -64,7 +64,7 @@ const save = async () => {
         <img :src="selectedIconUrl" alt="Selected Icon" id="icon" />
       </div>
       <div v-if="showIconList" class="icon-list">
-        <div v-for="n in 35" :key="n" class="icon-item" @click="selectIcon(n)">
+        <div v-for="n in 37" :key="n" class="icon-item" @click="selectIcon(n)">
           <img :src="`/images/avatars/${String(n).padStart(3, '0')}.png`" alt="Icon" />
         </div>
       </div>
