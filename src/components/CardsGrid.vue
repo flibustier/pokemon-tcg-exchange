@@ -82,20 +82,27 @@ const increase = (card: Card) => {
             <img
               :src="`/images/sets/LOGO_expansion_${sets[index - 1].code}_en_US.webp`"
               :alt="sets[index - 1].label.en"
+              width="136"
               height="60"
               class="hidden-sm"
             />
-            <img src="/images/double-arrow-left.png" alt="«" height="50" />
+            <img src="/images/double-arrow-left.png" alt="«" width="47" height="50" />
           </a>
           <div v-else class="bumper"></div>
-          <div>
-            <img :src="`/images/sets/LOGO_expansion_${set.code}_en_US.webp`" :alt="set.label.en" />
-          </div>
+          <h2>
+            <img
+              :src="`/images/sets/LOGO_expansion_${set.code}_en_US.webp`"
+              :alt="set.label.en"
+              width="256"
+              heigh="113"
+            />
+          </h2>
           <a v-if="index < sets.length - 1" :href="'#' + sets[index + 1].code">
-            <img src="/images/double-arrow-right.png" alt="»" height="50" />
+            <img src="/images/double-arrow-right.png" alt="»" width="47" height="50" />
             <img
               :src="`/images/sets/LOGO_expansion_${sets[index + 1].code}_en_US.webp`"
               :alt="sets[index + 1].label.en"
+              width="136"
               height="60"
               class="hidden-sm"
             />
@@ -137,7 +144,6 @@ const increase = (card: Card) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
   margin-bottom: 2rem;
 }
 

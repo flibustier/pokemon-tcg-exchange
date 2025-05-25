@@ -12,11 +12,18 @@ const decrease = () => {
 <template>
   <div class="wrap">
     <div class="btns">
-      <button type="button" :disabled="(model || 0) < 1" @click="decrease" />
-      <button type="button" class="plus-button" @click="increase" />
+      <button type="button" aria-label="Decrease" :disabled="(model || 0) < 1" @click="decrease" />
+      <button type="button" aria-label="Increase" class="plus-button" @click="increase" />
     </div>
 
-    <input v-model="model" type="number" autocomplete="on" step="1" min="0" />
+    <input
+      v-model="model"
+      type="number"
+      aria-label="Number of cards"
+      autocomplete="off"
+      step="1"
+      min="0"
+    />
   </div>
 </template>
 

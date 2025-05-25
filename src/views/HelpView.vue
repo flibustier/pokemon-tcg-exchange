@@ -89,6 +89,8 @@ useHead({
             </p>
             <img
               src="/images/screenshots/home-step-1.png"
+              width="770"
+              height="606"
               alt="Select cards you are looking for"
               style="max-width: 100%; border-radius: 8px; margin: 1em 0"
             />
@@ -101,6 +103,8 @@ useHead({
             </p>
             <img
               src="/images/screenshots/home-step-2.png"
+              width="770"
+              height="595"
               alt="Select cards you can offer"
               style="max-width: 100%; border-radius: 8px; margin: 1em 0"
             />
