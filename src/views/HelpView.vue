@@ -1,3 +1,13 @@
+<script setup lang="ts">
+import { useHead } from '@unhead/vue'
+
+import CenteredLayout from '@/layouts/CenteredLayout.vue'
+
+useHead({
+  title: 'How to trade with Pokemon TCG Pocket Exchange Center',
+})
+</script>
+
 <template>
   <CenteredLayout>
     <main class="help-page">
@@ -272,10 +282,6 @@
     </main>
   </CenteredLayout>
 </template>
-
-<script setup lang="ts">
-import CenteredLayout from '@/layouts/CenteredLayout.vue'
-</script>
 
 <style scoped>
 .help-page {
