@@ -1,22 +1,16 @@
 <script setup lang="ts">
+import CenteredLayout from '@/layouts/CenteredLayout.vue'
 import { setLogOut } from '@/services/store'
 
-setLogOut()
+if (!import.meta.env.SSR) {
+  setLogOut()
 
-window.location.replace('/')
+  window.location.replace('/')
+}
 </script>
 
 <template>
-  <div class="about">
+  <CenteredLayout>
     <h1>Logging out...</h1>
-  </div>
+  </CenteredLayout>
 </template>
-
-<style>
-.about {
-  min-height: 80vh;
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-</style>

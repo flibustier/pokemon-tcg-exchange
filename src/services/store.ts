@@ -2,6 +2,14 @@ import { ref, watch, computed } from 'vue'
 import { debouncedUpdateUser } from './api'
 import { cards } from './cards'
 
+const storage = import.meta.env.SSR
+  ? {
+      getItem: () => {},
+      setItem: () => {},
+      removeItem: () => {},
+    }
+  : localStorage
+
 enum ObjectName {
   ClientID = 'client_id',
   WantedCards = 'wanted_cards',
@@ -12,7 +20,7 @@ enum ObjectName {
 }
 
 export const getClientID = () => {
-  let clientID = localStorage.getItem(ObjectName.ClientID)
+  let clientID = storage.getItem(ObjectName.ClientID)
   if (clientID) {
     return clientID
   }
@@ -22,20 +30,20 @@ export const getClientID = () => {
   } catch {
     clientID = Math.random().toString(16).substring(2, 15)
   }
-  localStorage.setItem(ObjectName.ClientID, clientID)
+  storage.setItem(ObjectName.ClientID, clientID)
 
   return clientID
 }
 
 export const getFriendId = () => {
-  return getUserInfo().friend_id || localStorage.getItem(ObjectName.FriendId) || ''
+  return getUserInfo().friend_id || storage.getItem(ObjectName.FriendId) || ''
 }
 export const setFriendId = (friendId: string) => {
-  localStorage.setItem(ObjectName.FriendId, friendId)
+  storage.setItem(ObjectName.FriendId, friendId)
 }
 
 export const getUserInfo = () => {
-  return JSON.parse(localStorage.getItem(ObjectName.User) || '{}')
+  return JSON.parse(storage.getItem(ObjectName.User) || '{}')
 }
 
 type User = {
@@ -45,7 +53,7 @@ type User = {
 }
 
 export const setUserInfo = (user: User) => {
-  localStorage.setItem(
+  storage.setItem(
     ObjectName.User,
     JSON.stringify({
       ...getUserInfo(),
@@ -55,20 +63,20 @@ export const setUserInfo = (user: User) => {
 }
 
 export const getWantedCards = () => {
-  return JSON.parse(localStorage.getItem(ObjectName.WantedCards) || '{}')
+  return JSON.parse(storage.getItem(ObjectName.WantedCards) || '{}')
 }
 export const getGivingCards = () => {
-  return JSON.parse(localStorage.getItem(ObjectName.GivingCards) || '{}')
+  return JSON.parse(storage.getItem(ObjectName.GivingCards) || '{}')
 }
 
 export const wantedCardsCountById = ref<Record<string, number>>(getWantedCards())
 export const givingCardsCountById = ref<Record<string, number>>(getGivingCards())
 
 export const setWantedCards = (cards: Record<string, number>) => {
-  localStorage.setItem(ObjectName.WantedCards, JSON.stringify(cards))
+  storage.setItem(ObjectName.WantedCards, JSON.stringify(cards))
 }
 export const setGivingCards = (cards: Record<string, number>) => {
-  localStorage.setItem(ObjectName.GivingCards, JSON.stringify(cards))
+  storage.setItem(ObjectName.GivingCards, JSON.stringify(cards))
 }
 
 watch(
@@ -157,15 +165,15 @@ async function passwordToSha512(password: string) {
 export const setLogin = async (email: string, password: string) => {
   const hashedPassword = await passwordToSha512(password)
 
-  localStorage.setItem(ObjectName.LogIn, btoa(email + ':' + hashedPassword))
+  storage.setItem(ObjectName.LogIn, btoa(email + ':' + hashedPassword))
 }
 
 export const setLogOut = () => {
-  localStorage.removeItem(ObjectName.LogIn)
-  localStorage.removeItem(ObjectName.FriendId)
-  localStorage.removeItem(ObjectName.WantedCards)
-  localStorage.removeItem(ObjectName.GivingCards)
-  localStorage.removeItem(ObjectName.User)
+  storage.removeItem(ObjectName.LogIn)
+  storage.removeItem(ObjectName.FriendId)
+  storage.removeItem(ObjectName.WantedCards)
+  storage.removeItem(ObjectName.GivingCards)
+  storage.removeItem(ObjectName.User)
 }
 
 export interface Credentials {
@@ -173,7 +181,7 @@ export interface Credentials {
   password: string
 }
 export const getCredentials = (): Credentials => {
-  const info = localStorage.getItem(ObjectName.LogIn)
+  const info = storage.getItem(ObjectName.LogIn)
   if (info) {
     const credentials = atob(info)
     const email = credentials.substring(0, credentials.indexOf(':'))
@@ -184,4 +192,4 @@ export const getCredentials = (): Credentials => {
 
   return { email: '', password: '' }
 }
-export const isLogged = () => localStorage.getItem(ObjectName.LogIn) != null
+export const isLogged = () => storage.getItem(ObjectName.LogIn) != null
