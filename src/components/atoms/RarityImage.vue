@@ -45,7 +45,7 @@ defineProps({
     src="/images/rarity/SR.png"
     alt="⭐️🔵"
     width="18px"
-    height="17px"
+    height="18px"
     v-for="i in numberOfShinyStarByRarity[rarity as keyof typeof numberOfShinyStarByRarity]"
     :key="i"
   />
