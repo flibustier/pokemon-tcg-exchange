@@ -1,1 +1,0 @@
-import{d as e,s as t,c as s,o as a,a as n}from"./app-BQUkUGaZ.js";const r={class:"about"},u=e({__name:"LogoutView",setup(c){return t(),window.location.replace("/"),(i,o)=>(a(),s("div",r,o[0]||(o[0]=[n("h1",null,"Logging out...",-1)])))}});export{u as default};

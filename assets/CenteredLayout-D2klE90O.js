@@ -1,1 +1,0 @@
-import{_ as t,c as o,o as s,K as c}from"./app-BQUkUGaZ.js";const n={},r={class:"centered-layout"};function a(e,d){return s(),o("div",r,[c(e.$slots,"default",{},void 0)])}const f=t(n,[["render",a],["__scopeId","data-v-2d6fe895"]]);export{f as C};
