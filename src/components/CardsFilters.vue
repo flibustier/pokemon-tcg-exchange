@@ -84,7 +84,7 @@ const toggle = (rarity: string) => {
 }
 
 .badge--unavailable {
-  margin-left: 1rem;
+  margin-left: 0.5rem;
   height: 30px;
 }
 
