@@ -32,7 +32,7 @@ const props = defineProps<{
   step: number
 }>()
 
-const sets = computed(() => allSets) //.filter((set) => set.code !== 'PROMO-A'))
+const sets = computed(() => allSets)
 
 const filteredCards = (set?: string) =>
   cards.filter(
@@ -43,10 +43,6 @@ const filteredCards = (set?: string) =>
         (!isRestricted(card) && (!isWantedCard(card) || props.step === 1))) &&
       (filters.raritySelection.length === 0 || filters.raritySelection.includes(card.rarityCode)),
   )
-
-const shorten = (text: string) => {
-  return text.length > 10 ? text.slice(0, 10) + '…' : text
-}
 
 const cardCountById = computed(() => {
   if (props.step === 1) {
@@ -113,8 +109,8 @@ const increase = (card: Card) => {
       </div>
       <div class="card-grid" :id="set.code">
         <div class="card" v-for="(card, index) in filteredCards(set.code)" :key="index">
-          <h3>
-            {{ shorten(card.label.eng) }}
+          <h3 :title="card.label.eng">
+            <span class="card-label hidden-sm">{{ card.label.eng }}</span>
             <span class="card-number">{{ card.number.toString().padStart(3, '0') }}</span>
           </h3>
           <img v-if="false" src="/images/wanted.png" alt="wanted" class="corner-icon" />
@@ -214,18 +210,26 @@ const increase = (card: Card) => {
   width: 100%;
 }
 
-h3 {
-  font-weight: medium;
-}
-
 .no-results {
   text-align: center;
   font-size: 1.5rem;
   margin-top: 2rem;
 }
 
+h3 {
+  max-width: 100%;
+  display: flex;
+}
+
+.card-label {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+  white-space: nowrap;
+  margin-right: 0.5rem;
+}
+
 .card-number {
-  margin-left: 1rem;
   font-size: 1.2rem;
 }
 
@@ -258,6 +262,11 @@ h3 {
 
   .bumper {
     width: 9%;
+  }
+
+  h2 > img {
+    height: 83px;
+    width: auto;
   }
 }
 </style>

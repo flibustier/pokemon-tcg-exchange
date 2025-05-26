@@ -25,15 +25,17 @@ onMounted(async () => {
 <template>
   <header class="container">
     <div class="brand" @click="router.push(isLogged() ? '/account' : '/')">
-      <img
-        alt="Pokemon Trading Card Game Pocket"
-        class="logo"
-        src="/images/tcgpocketlogo_en.png"
-        height="125"
-        id="tcg-pocket-logo"
-      />
-      <img alt="Exchange" class="logo" src="/images/exchange.png" id="exchange-logo" height="75" />
-      <h1>Exchange Center</h1>
+      <h1>
+        <img
+          alt="Pokemon Trading Card Game Pocket"
+          class="logo"
+          src="/images/tcgpocketlogo_en.png"
+          height="125"
+          id="tcg-pocket-logo"
+        />
+        <img alt="" class="logo" src="/images/exchange.png" id="exchange-logo" height="75" />
+        Exchange Center
+      </h1>
     </div>
 
     <div class="actions">
@@ -62,6 +64,12 @@ header {
   button {
     color: var(--text-primary);
   }
+
+  h1 {
+    display: flex;
+    align-items: center;
+    line-height: 2rem;
+  }
 }
 
 .brand {
@@ -80,22 +88,6 @@ header {
 
 #exchange-logo {
   margin: 0 0.5rem;
-}
-
-@media (max-width: 600px) {
-  #tcg-pocket-logo {
-    height: 75px;
-  }
-  #exchange-logo {
-    height: 50px;
-  }
-  h1 {
-    font-size: 1.5rem;
-  }
-  .btn-primary {
-    padding: 10px 20px;
-    font-size: 14px;
-  }
 }
 
 main {
@@ -143,7 +135,7 @@ main {
 
 .actions {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
   justify-content: center;
   align-items: center;
 }
@@ -151,5 +143,27 @@ main {
 a {
   color: var(--text-primary);
   text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  #tcg-pocket-logo {
+    height: 75px;
+  }
+  #exchange-logo {
+    height: 40px;
+  }
+  header {
+    h1 {
+      font-size: 1.5rem;
+      line-height: 1.7rem;
+    }
+  }
+  .btn-primary {
+    padding: 5px 15px;
+    font-size: 14px;
+  }
+  .actions {
+    gap: 0.5rem;
+  }
 }
 </style>
