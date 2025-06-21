@@ -33,10 +33,11 @@ const isCardManaging = computed(() =>
     <div class="content">
       <CardsGrid v-if="isCardManaging" :step="activeRoute === 'wishlist' ? 1 : 2" />
       <ProposalsView v-if="activeRoute === 'proposals'" />
-      <CenteredLayout v-if="activeRoute === 'account'" style="gap: 2rem">
-        <h2>Settings</h2>
-        <SettingsForm />
-        <PacksInformations />
+      <CenteredLayout v-if="activeRoute === 'account'">
+        <div class="row-xl">
+          <SettingsForm />
+          <PacksInformations />
+        </div>
       </CenteredLayout>
     </div>
   </main>
@@ -73,6 +74,12 @@ nav {
   gap: 16px;
 }
 
+.row-xl {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 @media (max-width: 1111px) {
   main {
     flex-direction: column;
@@ -103,6 +110,11 @@ nav {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+  }
+  .row-xl {
+    flex-direction: column;
+    gap: 2rem;
+    width: fit-content;
   }
 
   .portfolio-btn:deep() {

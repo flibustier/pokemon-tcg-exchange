@@ -41,6 +41,8 @@ const save = async () => {
 
 <template>
   <form class="friend-form" @submit.prevent="save">
+    <h2>Settings</h2>
+
     <div class="form-group">
       <label for="friendId" class="form-label">Friend ID (16 digits without "-")</label>
       <input
@@ -78,7 +80,8 @@ const save = async () => {
 
 <style scoped>
 h2 {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
 .friend-form {
