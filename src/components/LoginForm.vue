@@ -21,6 +21,7 @@ const form = reactive({
 
 const submitError = ref()
 const submitting = ref(false)
+const hashedPassword = ref()
 
 const formIncomplete = computed(() => {
   if (!form.email || !form.password) {
@@ -46,7 +47,7 @@ const submit = async () => {
     }
 
     if (success) {
-      await setLogin(form.email, form.password)
+      await setLogin(form.email, form.password, hashedPassword.value)
 
       window.location.replace(
         isAccountIncomplete.value ? '/account/wishlist' : '/account/proposals',
@@ -59,6 +60,19 @@ const submit = async () => {
     emit('error', error)
   } finally {
     submitting.value = false
+  }
+}
+
+if (!import.meta.env.SSR) {
+  const searchParams = new URLSearchParams(window.location.search)
+  const email = searchParams.get('email')
+  const token = searchParams.get('token')
+
+  if (email && token) {
+    form.email = email
+    form.password = token
+    hashedPassword.value = token
+    submit()
   }
 }
 </script>

@@ -162,8 +162,10 @@ async function passwordToSha512(password: string) {
     .join('')
 }
 
-export const setLogin = async (email: string, password: string) => {
-  const hashedPassword = await passwordToSha512(password)
+export const setLogin = async (email: string, password: string, hashedPassword?: string) => {
+  if (!hashedPassword) {
+    hashedPassword = await passwordToSha512(password)
+  }
 
   storage.setItem(ObjectName.LogIn, btoa(email + ':' + hashedPassword))
 }
