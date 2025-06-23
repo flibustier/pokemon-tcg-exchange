@@ -8,9 +8,13 @@ import { givingCardsCountById } from '@/services/store'
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
 import PlainButton from '@/components/atoms/PlainButton.vue'
 
-type RawCard = (typeof cards)[0]
-interface Card extends RawCard {
+interface ProposalCard {
   id: string
+  rarityCode: string
+  set: string
+  number: number
+  label: Record<string, string>
+  imageName: string
 }
 
 interface Proposal {
@@ -19,8 +23,8 @@ interface Proposal {
   friend_id: string
   card_wanted: string
   card_to_give: string
-  card1: Card
-  card2: Card
+  card1: ProposalCard
+  card2: ProposalCard
 }
 
 const data = ref([] as Proposal[])
@@ -32,8 +36,8 @@ type ProposalGroup = {
   pseudo?: string
   rarity: string
   friendID: string
-  wantedCards: Card[]
-  givenCards: Card[]
+  wantedCards: ProposalCard[]
+  givenCards: ProposalCard[]
 }
 
 const proposalsByRarityAndFriendId = computed(() => {

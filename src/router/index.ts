@@ -1,13 +1,18 @@
 // import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/StepView.vue'
+import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 import { isLogged } from '@/services/store'
+import HomeView from '../views/StepView.vue'
 
 export const routes = [
   {
     path: '/',
     name: 'home',
     component: HomeView,
-    beforeEnter: (_to, _from, next) => {
+    beforeEnter: (
+      _to: RouteLocationNormalized,
+      _from: RouteLocationNormalized,
+      next: NavigationGuardNext,
+    ) => {
       if (isLogged()) {
         next('/account/proposals')
       } else {
@@ -34,7 +39,11 @@ export const routes = [
     path: '/account',
     name: 'account',
     component: () => import('../views/AccountView.vue'),
-    beforeEnter: (_to, _from, next) => {
+    beforeEnter: (
+      _to: RouteLocationNormalized,
+      _from: RouteLocationNormalized,
+      next: NavigationGuardNext,
+    ) => {
       if (isLogged()) {
         next()
       } else {
