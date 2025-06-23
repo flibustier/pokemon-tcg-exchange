@@ -48,10 +48,13 @@ export const fetchUser = async ({ email, password }: Credentials = getCredential
       }),
     })
     if (response.ok) {
-      const { wanted, giving, ...info } = await response.json()
+      const { wanted, giving, rarity_rules, ...info } = await response.json()
 
       importCards(JSON.parse(wanted), JSON.parse(giving))
-      setUserInfo(info)
+      setUserInfo({
+        ...info,
+        rarity_rules: JSON.parse(rarity_rules),
+      })
 
       return true
     } else {

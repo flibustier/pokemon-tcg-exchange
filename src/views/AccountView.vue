@@ -78,6 +78,7 @@ nav {
   display: flex;
   justify-content: space-between;
   width: 100%;
+  align-items: center;
 }
 
 @media (max-width: 1111px) {
