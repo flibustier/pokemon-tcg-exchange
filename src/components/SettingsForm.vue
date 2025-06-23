@@ -2,28 +2,54 @@
 import { ref, reactive, computed, watch } from 'vue'
 
 import PlainButton from '@/components/atoms/PlainButton.vue'
+import ToggleSwitch from '@/components/atoms/ToggleSwitch.vue'
 
-import { getFriendId, getUserInfo, setUserInfo } from '@/services/store'
+import { getFriendId, getUserInfo, setUserInfo, type RarityRule } from '@/services/store'
 import { updateUser } from '@/services/api'
+import RarityImage from './atoms/RarityImage.vue'
+
+const { rarity_rules, ...info } = getUserInfo()
 
 const user = reactive<{
+  accept_notifications: boolean
   friend_id: string
+  language: string
   pseudo: string
   icon: string
 }>({
   pseudo: '',
   icon: '000',
-  ...getUserInfo(),
+  language: '',
+  accept_notifications: true,
+  ...info,
   friend_id: getFriendId(),
 })
 const showIconList = ref(false)
 const success = ref(false)
 
+const rarities = reactive({
+  C: true,
+  U: true,
+  R: true,
+  RR: true,
+  AR: true,
+  ...(rarity_rules || []).reduce(
+    (acc, rarityRule: RarityRule) => ({
+      ...acc,
+      [rarityRule.rarity]: rarityRule.enabled === 1,
+    }),
+    {},
+  ),
+})
+
+const languages = ['ENG', 'SPA', 'FRA', 'GER', 'ITA', 'POR', 'JPN', 'KOR', 'CHT']
+
 watch(
-  () => [user.friend_id, user.pseudo, user.icon],
+  () => [user, rarities],
   () => {
     success.value = false
   },
+  { deep: true },
 )
 
 const selectedIconUrl = computed(() => `/images/avatars/${user.icon || '000'}.png`)
@@ -34,7 +60,13 @@ const selectIcon = (iconNumber: number) => {
 }
 
 const save = async () => {
-  setUserInfo(user)
+  setUserInfo({
+    ...user,
+    rarity_rules: Object.entries(rarities).map(([key, value]) => ({
+      rarity: key,
+      enabled: value ? 1 : 0,
+    })),
+  })
   success.value = (await updateUser()) || false
 }
 </script>
@@ -70,6 +102,38 @@ const save = async () => {
           <img :src="`/images/avatars/${String(n).padStart(3, '0')}.png`" alt="Icon" />
         </div>
       </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Accept exchange of rarity:</label>
+
+      <ToggleSwitch v-model="rarities.C">
+        <RarityImage rarity="C" />
+      </ToggleSwitch>
+      <ToggleSwitch v-model="rarities.U">
+        <RarityImage rarity="U" />
+      </ToggleSwitch>
+      <ToggleSwitch v-model="rarities.R">
+        <RarityImage rarity="R" />
+      </ToggleSwitch>
+      <ToggleSwitch v-model="rarities.RR">
+        <RarityImage rarity="RR" />
+      </ToggleSwitch>
+      <ToggleSwitch v-model="rarities.AR">
+        <RarityImage rarity="AR" />
+      </ToggleSwitch>
+    </div>
+    <div class="form-group" v-if="false">
+      <ToggleSwitch v-model="user.accept_notifications" label="Accept Notifications" />
+    </div>
+
+    <div class="form-group">
+      <label for="language-input" class="form-label">Your card’s language</label>
+      <select id="language-input" v-model="user.language" class="language-input">
+        <option value="">Please select</option>
+        <option v-for="language in languages" :key="language" :value="language">
+          {{ language }}
+        </option>
+      </select>
     </div>
 
     <PlainButton type="submit" role="button" :disabled="success">{{
@@ -113,7 +177,8 @@ h2 {
 
 .friend-id,
 .email-input,
-.password-input {
+.password-input,
+.language-input {
   width: 100%;
   padding: 12px 16px;
   border: 1px solid #e0e0e0;

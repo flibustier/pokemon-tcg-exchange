@@ -42,14 +42,21 @@ export const setFriendId = (friendId: string) => {
   storage.setItem(ObjectName.FriendId, friendId)
 }
 
-export const getUserInfo = () => {
+export const getUserInfo = (): User => {
   return JSON.parse(storage.getItem(ObjectName.User) || '{}')
+}
+
+export type RarityRule = {
+  rarity: string
+  enabled: 1 | 0
 }
 
 type User = {
   friend_id: string
   pseudo?: string
   icon?: string
+  language?: string
+  rarity_rules?: RarityRule[]
 }
 
 export const setUserInfo = (user: User) => {
