@@ -22,23 +22,23 @@
   "devDependencies": {
     "@playwright/test": "^1.53.1",
     "@tsconfig/node22": "^22.0.2",
-    "@types/node": "^22.15.33",
+    "@types/node": "^22.15.34",
     "@unhead/vue": "^2.0.11",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.5.1",
     "@vue/tsconfig": "^0.7.0",
-    "eslint": "^9.29.0",
+    "eslint": "^9.30.0",
     "eslint-plugin-playwright": "^2.2.0",
     "eslint-plugin-vue": "^10.2.0",
     "jiti": "^2.4.2",
     "npm-run-all2": "^8.0.4",
-    "pokemon-tcg-pocket-database": "^1.6.0",
-    "prettier": "^3.6.1",
+    "pokemon-tcg-pocket-database": "^1.7.0",
+    "prettier": "^3.6.2",
     "typescript": "~5.8.3",
     "vite": "^6.3.5",
     "vite-plugin-vue-devtools": "^7.7.7",
-    "vite-ssg": "^27.0.1",
+    "vite-ssg": "^27.1.0",
     "vue-tsc": "^2.2.10"
   }
 }
