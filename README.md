@@ -2,7 +2,12 @@
 
 **Pokémon TCG Exchange** is a community-driven platform designed to help players of Pokémon TCG Pocket efficiently **trade digital cards** and complete their collections. The site provides a seamless, user-friendly interface for requesting missing cards, offering duplicates, and matching with other trainers for fair and secure trades.
 
----
+<p align="center">
+    <a href="https://pokemon-tcg.exchange/">https://pokemon-tcg.exchange/</a>
+    <br />
+    <br />
+    <img src="./public/images/screenshots/home-step-1.png" height="500"  alt="Screenshot of the Pokemon TCG Pocket Trading website" />
+</p>
 
 ## What is Pokémon TCG Exchange?
 
@@ -17,12 +22,9 @@ Pokémon TCG Exchange is built for fans of the Pokémon Trading Card Game Pocket
 
 - **Automated Matching:** Enter the card you want and the card you offer; the system finds a matching trade partner for you.
 - **Secure Communication:** Once matched, a private chat opens to coordinate the trade details.
-- **Time-Limited Trades:** You have 48 hours to agree and complete the trade before the match expires.
-- **Fair Trading:** The platform supports the Pokémon TCG Pocket's rules—trades must be between cards of the same rarity, and certain rarities or promo cards may not be eligible for trade[4][5].
+- **Fair Trading:** The platform supports the Pokémon TCG Pocket's rules—trades must be between cards of the same rarity, and certain rarities or promo cards may not be eligible for trade.
 
-> _"Request your missing cards, offer a duplicate, wait for a match, and swap seamlessly on Pokémon TCG Pocket!"_[2]
-
----
+> _"Request your missing cards, offer a duplicate, wait for a match, and swap seamlessly on Pokémon TCG Pocket!"_
 
 ## How It Works
 
@@ -32,9 +34,7 @@ Pokémon TCG Exchange is built for fans of the Pokémon Trading Card Game Pocket
 4. **Chat & Confirm:** Use the built-in chat to arrange the details and confirm the trade.
 5. **Trade In-Game:** Complete the actual card swap within Pokémon TCG Pocket.
 
-**Note:** All trades must follow the in-game restrictions—only cards of matching rarity can be exchanged, and certain cards require Trade Tokens or other in-game resources[4][5].
-
----
+**Note:** All trades must follow the in-game restrictions—only cards of matching rarity can be exchanged, and certain cards require Trade Tokens or other in-game resources.
 
 ## Project Setup
 
@@ -51,8 +51,6 @@ TypeScript cannot handle type information for `.vue` imports by default, so we r
 ### Customize Configuration
 
 See [Vite Configuration Reference](https://vite.dev/config/).
-
----
 
 ## Getting Started
 
@@ -99,13 +97,9 @@ pnpm test:e2e --debug
 pnpm lint
 ```
 
----
-
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
-
----
 
 ## License
 
