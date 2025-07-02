@@ -20,6 +20,7 @@ interface ProposalCard {
 interface Proposal {
   icon?: string
   pseudo?: string
+  language?: string
   friend_id: string
   card_wanted: string
   card_to_give: string
@@ -34,6 +35,7 @@ const error = ref()
 type ProposalGroup = {
   icon?: string
   pseudo?: string
+  language?: string
   rarity: string
   friendID: string
   wantedCards: ProposalCard[]
@@ -43,7 +45,7 @@ type ProposalGroup = {
 const proposalsByRarityAndFriendId = computed(() => {
   return data.value.reduce((acc: ProposalGroup[], proposal: Proposal): ProposalGroup[] => {
     const rarity = proposal.card1.rarityCode
-    const { friend_id: friendID, icon, pseudo } = proposal
+    const { friend_id: friendID, icon, pseudo, language } = proposal
 
     const existingGroup = acc.find(
       (group) => group.rarity === rarity && group.friendID === friendID,
@@ -61,6 +63,7 @@ const proposalsByRarityAndFriendId = computed(() => {
         friendID,
         icon,
         pseudo,
+        language,
         wantedCards: [proposal.card1],
         givenCards: [proposal.card2],
       })
@@ -166,6 +169,7 @@ onMounted(async () => {
             </div>
           </div>
           <div class="tile-footer">
+            {{ group.language }}
             <img
               src="/images/TRADE_ITEM_130010.webp"
               alt="Trade Token"
