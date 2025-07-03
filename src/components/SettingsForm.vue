@@ -8,6 +8,8 @@ import { getFriendId, getUserInfo, setUserInfo, type RarityRule } from '@/servic
 import { updateUser } from '@/services/api'
 import RarityImage from './atoms/RarityImage.vue'
 
+const MAX_AVATAR_NUMBER = 41
+
 const { rarity_rules, ...info } = getUserInfo()
 
 const user = reactive<{
@@ -98,7 +100,7 @@ const save = async () => {
         <img :src="selectedIconUrl" alt="Selected Icon" id="icon" />
       </div>
       <div v-if="showIconList" class="icon-list">
-        <div v-for="n in 40" :key="n" class="icon-item" @click="selectIcon(n)">
+        <div v-for="n in MAX_AVATAR_NUMBER" :key="n" class="icon-item" @click="selectIcon(n)">
           <img :src="`/images/avatars/${String(n).padStart(3, '0')}.png`" alt="Icon" />
         </div>
       </div>
