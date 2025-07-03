@@ -69,6 +69,11 @@ export const routes = [
     ],
   },
   {
+    path: '/404',
+    name: '404',
+    component: () => import('../views/NotFoundView.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('../views/NotFoundView.vue'),
