@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-import cards from 'pokemon-tcg-pocket-database/dist/cards.json' with { type: 'json' }
+import { ref, onMounted, computed, reactive } from 'vue'
 
+import { uniq } from '@/services/utils'
+import { cards } from '@/services/cards'
 import { getProposals } from '@/services/api'
 import { givingCardsCountById } from '@/services/store'
 
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
 import PlainButton from '@/components/atoms/PlainButton.vue'
+import CardsFilters from '@/components/CardsFilters.vue'
 
 interface ProposalCard {
   id: string
@@ -32,6 +34,22 @@ const data = ref([] as Proposal[])
 const loading = ref(true)
 const error = ref()
 
+const filters = reactive({
+  raritySelection: [] as string[],
+  languageSelection: [] as string[],
+  pseudonymSelection: [] as string[],
+})
+
+const cardsForFilters = computed(() => {
+  return data.value.map((proposal) => proposal.card1)
+})
+const languages = computed(() => {
+  return uniq(data.value.map((proposal) => proposal.language))
+})
+const pseudonyms = computed(() => {
+  return uniq(data.value.map((proposal) => proposal.pseudo))
+})
+
 type ProposalGroup = {
   icon?: string
   pseudo?: string
@@ -46,6 +64,14 @@ const proposalsByRarityAndFriendId = computed(() => {
   return data.value.reduce((acc: ProposalGroup[], proposal: Proposal): ProposalGroup[] => {
     const rarity = proposal.card1.rarityCode
     const { friend_id: friendID, icon, pseudo, language } = proposal
+
+    if (
+      (filters.raritySelection.length && !filters.raritySelection.includes(rarity)) ||
+      (filters.languageSelection.length && !filters.languageSelection.includes(language || '')) ||
+      (filters.pseudonymSelection.length && !filters.pseudonymSelection.includes(pseudo || ''))
+    ) {
+      return acc
+    }
 
     const existingGroup = acc.find(
       (group) => group.rarity === rarity && group.friendID === friendID,
@@ -128,6 +154,12 @@ onMounted(async () => {
     </template>
     <template v-else-if="data.length > 0">
       <h2>You’ve got a match!</h2>
+      <CardsFilters
+        v-model="filters"
+        :cards="cardsForFilters"
+        :languages="languages"
+        :pseudonyms="pseudonyms"
+      />
 
       <div class="list">
         <div
@@ -202,6 +234,7 @@ onMounted(async () => {
 
 h2 {
   text-align: center;
+  margin-bottom: 1rem;
 }
 
 .exchange-tile {
