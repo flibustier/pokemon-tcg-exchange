@@ -4,7 +4,7 @@ import { ref, computed } from 'vue'
 import PrimaryButton from '@/components/atoms/PrimaryButton.vue'
 import PlainButton from '@/components/atoms/PlainButton.vue'
 import CardsGrid from '@/components/CardsGrid.vue'
-import LoginForm from '@/components/LoginForm.vue'
+import LoginForm from '@/components/forms/LoginForm.vue'
 import PricesTable from '@/components/PricesTable.vue'
 
 import { isWantedStepCompleted, isGivingStepCompleted } from '@/services/store'

@@ -7,13 +7,14 @@ const props = defineProps<{
   label: string
   icon: string
   active?: boolean
+  disabled?: boolean
 }>()
 
 const navigate = () => router.push({ name: props.label.toLowerCase() })
 </script>
 
 <template>
-  <button class="portfolio-btn" :class="{ active }" @click="navigate">
+  <button class="portfolio-btn" :class="{ active }" :disabled="disabled ?? false" @click="navigate">
     <span class="icon">
       <!-- Simple book icon SVG -->
       <svg v-if="icon === 'portfolio'" width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -69,6 +70,7 @@ const navigate = () => router.push({ name: props.label.toLowerCase() })
         />
       </svg>
       <img src="/images/icons/exchange.svg" v-if="icon === 'exchange'" width="32" height="32" />
+      <img src="/images/icons/message.svg" v-if="icon === 'message'" width="38" height="38" />
     </span>
     <span class="label">{{ label }}</span>
   </button>

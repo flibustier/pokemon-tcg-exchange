@@ -57,6 +57,8 @@ type User = {
   icon?: string
   language?: string
   rarity_rules?: RarityRule[]
+  github_username?: string
+  has_beta_access?: boolean
 }
 
 export const setUserInfo = (user: User) => {
@@ -200,5 +202,8 @@ export const getCredentials = (): Credentials => {
   }
 
   return { email: '', password: '' }
+}
+export const getBasicAuth = (): string => {
+  return storage.getItem(ObjectName.LogIn) || ''
 }
 export const isLogged = () => storage.getItem(ObjectName.LogIn) != null

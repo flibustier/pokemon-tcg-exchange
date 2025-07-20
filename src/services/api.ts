@@ -10,6 +10,7 @@ import {
   getUserInfo,
   setUserInfo,
   type Credentials,
+  getBasicAuth,
 } from './store'
 
 function debounce<T extends (...args: unknown[]) => void>(func: T, timeout = 300) {
@@ -25,6 +26,34 @@ function debounce<T extends (...args: unknown[]) => void>(func: T, timeout = 300
 const isProduction = import.meta.env.PROD
 
 const endpoint = isProduction ? 'https://api.pokemon-tcg.exchange' : 'http://localhost:8090'
+
+const useAPI = async (
+  route: string,
+  method: string = 'GET',
+  body?: unknown,
+  isJsonResponse = true,
+) => {
+  try {
+    const response = await fetch(endpoint + route, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Basic ' + getBasicAuth(),
+        'X-Client-ID': getClientID(),
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    })
+    if (isJsonResponse) {
+      return await response.json()
+    }
+
+    return await response.text()
+  } catch (error) {
+    console.error('Error:', error)
+
+    throw error
+  }
+}
 
 interface UserInfo {
   email: string
@@ -157,3 +186,34 @@ export const getProposals = async () => {
     throw error
   }
 }
+
+export interface Discussion {
+  pseudo: string
+  avatar: string
+  language: string
+  friend_id: string
+  last_message: string
+  last_message_date: string
+}
+export const getDiscussions = (): Promise<Discussion[]> => useAPI('/user/discussions')
+
+export interface Message {
+  from: string
+  to: string
+  message: string
+  sent: string
+  read: string | null
+}
+export const getMessages = (friendID: string): Promise<Message[]> =>
+  useAPI(`/user/messages/${friendID}`)
+
+export const postMessage = (friendID: string, message: string) =>
+  useAPI(
+    '/user/messages',
+    'PUT',
+    {
+      to: friendID,
+      message,
+    },
+    false,
+  )

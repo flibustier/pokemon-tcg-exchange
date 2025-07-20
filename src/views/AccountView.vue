@@ -2,13 +2,15 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-import MenuButton from '@/components/atoms/MenuButton.vue'
-import SettingsForm from '@/components/SettingsForm.vue'
-import PricesTable from '@/components/PricesTable.vue'
+import MessagesView from '@/views/MessagesView.vue'
 import ProposalsView from '@/views/ProposalsView.vue'
-import CardsGrid from '@/components/CardsGrid.vue'
-import PacksInformations from '@/components/PacksInformations.vue'
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
+import PacksInformations from '@/components/PacksInformations.vue'
+import SettingsForm from '@/components/forms/SettingsForm.vue'
+import PricesTable from '@/components/PricesTable.vue'
+import MenuButton from '@/components/atoms/MenuButton.vue'
+import CardsGrid from '@/components/CardsGrid.vue'
+import BetaAccessForm from '@/components/forms/BetaAccessForm.vue'
 
 const route = useRoute()
 
@@ -26,6 +28,11 @@ const isCardManaging = computed(() =>
         <MenuButton label="Wishlist" icon="heart" :active="activeRoute === 'wishlist'" />
         <MenuButton label="Offers" icon="portfolio" :active="activeRoute === 'offers'" />
         <MenuButton label="Proposals" icon="exchange" :active="activeRoute === 'proposals'" />
+        <MenuButton
+          label="Messages"
+          icon="message"
+          :active="(activeRoute as string).startsWith('message')"
+        />
         <MenuButton label="Account" icon="gear" :active="activeRoute === 'account'" />
       </nav>
       <PricesTable id="prices" v-if="isCardManaging" :showGiving="activeRoute === 'offers'" />
@@ -39,6 +46,10 @@ const isCardManaging = computed(() =>
           <PacksInformations />
         </div>
       </CenteredLayout>
+      <CenteredLayout v-if="activeRoute === 'beta'">
+        <BetaAccessForm />
+      </CenteredLayout>
+      <MessagesView v-if="(activeRoute as string).startsWith('message')" />
     </div>
   </main>
 </template>
@@ -64,7 +75,7 @@ main {
   gap: 3rem;
   position: sticky;
   top: 125px;
-  min-width: 310px;
+  min-width: 200px;
 }
 
 nav {

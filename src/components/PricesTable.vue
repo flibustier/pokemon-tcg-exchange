@@ -75,14 +75,14 @@ const totalCost = computed(() => {
   flex-direction: column;
   gap: 1rem;
   align-items: center;
+  width: 200px;
 }
 
 .price {
-  display: flex;
-  gap: 0.5rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 3fr 1fr 3fr;
   align-items: center;
-  font-size: 16px;
-  color: #5f6368;
 }
 
 .rarity {
