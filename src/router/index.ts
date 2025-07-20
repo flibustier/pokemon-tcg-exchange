@@ -1,13 +1,14 @@
 // import { createRouter, createWebHistory } from 'vue-router'
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 import { isLogged } from '@/services/store'
-import HomeView from '../views/StepView.vue'
+
+const AccountView = () => import('../views/AccountView.vue')
 
 export const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,
+    component: () => import('../views/StepView.vue'),
     beforeEnter: (
       _to: RouteLocationNormalized,
       _from: RouteLocationNormalized,
@@ -38,7 +39,7 @@ export const routes = [
   {
     path: '/account',
     name: 'account',
-    component: () => import('../views/AccountView.vue'),
+    component: AccountView,
     beforeEnter: (
       _to: RouteLocationNormalized,
       _from: RouteLocationNormalized,
@@ -54,17 +55,34 @@ export const routes = [
       {
         path: 'wishlist',
         name: 'wishlist',
-        component: () => import('../views/AccountView.vue'),
+        component: AccountView,
       },
       {
         path: 'offers',
         name: 'offers',
-        component: () => import('../views/AccountView.vue'),
+        component: AccountView,
       },
       {
         path: 'proposals',
         name: 'proposals',
-        component: () => import('../views/AccountView.vue'),
+        component: AccountView,
+      },
+      {
+        path: 'beta',
+        name: 'beta',
+        component: AccountView,
+      },
+      {
+        path: 'messages',
+        name: 'messages',
+        component: AccountView,
+        children: [
+          {
+            path: ':id',
+            name: 'message',
+            component: AccountView,
+          },
+        ],
       },
     ],
   },

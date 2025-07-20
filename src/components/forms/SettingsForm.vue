@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
 import PlainButton from '@/components/atoms/PlainButton.vue'
+import RarityImage from '@/components/atoms/RarityImage.vue'
 import ToggleSwitch from '@/components/atoms/ToggleSwitch.vue'
 
 import { getFriendId, getUserInfo, setUserInfo, type RarityRule } from '@/services/store'
 import { updateUser } from '@/services/api'
-import RarityImage from './atoms/RarityImage.vue'
 
-const MAX_AVATAR_NUMBER = 41
+const MAX_AVATAR_NUMBER = 43
+const languages = ['ENG', 'SPA', 'FRA', 'GER', 'ITA', 'POR', 'JPN', 'KOR', 'CHT']
+
+const router = useRouter()
 
 const { rarity_rules, ...info } = getUserInfo()
 
@@ -16,6 +20,7 @@ const user = reactive<{
   accept_notifications: boolean
   friend_id: string
   language: string
+  has_beta_access: boolean
   pseudo: string
   icon: string
 }>({
@@ -23,6 +28,7 @@ const user = reactive<{
   icon: '000',
   language: '',
   accept_notifications: true,
+  has_beta_access: false,
   ...info,
   friend_id: getFriendId(),
 })
@@ -44,8 +50,6 @@ const rarities = reactive({
   ),
 })
 
-const languages = ['ENG', 'SPA', 'FRA', 'GER', 'ITA', 'POR', 'JPN', 'KOR', 'CHT']
-
 watch(
   () => [user, rarities],
   () => {
@@ -59,6 +63,10 @@ const selectedIconUrl = computed(() => `/images/avatars/${user.icon || '000'}.pn
 const selectIcon = (iconNumber: number) => {
   user.icon = String(iconNumber).padStart(3, '0')
   showIconList.value = false
+}
+
+const configureBeta = () => {
+  router.push({ name: 'beta' })
 }
 
 const save = async () => {
@@ -78,24 +86,7 @@ const save = async () => {
     <h2>Settings</h2>
 
     <div class="form-group">
-      <label for="friendId" class="form-label">Friend ID (16 digits without "-")</label>
-      <input
-        v-model="user.friend_id"
-        required
-        type="text"
-        id="friendId"
-        class="friend-id"
-        placeholder="0000000000000000"
-        pattern="\d{16}"
-        maxlength="16"
-      />
-    </div>
-    <div class="form-group">
-      <label for="pseudo" class="form-label">Pseudonym (14 characters max)</label>
-      <input v-model="user.pseudo" type="text" id="pseudo" class="friend-id" maxlength="14" />
-    </div>
-    <div class="form-group">
-      <label for="icon" class="form-label">Profile Icon</label>
+      <label for="icon" class="form-label label-center">Profile Icon</label>
       <div class="selected-icon" @click="showIconList = !showIconList">
         <img :src="selectedIconUrl" alt="Selected Icon" id="icon" />
       </div>
@@ -105,6 +96,26 @@ const save = async () => {
         </div>
       </div>
     </div>
+
+    <div class="form-group">
+      <label for="friendId" class="form-label">Friend ID</label>
+      <input
+        v-model="user.friend_id"
+        required
+        type="text"
+        id="friendId"
+        class="friend-id"
+        placeholder="0000000000000000"
+        pattern="\d{16}"
+        maxlength="16"
+        :disabled="true"
+      />
+    </div>
+    <div class="form-group">
+      <label for="pseudo" class="form-label">Pseudonym (14 characters max)</label>
+      <input v-model="user.pseudo" type="text" id="pseudo" class="friend-id" maxlength="14" />
+    </div>
+
     <div class="form-group">
       <label class="form-label">Accept exchange of rarity:</label>
 
@@ -124,9 +135,6 @@ const save = async () => {
         <RarityImage rarity="AR" />
       </ToggleSwitch>
     </div>
-    <div class="form-group" v-if="false">
-      <ToggleSwitch v-model="user.accept_notifications" label="Accept Notifications" />
-    </div>
 
     <div class="form-group">
       <label for="language-input" class="form-label">Your card’s language</label>
@@ -138,6 +146,16 @@ const save = async () => {
       </select>
     </div>
 
+    <div class="form-group">
+      <ToggleSwitch
+        :model-value="user.has_beta_access"
+        :disabled="user.has_beta_access"
+        @update:model-value="configureBeta"
+      >
+        Access beta features (messages, …)
+      </ToggleSwitch>
+    </div>
+
     <PlainButton type="submit" role="button" :disabled="success">{{
       success ? 'Saved!' : 'Save'
     }}</PlainButton>
@@ -145,8 +163,8 @@ const save = async () => {
 </template>
 
 <style scoped>
-h2 {
-  margin-bottom: 1rem;
+h2,
+.label-center {
   text-align: center;
 }
 
@@ -170,11 +188,9 @@ h2 {
 
 .form-label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 0.25rem;
   font-size: 14px;
   color: #5f6368;
-  font-weight: 500;
-  padding-left: 16px;
 }
 
 .friend-id,

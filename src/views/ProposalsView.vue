@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, reactive } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import { uniq } from '@/services/utils'
 import { cards } from '@/services/cards'
@@ -9,6 +10,7 @@ import { givingCardsCountById } from '@/services/store'
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
 import PlainButton from '@/components/atoms/PlainButton.vue'
 import CardsFilters from '@/components/CardsFilters.vue'
+import UserBadge from '@/components/atoms/UserBadge.vue'
 
 interface ProposalCard {
   id: string
@@ -30,15 +32,24 @@ interface Proposal {
   card2: ProposalCard
 }
 
-const data = ref([] as Proposal[])
-const loading = ref(true)
+const route = useRoute()
+const router = useRouter()
+
 const error = ref()
+const loading = ref(true)
+const allProposals = ref([] as Proposal[])
 
 const filters = reactive({
   raritySelection: [] as string[],
   languageSelection: [] as string[],
   pseudonymSelection: [] as string[],
 })
+
+const data = computed(() =>
+  allProposals.value.filter((proposal: Proposal) =>
+    route.query.id ? proposal.friend_id === route.query.id : true,
+  ),
+)
 
 const cardsForFilters = computed(() => {
   return data.value.map((proposal) => proposal.card1)
@@ -108,10 +119,6 @@ const findCard = (id: string) => {
   }
 }
 
-const formatFriendID = (friendID: string) => {
-  return friendID.replace(/(\d{4})(\d{4})(\d{4})(\d{4})/, '$1-$2-$3-$4')
-}
-
 const exchangeTokenCost = (rarity: string) => {
   switch (rarity) {
     case 'R':
@@ -124,6 +131,17 @@ const exchangeTokenCost = (rarity: string) => {
   return 0
 }
 
+const sendMessage = (proposal: ProposalGroup) => {
+  router.push({
+    name: 'message',
+    params: { id: proposal.friendID },
+    query: {
+      i: proposal.icon,
+      p: proposal.pseudo,
+    },
+  })
+}
+
 const reload = () => {
   window.location.reload()
 }
@@ -132,7 +150,7 @@ onMounted(async () => {
   loading.value = true
   try {
     const response = await getProposals()
-    data.value = response.map((proposal: Proposal) => ({
+    allProposals.value = response.map((proposal: Proposal) => ({
       ...proposal,
       card1: findCard(proposal.card_wanted),
       card2: findCard(proposal.card_to_give),
@@ -167,18 +185,7 @@ onMounted(async () => {
           v-for="(group, index) in proposalsByRarityAndFriendId"
           :key="index"
         >
-          <div class="tile-title">
-            <img
-              v-if="group.icon && group.icon !== '000'"
-              :src="`/images/avatars/${group.icon}.png`"
-              height="40px"
-              alt=""
-            />
-            <div>
-              <div v-if="group.pseudo">{{ group.pseudo }}</div>
-              <div>ID {{ formatFriendID(group.friendID) }}</div>
-            </div>
-          </div>
+          <UserBadge class="tile-title" v-bind="group" />
           <div class="cards">
             <div class="card-container" v-for="(card, index) in group.wantedCards" :key="index">
               <img
@@ -201,14 +208,19 @@ onMounted(async () => {
             </div>
           </div>
           <div class="tile-footer">
-            {{ group.language }}
-            <img
-              src="/images/TRADE_ITEM_130010.webp"
-              alt="Trade Token"
-              class="trade-token"
-              height="32"
-            />
-            <span class="token-count">{{ exchangeTokenCost(group.rarity) }}</span>
+            <div v-if="group.language">{{ group.language }}</div>
+            <div>
+              <img
+                src="/images/TRADE_ITEM_130010.webp"
+                alt="Trade Token"
+                class="trade-token"
+                height="32"
+              />
+              <span class="token-count">{{ exchangeTokenCost(group.rarity) }}</span>
+            </div>
+            <div class="clickable" @click="sendMessage(group)">
+              <img src="/images/icons/message.svg" height="20" alt="Message" />
+            </div>
           </div>
         </div>
       </div>
@@ -222,6 +234,10 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.clickable:hover {
+  cursor: pointer;
+}
+
 .list {
   width: 100%;
   display: flex;
@@ -305,32 +321,26 @@ h2 {
   position: absolute;
   top: 500px;
   transform: none;
-  background: white;
-  padding: 4px 16px;
-  border-radius: 12px;
-  font-size: 14px;
-  color: #5f6368;
-  font-weight: 500;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  justify-content: space-evenly;
+  width: 270px;
+}
+
+.tile-footer > div {
   display: flex;
   align-items: center;
   gap: 8px;
+  background: white;
+  padding: 4px 16px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .tile-title {
   position: absolute;
   top: -18px;
   transform: none;
-  background: white;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 14px;
-  color: #5f6368;
-  font-weight: 500;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 .trade-token {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import LoginForm from '@/components/LoginForm.vue'
+import LoginForm from '@/components/forms/LoginForm.vue'
 
 const hasAccount = ref(true)
 

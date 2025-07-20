@@ -1,11 +1,18 @@
 <script setup lang="ts">
 const model = defineModel()
+
+defineProps({
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+})
 </script>
 
 <template>
   <div class="toggle-container">
     <label class="switch-label">
-      <input type="checkbox" v-model="model" class="switch-input" />
+      <input type="checkbox" v-model="model" :disabled="disabled" class="switch-input" />
       <span class="switch-slider"></span>
       <span class="switch-text">
         <slot />
