@@ -36,7 +36,7 @@ const formatDate = (date: string) => {
   // else return the full date
 
   const now = new Date()
-  const messageDate = new Date(date)
+  const messageDate = new Date(date + ' UTC')
   const diff = now.getTime() - messageDate.getTime()
   const diffDays = Math.floor(diff / (1000 * 3600 * 24))
   if (diffDays === 0) {
