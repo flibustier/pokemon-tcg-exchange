@@ -77,6 +77,10 @@ const navigate = () => router.push({ name: props.label.toLowerCase() })
 </template>
 
 <style scoped>
+.icon {
+  display: flex;
+}
+
 .portfolio-btn {
   display: flex;
   flex-direction: column;
@@ -91,10 +95,6 @@ const navigate = () => router.push({ name: props.label.toLowerCase() })
   cursor: pointer;
   transition: box-shadow 0.2s;
   font-family: sans-serif;
-}
-
-.portfolio-btn .icon {
-  margin-bottom: 8px;
 }
 
 .portfolio-btn .label {

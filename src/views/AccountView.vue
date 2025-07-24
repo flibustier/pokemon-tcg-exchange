@@ -116,7 +116,7 @@ nav {
     }
   }
   .content {
-    margin-bottom: 80px;
+    margin-bottom: 160px;
   }
   nav {
     flex-direction: row;
@@ -132,6 +132,16 @@ nav {
   .portfolio-btn:deep() {
     width: 5.5rem;
     height: 6rem;
+  }
+}
+
+@media (max-width: 600px) {
+  nav {
+    gap: 2px;
+  }
+  .portfolio-btn:deep() {
+    width: 5rem;
+    height: 5rem;
   }
 }
 </style>
