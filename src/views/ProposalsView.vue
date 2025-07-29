@@ -122,11 +122,11 @@ const findCard = (id: string) => {
 const exchangeTokenCost = (rarity: string) => {
   switch (rarity) {
     case 'R':
-      return 120
+      return 1200
     case 'RR':
-      return 500
+      return 5000
     case 'AR':
-      return 400
+      return 4000
   }
   return 0
 }
@@ -210,12 +210,7 @@ onMounted(async () => {
           <div class="tile-footer">
             <div v-if="group.language">{{ group.language }}</div>
             <div>
-              <img
-                src="/images/TRADE_ITEM_130010.webp"
-                alt="Trade Token"
-                class="trade-token"
-                height="32"
-              />
+              <img src="/images/shinedust.webp" alt="Trade Token" class="trade-token" height="32" />
               <span class="token-count">{{ exchangeTokenCost(group.rarity) }}</span>
             </div>
             <div class="clickable" @click="sendMessage(group)">

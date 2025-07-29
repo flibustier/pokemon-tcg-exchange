@@ -13,9 +13,9 @@ const props = defineProps({
 })
 
 const costByRarity = {
-  R: 120,
-  RR: 500,
-  AR: 400,
+  R: 1200,
+  RR: 5000,
+  AR: 4000,
 }
 
 const countByRarity = (array: { rarity?: string; count: number }[]): Record<string, number> => {
@@ -43,8 +43,9 @@ const totalCost = computed(() => {
     <h3>To match all your wishes, you <span v-if="!props.showGiving">will</span> need :</h3>
     <div class="price">
       <span>{{ totalCost }}</span>
+      <span>x</span>
       <div class="rarity">
-        <img src="/images/TRADE_ITEM_130010.webp" alt="Trade Item Token" width="50px" />
+        <img src="/images/shinedust.webp" alt="Trade Item Token" width="50px" />
       </div>
     </div>
     <div class="price" v-for="(index, rarity) in countWantedByRarity" :key="index">
