@@ -50,14 +50,16 @@ const activeStep = ref(1)
         :showGiving="activeStep === 2"
       />
     </div>
-    <CardsGrid v-if="activeStep < 3" v-model="stepCompleted" :step="activeStep" id="cards-grid" />
-    <div v-else class="content">
-      <h2 class="hidden-xl">Enter your ID and match with other players !</h2>
-      <LoginForm />
-      <div class="buttons" style="max-width: 335px">
-        <PrimaryButton @click="activeStep--"> Previous </PrimaryButton>
+    <client-only>
+      <CardsGrid v-if="activeStep < 3" v-model="stepCompleted" :step="activeStep" id="cards-grid" />
+      <div v-else class="content">
+        <h2 class="hidden-xl">Enter your ID and match with other players !</h2>
+        <LoginForm />
+        <div class="buttons" style="max-width: 335px">
+          <PrimaryButton @click="activeStep--"> Previous </PrimaryButton>
+        </div>
       </div>
-    </div>
+    </client-only>
   </main>
 </template>
 

@@ -4,7 +4,19 @@ import { useHead } from '@unhead/vue'
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
 
 useHead({
-  title: 'How to trade with Pokemon TCG Pocket Exchange Center',
+  title: 'How to trade and exchange your Pokemon TCG Pocket cards with our hub',
+  meta: [
+    {
+      name: 'description',
+      content: 'Trade and exchange safely your Pokemon TCG Pocket cards with our exchange hub',
+    },
+  ],
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://pokemon-tcg.exchange/help',
+    },
+  ],
 })
 </script>
 
