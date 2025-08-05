@@ -27,6 +27,11 @@ export const routes = [
     component: () => import('../views/LoginView.vue'),
   },
   {
+    path: '/forgotten-password',
+    name: 'forgotten-password',
+    component: () => import('../views/LoginView.vue'),
+  },
+  {
     path: '/logout',
     name: 'logout',
     component: () => import('../views/LogoutView.vue'),

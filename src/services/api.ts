@@ -224,3 +224,14 @@ export const postMessage = (friendID: string, message: string) =>
     },
     false,
   )
+
+export const sendMagicLink = (email: string, friend_id: string) =>
+  useAPI(
+    '/forgotten_password',
+    'POST',
+    {
+      email,
+      friend_id,
+    },
+    false,
+  )

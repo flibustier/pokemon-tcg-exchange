@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 
-import { createUser, fetchUser } from '@/services/api'
+import { createUser, fetchUser, sendMagicLink } from '@/services/api'
 import { getFriendId, isAccountIncomplete, setLogin } from '@/services/store'
 
 const props = defineProps({
@@ -9,7 +9,12 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  withoutPassword: {
+    type: Boolean,
+    default: false,
+  },
 })
+watch(props, () => (submitError.value = null))
 
 const emit = defineEmits(['error'])
 
@@ -22,9 +27,18 @@ const form = reactive({
 const submitError = ref()
 const submitting = ref(false)
 const hashedPassword = ref()
+const passwordSuccess = ref(false)
+
+const CTA = computed(() => {
+  if (submitting.value) return 'Loading…'
+  if (props.withoutPassword) return 'Send Magic Link'
+  if (props.withoutId) return 'Sign In'
+
+  return 'Create Account'
+})
 
 const formIncomplete = computed(() => {
-  if (!form.email || !form.password) {
+  if (!form.email || (!form.password && !props.withoutPassword)) {
     return true
   }
   if (props.withoutId) {
@@ -39,6 +53,17 @@ const formIncomplete = computed(() => {
 const submit = async () => {
   submitting.value = true
   try {
+    if (props.withoutPassword) {
+      passwordSuccess.value = (await sendMagicLink(form.email, form.friendId)) === 'ok'
+
+      if (passwordSuccess.value) {
+        form.email = ''
+        form.friendId = ''
+      }
+
+      return
+    }
+
     let success = false
     if (props.withoutId) {
       success = await fetchUser(form)
@@ -79,7 +104,7 @@ if (!import.meta.env.SSR) {
 
 <template>
   <form class="friend-form" @submit.prevent="submit">
-    <div class="form-group" v-if="!props.withoutId">
+    <div class="form-group" v-if="!props.withoutId || props.withoutPassword">
       <label for="friendId" class="form-label">Friend ID (16 digits without "-")</label>
       <input
         v-model="form.friendId"
@@ -95,7 +120,9 @@ if (!import.meta.env.SSR) {
     <div class="form-group">
       <label for="email" class="form-label"
         >Email address
-        <span v-if="!props.withoutId">(for notifications about exchange proposals)</span></label
+        <span v-if="!props.withoutId && !props.withoutPassword"
+          >(for notifications about exchange proposals)</span
+        ></label
       >
       <input
         type="email"
@@ -106,7 +133,7 @@ if (!import.meta.env.SSR) {
         required
       />
     </div>
-    <div class="form-group">
+    <div class="form-group" v-if="!props.withoutPassword">
       <label for="password" class="form-label"
         >Password <span v-if="!props.withoutId">(for retrieving your data later)</span></label
       >
@@ -120,9 +147,20 @@ if (!import.meta.env.SSR) {
       />
     </div>
     <button type="submit" class="submit-button" :disabled="formIncomplete || submitting">
-      {{ submitting ? 'Loading…' : props.withoutId ? 'Sign In' : 'Create Account' }}
+      {{ CTA }}
     </button>
-    <span class="error-message" v-if="submitError">Error: {{ submitError }}</span>
+    <div class="text-center">
+      <p v-if="passwordSuccess" class="success-message">
+        An email will be sent with a link to signin !
+      </p>
+      <span v-if="submitError" class="error-message">Error: {{ submitError }}</span>
+      <router-link
+        v-if="submitError === 'invalid password'"
+        :to="'/forgotten-password?email=' + form.email"
+      >
+        Forgotten password?
+      </router-link>
+    </div>
   </form>
 </template>
 
@@ -212,11 +250,23 @@ if (!import.meta.env.SSR) {
   box-shadow: none;
 }
 
+.text-center {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 1rem;
+}
+
 .error-message {
   color: #ff5252;
-  padding: 8px 16px;
-  margin-top: 4px;
-  font-weight: 500;
-  text-align: center;
+}
+
+.success-message {
+  color: #4caf50;
+}
+
+a {
+  color: var(--text-primary);
+  text-decoration: none;
 }
 </style>
