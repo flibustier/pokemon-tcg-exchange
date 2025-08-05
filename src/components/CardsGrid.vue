@@ -81,18 +81,21 @@ const increase = (card: Card) => {
               width="136"
               height="60"
               class="hidden-sm"
+              loading="lazy"
             />
             <img src="/images/double-arrow-left.png" alt="«" width="47" height="50" />
           </a>
           <div v-else class="bumper"></div>
-          <h2>
-            <img
-              :src="`/images/sets/LOGO_expansion_${set.code}_en_US.webp`"
-              :alt="set.label.en"
-              width="256"
-              heigh="113"
-            />
-          </h2>
+
+          <img
+            :src="`/images/sets/LOGO_expansion_${set.code}_en_US.webp`"
+            :alt="set.label.en"
+            class="set-current-logo"
+            width="256"
+            heigh="113"
+            loading="lazy"
+          />
+
           <a v-if="index < sets.length - 1" :href="'#' + sets[index + 1].code">
             <img src="/images/double-arrow-right.png" alt="»" width="47" height="50" />
             <img
@@ -101,6 +104,7 @@ const increase = (card: Card) => {
               width="136"
               height="60"
               class="hidden-sm"
+              loading="lazy"
             />
           </a>
           <div v-else class="bumper"></div>
@@ -173,6 +177,8 @@ const increase = (card: Card) => {
 
   a {
     height: 100%;
+    align-items: center;
+    display: flex;
   }
 }
 
@@ -200,14 +206,6 @@ const increase = (card: Card) => {
   img {
     width: 100%;
   }
-}
-
-.card-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
 }
 
 .no-results {
@@ -264,7 +262,7 @@ h3 {
     width: 9%;
   }
 
-  h2 > img {
+  .set-current-logo {
     height: 83px;
     width: auto;
   }

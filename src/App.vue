@@ -30,10 +30,10 @@ onMounted(async () => {
           alt="Pokemon Trading Card Game Pocket"
           class="logo"
           src="/images/tcgpocketlogo_en.png"
-          height="125"
+          height="100"
           id="tcg-pocket-logo"
         />
-        <img alt="" class="logo" src="/images/exchange.png" id="exchange-logo" height="75" />
+        <img alt="" class="logo" src="/images/exchange.png" id="exchange-logo" height="60" />
         Exchange Center
       </h1>
     </div>
@@ -68,7 +68,8 @@ header {
   h1 {
     display: flex;
     align-items: center;
-    line-height: 2rem;
+    line-height: 1.7rem;
+    font-size: 1.6rem;
   }
 }
 
@@ -151,11 +152,13 @@ a {
   }
   #exchange-logo {
     height: 40px;
+    margin-left: 0;
+    margin-right: 0.25rem;
   }
   header {
     h1 {
-      font-size: 1.5rem;
-      line-height: 1.7rem;
+      font-size: 1.2rem;
+      line-height: 1.4rem;
     }
   }
   .btn-primary {
