@@ -4,6 +4,9 @@ import { ref, reactive, onUnmounted, computed } from 'vue'
 import PlainButton from '@/components/atoms/PlainButton.vue'
 import HorizontalSeparator from '@/components/atoms/HorizontalSeparator.vue'
 
+const CHECK_INTERVAL_MS = 5_000
+const AUTO_ACCEPT_AFTER_60_SECONDS = true
+
 const emit = defineEmits(['success'])
 
 const success = ref(false)
@@ -11,6 +14,7 @@ const submitted = ref(false)
 const ghUsername = ref('')
 const accessCode = ref('')
 const stargazers = ref([] as string[])
+const checkTimer = ref(12) // 12 * 5 seconds = 60 seconds
 const checkInterval = ref(0)
 const errors = reactive({
   accessCode: false,
@@ -31,7 +35,11 @@ const isAccessCodeValid = computed(() => {
 })
 
 const submit = async () => {
-  if (stargazers.value.includes(ghUsername.value) || isAccessCodeValid.value) {
+  if (
+    stargazers.value.includes(ghUsername.value) ||
+    isAccessCodeValid.value ||
+    checkTimer.value <= 0
+  ) {
     console.log('ACCESS GRANTED')
     emit('success', isAccessCodeValid.value ? '' : ghUsername.value)
     return
@@ -53,10 +61,17 @@ const cancel = () => {
 const checkStaring = async () => {
   const currentStargazers = await fetchStargazers()
 
-  if (currentStargazers.length === stargazers.value.length) return
+  if (submitted.value && AUTO_ACCEPT_AFTER_60_SECONDS) {
+    checkTimer.value--
+  }
 
-  ghUsername.value =
-    currentStargazers.find((username) => !stargazers.value.includes(username)) || ''
+  if (currentStargazers.length === stargazers.value.length && checkTimer.value > 0) return
+
+  if (ghUsername.value === '') {
+    ghUsername.value =
+      currentStargazers.find((username) => !stargazers.value.includes(username)) || ''
+  }
+
   success.value = true
   stargazers.value = currentStargazers
   clearInterval(checkInterval.value)
@@ -66,7 +81,7 @@ const checkStaring = async () => {
 const autoFetch = async () => {
   stargazers.value = await fetchStargazers()
 
-  checkInterval.value = setInterval(checkStaring, 5000)
+  checkInterval.value = setInterval(checkStaring, CHECK_INTERVAL_MS)
 }
 
 onUnmounted(() => {
