@@ -11,6 +11,7 @@ import {
   setUserInfo,
   type Credentials,
   getBasicAuth,
+  storeDiscussions,
 } from './store'
 
 function debounce<T extends (...args: unknown[]) => void>(func: T, timeout = 300) {
@@ -84,6 +85,8 @@ export const fetchUser = async ({ email, password }: Credentials = getCredential
         ...info,
         rarity_rules: JSON.parse(rarity_rules),
       })
+
+      refreshDiscussions()
 
       return true
     } else {
@@ -194,8 +197,12 @@ export interface Discussion {
   friend_id: string
   last_message: string
   last_message_date: string
+  read: boolean
 }
-export const getDiscussions = (): Promise<Discussion[]> => useAPI('/user/discussions')
+
+const getDiscussions = (): Promise<Discussion[]> => useAPI('/user/discussions')
+export const refreshDiscussions = (): Promise<void> =>
+  getDiscussions().then((discussions) => storeDiscussions(discussions))
 
 export interface Message {
   from: string

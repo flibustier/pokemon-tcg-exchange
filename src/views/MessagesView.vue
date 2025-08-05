@@ -2,14 +2,8 @@
 import { onMounted, ref, computed, watch, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import {
-  getDiscussions,
-  getMessages,
-  postMessage,
-  type Discussion,
-  type Message,
-} from '@/services/api'
-import { getUserInfo } from '@/services/store'
+import { getMessages, postMessage, refreshDiscussions, type Message } from '@/services/api'
+import { getUserInfo, discussions } from '@/services/store'
 
 import UserBadge from '@/components/atoms/UserBadge.vue'
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
@@ -19,7 +13,6 @@ const router = useRouter()
 
 const discussionID = computed(() => route.params.id)
 
-const discussions = ref([] as Discussion[])
 const messages = ref([] as Message[])
 const composedMessage = ref('')
 const showMobileDiscussions = ref(false)
@@ -89,6 +82,9 @@ const refresh = async () => {
     if (messages.value.length === 0 && !getUserInfo().has_beta_access) {
       router.push({ name: 'beta' })
     }
+    if (currentDiscussion.value?.read === false) {
+      await refreshDiscussions()
+    }
 
     // scroll to last message
     nextTick(() => {
@@ -103,7 +99,7 @@ watch(discussionID, refresh)
 
 let refreshInterval: number
 onMounted(async () => {
-  discussions.value = await getDiscussions()
+  await refreshDiscussions()
 
   if (!discussionID.value && discussions.value.length > 0) {
     navigateToDiscussion(discussions.value[0].friend_id)
@@ -140,7 +136,10 @@ onUnmounted(() => {
           v-for="discussion in discussions"
           :key="discussion.friend_id"
           class="discussion-item"
-          :class="{ active: discussion.friend_id === discussionID }"
+          :class="{
+            active: discussion.friend_id === discussionID,
+            unread: discussion.read === false,
+          }"
           @click="navigateToDiscussion(discussion.friend_id)"
         >
           <img
@@ -154,7 +153,9 @@ onUnmounted(() => {
           <div class="content">
             <div v-if="discussion.pseudo !== ''" class="name">
               {{ discussion.pseudo }}
-              <span v-if="discussion.language !== ''">({{ discussion.language }})</span>
+              <span class="language" v-if="discussion.language !== ''"
+                >({{ discussion.language }})</span
+              >
             </div>
             <div v-else class="name">{{ discussion.friend_id }}</div>
             <div class="last-message">
@@ -297,6 +298,17 @@ h2 {
   background: var(--active-color);
   border-left-color: var(--primary-color);
 }
+.discussion-item.unread {
+  .name,
+  .language,
+  .last-message,
+  .time {
+    font-weight: bold;
+  }
+}
+.language {
+  font-size: 0.8rem;
+}
 .avatar {
   width: 40px;
   height: 40px;
@@ -313,10 +325,6 @@ h2 {
 .content {
   display: flex;
   flex-direction: column;
-}
-.discussion-item.unread .name {
-  font-weight: bold;
-  font-size: 1rem;
 }
 .last-message {
   font-size: 0.875rem;

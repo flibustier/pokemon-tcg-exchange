@@ -1,5 +1,5 @@
-import { ref, watch, computed } from 'vue'
-import { debouncedUpdateUser } from './api'
+import { ref, watch, computed, reactive } from 'vue'
+import { debouncedUpdateUser, type Discussion } from './api'
 import { cards } from './cards'
 
 const storage = import.meta.env.SSR
@@ -17,6 +17,20 @@ enum ObjectName {
   LogIn = 'token',
   FriendId = 'friend_id',
   User = 'user',
+}
+
+const sessionStorage = reactive({
+  discussions: [] as Discussion[],
+})
+
+export const hasUnreadMessages = computed(() =>
+  sessionStorage.discussions.some(({ read }) => read === false),
+)
+
+export const discussions = computed(() => sessionStorage.discussions)
+
+export const storeDiscussions = (discussions: Discussion[]) => {
+  sessionStorage.discussions = discussions
 }
 
 export const getClientID = () => {

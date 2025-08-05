@@ -8,6 +8,7 @@ const props = defineProps<{
   icon: string
   active?: boolean
   disabled?: boolean
+  withNotificationDot?: boolean
 }>()
 
 const navigate = () => router.push({ name: props.label.toLowerCase() })
@@ -15,6 +16,7 @@ const navigate = () => router.push({ name: props.label.toLowerCase() })
 
 <template>
   <button class="portfolio-btn" :class="{ active }" :disabled="disabled ?? false" @click="navigate">
+    <span :class="{ 'notification-dot': withNotificationDot }" v-if="icon === 'message'"></span>
     <span class="icon">
       <!-- Simple book icon SVG -->
       <svg v-if="icon === 'portfolio'" width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -116,5 +118,14 @@ const navigate = () => router.push({ name: props.label.toLowerCase() })
 .portfolio-btn.active .icon,
 .portfolio-btn:active .icon {
   filter: drop-shadow(0 0 8px #32e37c88);
+}
+
+.notification-dot {
+  position: relative;
+  left: 20px;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: #f0f;
 }
 </style>

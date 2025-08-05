@@ -2,15 +2,17 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
+import { hasUnreadMessages } from '@/services/store'
+
 import MessagesView from '@/views/MessagesView.vue'
 import ProposalsView from '@/views/ProposalsView.vue'
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
 import PacksInformations from '@/components/PacksInformations.vue'
+import BetaAccessForm from '@/components/forms/BetaAccessForm.vue'
 import SettingsForm from '@/components/forms/SettingsForm.vue'
 import PricesTable from '@/components/PricesTable.vue'
 import MenuButton from '@/components/atoms/MenuButton.vue'
 import CardsGrid from '@/components/CardsGrid.vue'
-import BetaAccessForm from '@/components/forms/BetaAccessForm.vue'
 
 const route = useRoute()
 
@@ -32,6 +34,7 @@ const isCardManaging = computed(() =>
           label="Messages"
           icon="message"
           :active="(activeRoute as string).startsWith('message')"
+          :with-notification-dot="hasUnreadMessages"
         />
         <MenuButton label="Account" icon="gear" :active="activeRoute === 'account'" />
       </nav>
