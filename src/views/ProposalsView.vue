@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, reactive } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { uniq } from '@/services/utils'
@@ -43,6 +43,7 @@ const filters = ref({
   raritySelection: [] as string[],
   languageSelection: [] as string[],
   pseudonymSelection: [] as string[],
+  cardName: undefined as string | undefined,
 })
 
 const data = computed(() =>
@@ -71,6 +72,9 @@ type ProposalGroup = {
   givenCards: ProposalCard[]
 }
 
+const cardContainsFilterTerms = (card: ProposalCard) =>
+  card.label.eng.toLowerCase().includes((filters.value.cardName || '').toLowerCase())
+
 const proposalsByRarityAndFriendId = computed(() => {
   return data.value.reduce((acc: ProposalGroup[], proposal: Proposal): ProposalGroup[] => {
     const rarity = proposal.card1.rarityCode
@@ -81,7 +85,10 @@ const proposalsByRarityAndFriendId = computed(() => {
       (filters.value.languageSelection.length &&
         !filters.value.languageSelection.includes(language || '')) ||
       (filters.value.pseudonymSelection.length &&
-        !filters.value.pseudonymSelection.includes(pseudo || ''))
+        !filters.value.pseudonymSelection.includes(pseudo || '')) ||
+      (filters.value.cardName &&
+        !cardContainsFilterTerms(proposal.card1) &&
+        !cardContainsFilterTerms(proposal.card2))
     ) {
       return acc
     }

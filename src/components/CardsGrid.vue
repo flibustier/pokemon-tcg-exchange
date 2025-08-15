@@ -13,6 +13,7 @@ const filters = ref({
   hideUnavailable: false,
   hideEmpty: false,
   raritySelection: [] as string[],
+  cardName: undefined as string | undefined,
 })
 
 const isRestricted = (card: Card) => {
@@ -38,6 +39,8 @@ const filteredCards = (set?: string) =>
   cards.filter(
     (card) =>
       (!set || card.set === set.toUpperCase()) &&
+      (!filters.value.cardName ||
+        card.label.eng.toLowerCase().includes(filters.value.cardName.toLowerCase())) &&
       (!filters.value.hideEmpty || cardCountById.value[cardId(card)] > 0) &&
       (!filters.value.hideUnavailable ||
         (!isRestricted(card) && (!isWantedCard(card) || props.step === 1))) &&
@@ -152,7 +155,6 @@ const increase = (card: Card) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
   width: 100%;
 }
 

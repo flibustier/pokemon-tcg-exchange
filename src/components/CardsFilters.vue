@@ -17,6 +17,7 @@ const filters = defineModel<{
   pseudonymSelection?: string[]
   hideUnavailable?: boolean
   hideEmpty?: boolean
+  cardName?: string
 }>({
   required: true,
 })
@@ -94,6 +95,14 @@ const togglePseudonym = toggle('pseudonymSelection')
         {{ language }}
       </div>
     </template>
+    <div style="margin-left: 0.5rem">
+      <input
+        v-model="filters.cardName"
+        class="input-search"
+        type="text"
+        placeholder="Search for card name"
+      />
+    </div>
   </div>
   <div class="filters" v-if="pseudonyms">
     <label class="filters__title">Players</label>
@@ -118,6 +127,7 @@ const togglePseudonym = toggle('pseudonymSelection')
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
   gap: 0.5rem;
 }
@@ -148,5 +158,12 @@ const togglePseudonym = toggle('pseudonymSelection')
     0 2px 8px 0 rgba(60, 60, 120, 0.18),
     inset 0 2px 8px 0 rgba(60, 60, 120, 0.16);
   border-color: transparent;
+}
+
+.input-search {
+  height: 30px;
+  padding: 0 0.5rem;
+  border-radius: 1rem;
+  border: 1px solid #9cc;
 }
 </style>
