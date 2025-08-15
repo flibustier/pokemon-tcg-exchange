@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
+import { computed, ref } from 'vue'
 
 import { AUTHORIZED_RARITIES, AUTHORIZED_SETS } from '@/../config.json' with { type: 'json' }
 import { wantedCardsCountById, givingCardsCountById } from '@/services/store'
@@ -9,7 +9,7 @@ import type { Card } from '@/services/cards'
 import NumberInput from './atoms/NumberInput.vue'
 import CardsFilters from './CardsFilters.vue'
 
-const filters = reactive({
+const filters = ref({
   hideUnavailable: false,
   hideEmpty: false,
   raritySelection: [] as string[],
@@ -38,10 +38,11 @@ const filteredCards = (set?: string) =>
   cards.filter(
     (card) =>
       (!set || card.set === set.toUpperCase()) &&
-      (!filters.hideEmpty || cardCountById.value[cardId(card)] > 0) &&
-      (!filters.hideUnavailable ||
+      (!filters.value.hideEmpty || cardCountById.value[cardId(card)] > 0) &&
+      (!filters.value.hideUnavailable ||
         (!isRestricted(card) && (!isWantedCard(card) || props.step === 1))) &&
-      (filters.raritySelection.length === 0 || filters.raritySelection.includes(card.rarityCode)),
+      (filters.value.raritySelection.length === 0 ||
+        filters.value.raritySelection.includes(card.rarityCode)),
   )
 
 const cardCountById = computed(() => {
@@ -134,7 +135,7 @@ const increase = (card: Card) => {
     </div>
     <template v-if="filteredCards().length === 0">
       <CardsFilters v-model="filters" :cards="cards" />
-      <p class="no-results">No results :/<br />Please adjust your filters</p>
+      <p class="no-results">No results :/<br />Please adjust your filters.value</p>
     </template>
   </div>
 </template>

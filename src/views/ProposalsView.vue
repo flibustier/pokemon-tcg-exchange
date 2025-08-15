@@ -39,7 +39,7 @@ const error = ref()
 const loading = ref(true)
 const allProposals = ref([] as Proposal[])
 
-const filters = reactive({
+const filters = ref({
   raritySelection: [] as string[],
   languageSelection: [] as string[],
   pseudonymSelection: [] as string[],
@@ -77,9 +77,11 @@ const proposalsByRarityAndFriendId = computed(() => {
     const { friend_id: friendID, icon, pseudo, language } = proposal
 
     if (
-      (filters.raritySelection.length && !filters.raritySelection.includes(rarity)) ||
-      (filters.languageSelection.length && !filters.languageSelection.includes(language || '')) ||
-      (filters.pseudonymSelection.length && !filters.pseudonymSelection.includes(pseudo || ''))
+      (filters.value.raritySelection.length && !filters.value.raritySelection.includes(rarity)) ||
+      (filters.value.languageSelection.length &&
+        !filters.value.languageSelection.includes(language || '')) ||
+      (filters.value.pseudonymSelection.length &&
+        !filters.value.pseudonymSelection.includes(pseudo || ''))
     ) {
       return acc
     }
