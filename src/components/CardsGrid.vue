@@ -269,5 +269,9 @@ h3 {
     height: 83px;
     width: auto;
   }
+
+  .card {
+    padding: 2px;
+  }
 }
 </style>

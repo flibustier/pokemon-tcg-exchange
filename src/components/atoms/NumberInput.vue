@@ -89,6 +89,7 @@ button:disabled::before,
 input {
   height: 24px;
   width: 60px;
+  max-width: 100%;
   border: none;
   border-radius: 10px;
   background: #fff;
@@ -125,9 +126,6 @@ input:disabled {
   .wrap {
     flex-direction: column-reverse;
     gap: 0.5rem;
-  }
-  input {
-    width: 100%;
   }
 }
 </style>
