@@ -1,0 +1,1 @@
+import{C as o}from"./CenteredLayout-CgGZzK72.js";import{d as t,a4 as a,m as n,o as r,q as s,e as u}from"./app-DRl2BE6V.js";const c=t({__name:"LogoutView",setup(l){return a(),window.location.replace("/"),(i,e)=>(r(),n(o,null,{default:s(()=>[...e[0]||(e[0]=[u("h1",null,"Logging out...",-1)])]),_:1}))}});export{c as default};

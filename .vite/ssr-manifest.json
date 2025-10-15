@@ -3,73 +3,73 @@
   "\u0000vite/modulepreload-polyfill.js": [],
   "\u0000vite/preload-helper.js": [],
   "../../../../../images/double-arrow-left.png": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "../../../../../images/double-arrow-right.png": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "../../../../../images/exchange.png": [],
   "../../../../../images/icons/exchange.svg": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "../../../../../images/icons/grid.svg": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "../../../../../images/icons/message.svg": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "../../../../../images/rarity/Losange.png": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "../../../../../images/rarity/SR.png": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "../../../../../images/rarity/Star.png": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "../../../../../images/rarity/UR.png": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "../../../../../images/screenshots/friend-id.png": [
-    "/assets/HelpView-2ph8DpA8.js",
+    "/assets/HelpView-BdoK92iV.js",
     "/assets/HelpView-CqueBj_8.css"
   ],
   "../../../../../images/screenshots/home-step-1.png": [
-    "/assets/HelpView-2ph8DpA8.js",
+    "/assets/HelpView-BdoK92iV.js",
     "/assets/HelpView-CqueBj_8.css"
   ],
   "../../../../../images/screenshots/home-step-2.png": [
-    "/assets/HelpView-2ph8DpA8.js",
+    "/assets/HelpView-BdoK92iV.js",
     "/assets/HelpView-CqueBj_8.css"
   ],
   "../../../../../images/screenshots/packs.png": [
-    "/assets/HelpView-2ph8DpA8.js",
+    "/assets/HelpView-BdoK92iV.js",
     "/assets/HelpView-CqueBj_8.css"
   ],
   "../../../../../images/screenshots/proposals-1.png": [
-    "/assets/HelpView-2ph8DpA8.js",
+    "/assets/HelpView-BdoK92iV.js",
     "/assets/HelpView-CqueBj_8.css"
   ],
   "../../../../../images/screenshots/settings-1.png": [
-    "/assets/HelpView-2ph8DpA8.js",
+    "/assets/HelpView-BdoK92iV.js",
     "/assets/HelpView-CqueBj_8.css"
   ],
   "../../../../../images/shinedust.webp": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "../../../../../images/tcgpocketlogo_en.png": [],
   "config.json": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "index.html": [],
@@ -83,11 +83,11 @@
   "node_modules/.pnpm/hookable@5.5.3/node_modules/hookable/dist/index.mjs": [],
   "node_modules/.pnpm/pokemon-tcg-pocket-database@1.9.0/node_modules/pokemon-tcg-pocket-database/dist/cards.json": [],
   "node_modules/.pnpm/pokemon-tcg-pocket-database@1.9.0/node_modules/pokemon-tcg-pocket-database/dist/rarity.json": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "node_modules/.pnpm/pokemon-tcg-pocket-database@1.9.0/node_modules/pokemon-tcg-pocket-database/dist/sets.json": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "node_modules/.pnpm/unhead@2.0.14/node_modules/unhead/dist/client.mjs": [],
@@ -104,182 +104,182 @@
   "src/App.vue?vue&type=style&index=0&scoped=80cc7645&lang.css": [],
   "src/assets/base.css": [],
   "src/components/CardsFilters.vue": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "src/components/CardsFilters.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "src/components/CardsFilters.vue?vue&type=style&index=0&scoped=f6a8ed96&lang.css": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "src/components/CardsGrid.vue": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "src/components/CardsGrid.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "src/components/CardsGrid.vue?vue&type=style&index=0&scoped=572ffdce&lang.css": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "src/components/GitHubStargazer.vue": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/GitHubStargazer.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/GitHubStargazer.vue?vue&type=style&index=0&scoped=a3745c42&lang.css": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/PacksInformations.vue": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/PacksInformations.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/PacksInformations.vue?vue&type=style&index=0&scoped=f29dc244&lang.css": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/PricesTable.vue": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "src/components/PricesTable.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "src/components/PricesTable.vue?vue&type=style&index=0&scoped=fb06e698&lang.css": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "src/components/atoms/HorizontalSeparator.vue": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/atoms/HorizontalSeparator.vue?vue&type=style&index=0&scoped=e7568407&lang.css": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/atoms/MenuButton.vue": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/atoms/MenuButton.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/atoms/MenuButton.vue?vue&type=style&index=0&scoped=01ae0054&lang.css": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/atoms/NumberInput.vue": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "src/components/atoms/NumberInput.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "src/components/atoms/NumberInput.vue?vue&type=style&index=0&scoped=826244d8&lang.css": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "src/components/atoms/PlainButton.vue": [
-    "/assets/PlainButton-CAjidTYM.js",
+    "/assets/PlainButton-DXYChCR9.js",
     "/assets/PlainButton-Dom0Ouqr.css"
   ],
   "src/components/atoms/PlainButton.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/PlainButton-CAjidTYM.js",
+    "/assets/PlainButton-DXYChCR9.js",
     "/assets/PlainButton-Dom0Ouqr.css"
   ],
   "src/components/atoms/PlainButton.vue?vue&type=style&index=0&scoped=254da2c4&lang.css": [
-    "/assets/PlainButton-CAjidTYM.js",
+    "/assets/PlainButton-DXYChCR9.js",
     "/assets/PlainButton-Dom0Ouqr.css"
   ],
   "src/components/atoms/PrimaryButton.vue": [],
   "src/components/atoms/PrimaryButton.vue?vue&type=script&setup=true&lang.ts": [],
   "src/components/atoms/PrimaryButton.vue?vue&type=style&index=0&scoped=016c3c81&lang.css": [],
   "src/components/atoms/RarityImage.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/CardsGrid-UiIys5jx.js",
+    "/assets/CardsGrid-ChjOdi8C.js",
     "/assets/CardsGrid-hX1TpQFZ.css"
   ],
   "src/components/atoms/ToggleSwitch.vue": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/atoms/ToggleSwitch.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/atoms/ToggleSwitch.vue?vue&type=style&index=0&scoped=c0313374&lang.css": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/atoms/UserBadge.vue": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/atoms/UserBadge.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/atoms/UserBadge.vue?vue&type=style&index=0&scoped=eb7da61a&lang.css": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/forms/BetaAccessForm.vue": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/forms/BetaAccessForm.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/forms/BetaAccessForm.vue?vue&type=style&index=0&scoped=a0aaca68&lang.css": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/forms/LoginForm.vue": [
-    "/assets/LoginForm-CK6SLnKI.js",
+    "/assets/LoginForm-DCGeBb42.js",
     "/assets/LoginForm-dCXL3iRJ.css"
   ],
   "src/components/forms/LoginForm.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/LoginForm-CK6SLnKI.js",
+    "/assets/LoginForm-DCGeBb42.js",
     "/assets/LoginForm-dCXL3iRJ.css"
   ],
   "src/components/forms/LoginForm.vue?vue&type=style&index=0&scoped=ac6de3ad&lang.css": [
-    "/assets/LoginForm-CK6SLnKI.js",
+    "/assets/LoginForm-DCGeBb42.js",
     "/assets/LoginForm-dCXL3iRJ.css"
   ],
   "src/components/forms/SettingsForm.vue": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/components/forms/SettingsForm.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
-  "src/components/forms/SettingsForm.vue?vue&type=style&index=0&scoped=25487534&lang.css": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+  "src/components/forms/SettingsForm.vue?vue&type=style&index=0&scoped=19411dc6&lang.css": [
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/layouts/CenteredLayout.vue": [
-    "/assets/CenteredLayout-BPlaQNLY.js",
+    "/assets/CenteredLayout-CgGZzK72.js",
     "/assets/CenteredLayout-DCt8-IEK.css"
   ],
   "src/layouts/CenteredLayout.vue?vue&type=style&index=0&scoped=2d6fe895&lang.css": [
-    "/assets/CenteredLayout-BPlaQNLY.js",
+    "/assets/CenteredLayout-CgGZzK72.js",
     "/assets/CenteredLayout-DCt8-IEK.css"
   ],
   "src/main.ts": [],
@@ -287,91 +287,91 @@
   "src/services/api.ts": [],
   "src/services/store.ts": [],
   "src/services/utils.ts": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/views/AccountView.vue": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/views/AccountView.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/views/AccountView.vue?vue&type=style&index=0&scoped=2226bd3e&lang.css": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/views/HelpView.vue": [
-    "/assets/HelpView-2ph8DpA8.js",
+    "/assets/HelpView-BdoK92iV.js",
     "/assets/HelpView-CqueBj_8.css"
   ],
   "src/views/HelpView.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/HelpView-2ph8DpA8.js",
+    "/assets/HelpView-BdoK92iV.js",
     "/assets/HelpView-CqueBj_8.css"
   ],
   "src/views/HelpView.vue?vue&type=style&index=0&scoped=341d3d01&lang.css": [
-    "/assets/HelpView-2ph8DpA8.js",
+    "/assets/HelpView-BdoK92iV.js",
     "/assets/HelpView-CqueBj_8.css"
   ],
   "src/views/LoginView.vue": [
-    "/assets/LoginView-DnV4mIAe.js",
+    "/assets/LoginView-DOyranCH.js",
     "/assets/LoginView-31FFtOR6.css"
   ],
   "src/views/LoginView.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/LoginView-DnV4mIAe.js",
+    "/assets/LoginView-DOyranCH.js",
     "/assets/LoginView-31FFtOR6.css"
   ],
   "src/views/LoginView.vue?vue&type=style&index=0&scoped=a33d88c0&lang.css": [
-    "/assets/LoginView-DnV4mIAe.js",
+    "/assets/LoginView-DOyranCH.js",
     "/assets/LoginView-31FFtOR6.css"
   ],
   "src/views/LogoutView.vue": [
-    "/assets/LogoutView-BwJkf8QL.js"
+    "/assets/LogoutView-DORkgM4W.js"
   ],
   "src/views/LogoutView.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/LogoutView-BwJkf8QL.js"
+    "/assets/LogoutView-DORkgM4W.js"
   ],
   "src/views/MessagesView.vue": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/views/MessagesView.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/views/MessagesView.vue?vue&type=style&index=0&scoped=dee5b49f&lang.css": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/views/NotFoundView.vue": [
-    "/assets/NotFoundView-CCGFu4Z7.js"
+    "/assets/NotFoundView-CLdKWpd5.js"
   ],
   "src/views/NotFoundView.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/NotFoundView-CCGFu4Z7.js"
+    "/assets/NotFoundView-CLdKWpd5.js"
   ],
   "src/views/ProposalsView.vue": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/views/ProposalsView.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/views/ProposalsView.vue?vue&type=style&index=0&scoped=ff3f67bf&lang.css": [
-    "/assets/AccountView-oQHWlJ7N.js",
-    "/assets/AccountView-Bn4N3IIX.css"
+    "/assets/AccountView-Cnx0KZmY.js",
+    "/assets/AccountView-BRXlr1PS.css"
   ],
   "src/views/StepView.vue": [
-    "/assets/StepView-Dj2FNvSD.js",
+    "/assets/StepView-DDdB-CNb.js",
     "/assets/StepView-CDSuAINP.css"
   ],
   "src/views/StepView.vue?vue&type=script&setup=true&lang.ts": [
-    "/assets/StepView-Dj2FNvSD.js",
+    "/assets/StepView-DDdB-CNb.js",
     "/assets/StepView-CDSuAINP.css"
   ],
   "src/views/StepView.vue?vue&type=style&index=0&scoped=4e3a8002&lang.css": [
-    "/assets/StepView-Dj2FNvSD.js",
+    "/assets/StepView-DDdB-CNb.js",
     "/assets/StepView-CDSuAINP.css"
   ]
 }
