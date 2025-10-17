@@ -95,8 +95,8 @@ const increase = (card: Card) => {
             :src="`/images/sets/LOGO_expansion_${set.code}_en_US.webp`"
             :alt="set.label.en"
             class="set-current-logo"
-            width="256"
-            heigh="113"
+            width="192"
+            heigh="85"
             loading="lazy"
           />
 
