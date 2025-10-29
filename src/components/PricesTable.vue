@@ -16,12 +16,16 @@ const costByRarity = {
   R: 1200,
   RR: 5000,
   AR: 4000,
+  SR: 25000,
+  //S: ?,
+  //SSR: ?,
 }
 
 const countByRarity = (array: { rarity?: string; count: number }[]): Record<string, number> => {
   return array.reduce(
     (acc, card) => {
-      acc[card.rarity || ''] = (acc[card.rarity || ''] || 0) + card.count
+      const rarity = card.rarity === 'SAR' ? 'SR' : card.rarity || ''
+      acc[rarity || ''] = (acc[rarity || ''] || 0) + card.count
       return acc
     },
     {} as Record<string, number>,

@@ -41,6 +41,10 @@ const rarities = reactive({
   R: true,
   RR: true,
   AR: true,
+  SR: true,
+  SAR: true,
+  S: true,
+  SSR: true,
   ...(rarity_rules || []).reduce(
     (acc, rarityRule: RarityRule) => ({
       ...acc,
@@ -133,6 +137,18 @@ const save = async () => {
       </ToggleSwitch>
       <ToggleSwitch v-model="rarities.AR">
         <RarityImage rarity="AR" />
+      </ToggleSwitch>
+      <ToggleSwitch
+        v-model="rarities.SR"
+        @update:model-value="(newValue) => (rarities.SAR = newValue)"
+      >
+        <RarityImage rarity="SR" />
+      </ToggleSwitch>
+      <ToggleSwitch v-model="rarities.S">
+        <RarityImage rarity="S" />
+      </ToggleSwitch>
+      <ToggleSwitch v-model="rarities.SSR">
+        <RarityImage rarity="SSR" />
       </ToggleSwitch>
     </div>
 

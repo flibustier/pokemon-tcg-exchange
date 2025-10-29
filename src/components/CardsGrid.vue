@@ -33,7 +33,11 @@ const props = defineProps<{
   step: number
 }>()
 
-const sets = computed(() => allSets)
+const sets = computed(() =>
+  allSets
+    .filter(({ code }) => !code.startsWith('PROMO'))
+    .sort((a, b) => (a.code < b.code ? 1 : -1)),
+)
 
 const filteredCards = (set?: string) =>
   cards.filter(
