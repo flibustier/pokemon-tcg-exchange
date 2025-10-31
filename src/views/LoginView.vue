@@ -13,7 +13,7 @@ const passwordRequest = ref(isPasswordRequest())
 
 function handleError(error: string) {
   console.log('error', error)
-  if (error === 'user not found') {
+  if (error === 'insufficient credentials') {
     hasAccount.value = false
   }
 }

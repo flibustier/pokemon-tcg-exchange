@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 import { createUser, fetchUser, sendMagicLink } from '@/services/api'
 import { getFriendId, isAccountIncomplete, setLogin } from '@/services/store'
@@ -26,7 +26,6 @@ const form = reactive({
 
 const submitError = ref()
 const submitting = ref(false)
-const hashedPassword = ref()
 const passwordSuccess = ref(false)
 
 const CTA = computed(() => {
@@ -50,6 +49,10 @@ const formIncomplete = computed(() => {
   return false
 })
 
+const redirect = () => {
+  window.location.replace(isAccountIncomplete.value ? '/account/wishlist' : '/account/proposals')
+}
+
 const submit = async () => {
   submitting.value = true
   try {
@@ -66,20 +69,18 @@ const submit = async () => {
 
     let success = false
     if (props.withoutId) {
-      success = await fetchUser(form)
+      await setLogin(form.email, form.password)
+      success = await fetchUser()
     } else {
       success = await createUser(form)
     }
 
     if (success) {
-      await setLogin(form.email, form.password, hashedPassword.value)
-
-      window.location.replace(
-        isAccountIncomplete.value ? '/account/wishlist' : '/account/proposals',
-      )
+      redirect()
     }
   } catch (error) {
-    if (error !== 'user not found') {
+    console.log('coucou', error)
+    if (error !== 'insufficient credentials') {
       submitError.value = error
     }
     emit('error', error)
@@ -89,16 +90,19 @@ const submit = async () => {
 }
 
 if (!import.meta.env.SSR) {
-  const searchParams = new URLSearchParams(window.location.search)
-  const email = searchParams.get('email')
-  const token = searchParams.get('token')
+  onMounted(async () => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const email = searchParams.get('email')
+    const token = searchParams.get('token')
 
-  if (email && token) {
-    form.email = email
-    form.password = token
-    hashedPassword.value = token
-    submit()
-  }
+    if (email && token) {
+      await setLogin(email, '', token)
+      const success = await fetchUser()
+      if (success) {
+        redirect()
+      }
+    }
+  })
 }
 </script>
 

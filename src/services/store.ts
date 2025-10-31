@@ -1,6 +1,10 @@
 import { ref, watch, computed, reactive } from 'vue'
-import { debouncedUpdateUser, type Discussion } from './api'
+
+import type { Discussion } from '@/types'
+
+import { debouncedUpdateUser } from './api'
 import { cards } from './cards'
+import { isEqual } from './utils'
 
 const storage = import.meta.env.SSR
   ? {
@@ -103,7 +107,7 @@ export const setGivingCards = (cards: Record<string, number>) => {
 }
 
 watch(
-  wantedCardsCountById,
+  () => wantedCardsCountById.value,
   (newStore) => {
     setWantedCards(newStore)
     debouncedUpdateUser()
@@ -159,21 +163,26 @@ type Card = {
   id: string
   count: number
 }
+
+const formatCardList = (cards: Card[]) =>
+  cards.reduce(
+    (acc, card) => {
+      acc[card.id] = card.count
+      return acc
+    },
+    {} as Record<string, number>,
+  )
+
 export const importCards = (wanted: Card[], giving: Card[]) => {
-  wantedCardsCountById.value = wanted.reduce(
-    (acc, card) => {
-      acc[card.id] = card.count
-      return acc
-    },
-    {} as Record<string, number>,
-  )
-  givingCardsCountById.value = giving.reduce(
-    (acc, card) => {
-      acc[card.id] = card.count
-      return acc
-    },
-    {} as Record<string, number>,
-  )
+  const newWanted = formatCardList(wanted)
+  if (!isEqual(wantedCardsCountById.value, newWanted)) {
+    wantedCardsCountById.value = newWanted
+  }
+
+  const newGiving = formatCardList(giving)
+  if (!isEqual(givingCardsCountById.value, newGiving)) {
+    givingCardsCountById.value = newGiving
+  }
 }
 
 async function passwordToSha512(password: string) {
@@ -201,22 +210,6 @@ export const setLogOut = () => {
   storage.removeItem(ObjectName.User)
 }
 
-export interface Credentials {
-  email: string
-  password: string
-}
-export const getCredentials = (): Credentials => {
-  const info = storage.getItem(ObjectName.LogIn)
-  if (info) {
-    const credentials = atob(info)
-    const email = credentials.substring(0, credentials.indexOf(':'))
-    const password = credentials.substring(credentials.indexOf(':') + 1)
-
-    return { email, password }
-  }
-
-  return { email: '', password: '' }
-}
 export const getBasicAuth = (): string => {
   return storage.getItem(ObjectName.LogIn) || ''
 }

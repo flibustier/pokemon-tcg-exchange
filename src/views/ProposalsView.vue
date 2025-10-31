@@ -2,6 +2,8 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import type { Proposal, ProposalCard } from '@/types'
+
 import { uniq } from '@/services/utils'
 import { cards } from '@/services/cards'
 import { getProposals } from '@/services/api'
@@ -11,26 +13,6 @@ import CenteredLayout from '@/layouts/CenteredLayout.vue'
 import PlainButton from '@/components/atoms/PlainButton.vue'
 import CardsFilters from '@/components/CardsFilters.vue'
 import UserBadge from '@/components/atoms/UserBadge.vue'
-
-interface ProposalCard {
-  id: string
-  rarityCode: string
-  set: string
-  number: number
-  label: Record<string, string>
-  imageName: string
-}
-
-interface Proposal {
-  icon?: string
-  pseudo?: string
-  language?: string
-  friend_id: string
-  card_wanted: string
-  card_to_give: string
-  card1: ProposalCard
-  card2: ProposalCard
-}
 
 const route = useRoute()
 const router = useRouter()
@@ -159,11 +141,14 @@ onMounted(async () => {
   loading.value = true
   try {
     const response = await getProposals()
-    allProposals.value = response.map((proposal: Proposal) => ({
-      ...proposal,
-      card1: findCard(proposal.card_wanted),
-      card2: findCard(proposal.card_to_give),
-    }))
+    allProposals.value = response.map(
+      (proposal: Proposal) =>
+        ({
+          ...proposal,
+          card1: findCard(proposal.card_wanted),
+          card2: findCard(proposal.card_to_give),
+        }) as Proposal,
+    )
   } catch (err) {
     error.value = err
   }

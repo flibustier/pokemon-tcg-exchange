@@ -5,7 +5,7 @@ import { RouterView, useRouter } from 'vue-router'
 const router = useRouter()
 
 import { fetchUser } from '@/services/api'
-import { isLogged, setLogOut } from '@/services/store'
+import { isLogged } from '@/services/store'
 
 import PrimaryButton from '@/components/atoms/PrimaryButton.vue'
 
@@ -15,7 +15,6 @@ onMounted(async () => {
       await fetchUser()
     } catch (e) {
       console.log(e)
-      setLogOut()
       window.location.reload()
     }
   }

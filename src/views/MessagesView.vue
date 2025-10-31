@@ -2,7 +2,9 @@
 import { onMounted, ref, computed, watch, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { getMessages, postMessage, refreshDiscussions, type Message } from '@/services/api'
+import type { Message } from '@/types'
+
+import { getMessages, postMessage, refreshDiscussions } from '@/services/api'
 import { getUserInfo, discussions } from '@/services/store'
 
 import UserBadge from '@/components/atoms/UserBadge.vue'

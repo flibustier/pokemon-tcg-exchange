@@ -17,8 +17,8 @@ const costByRarity = {
   RR: 5000,
   AR: 4000,
   SR: 25000,
-  //S: ?,
-  //SSR: ?,
+  S: 10000,
+  SSR: 30000,
 }
 
 const countByRarity = (array: { rarity?: string; count: number }[]): Record<string, number> => {
