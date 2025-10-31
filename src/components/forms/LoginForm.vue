@@ -2,7 +2,7 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 import { createUser, fetchUser, sendMagicLink } from '@/services/api'
-import { getFriendId, isAccountIncomplete, setLogin } from '@/services/store'
+import { isAccountIncomplete, setLogin } from '@/services/store'
 
 const props = defineProps({
   withoutId: {
@@ -19,7 +19,7 @@ watch(props, () => (submitError.value = null))
 const emit = defineEmits(['error'])
 
 const form = reactive({
-  friendId: getFriendId(),
+  friendId: '',
   email: '',
   password: '',
 })
@@ -79,7 +79,6 @@ const submit = async () => {
       redirect()
     }
   } catch (error) {
-    console.log('coucou', error)
     if (error !== 'insufficient credentials') {
       submitError.value = error
     }

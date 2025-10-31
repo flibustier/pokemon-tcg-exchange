@@ -6,7 +6,7 @@ import PlainButton from '@/components/atoms/PlainButton.vue'
 import RarityImage from '@/components/atoms/RarityImage.vue'
 import ToggleSwitch from '@/components/atoms/ToggleSwitch.vue'
 
-import { getFriendId, getUserInfo, setUserInfo, type RarityRule } from '@/services/store'
+import { getUserInfo, setUserInfo, type RarityRule } from '@/services/store'
 import { updateUser } from '@/services/api'
 
 const MAX_AVATAR_NUMBER = 54
@@ -30,7 +30,6 @@ const user = reactive<{
   accept_notifications: true,
   has_beta_access: false,
   ...info,
-  friend_id: getFriendId(),
 })
 const showIconList = ref(false)
 const success = ref(false)

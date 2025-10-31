@@ -19,7 +19,6 @@ enum ObjectName {
   WantedCards = 'wanted_cards',
   GivingCards = 'giving_cards',
   LogIn = 'token',
-  FriendId = 'friend_id',
   User = 'user',
 }
 
@@ -51,13 +50,6 @@ export const getClientID = () => {
   storage.setItem(ObjectName.ClientID, clientID)
 
   return clientID
-}
-
-export const getFriendId = () => {
-  return getUserInfo().friend_id || storage.getItem(ObjectName.FriendId) || ''
-}
-export const setFriendId = (friendId: string) => {
-  storage.setItem(ObjectName.FriendId, friendId)
 }
 
 export const getUserInfo = (): User => {
@@ -204,7 +196,6 @@ export const setLogin = async (email: string, password: string, hashedPassword?:
 
 export const setLogOut = () => {
   storage.removeItem(ObjectName.LogIn)
-  storage.removeItem(ObjectName.FriendId)
   storage.removeItem(ObjectName.WantedCards)
   storage.removeItem(ObjectName.GivingCards)
   storage.removeItem(ObjectName.User)
