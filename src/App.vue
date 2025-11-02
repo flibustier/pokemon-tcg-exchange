@@ -15,7 +15,7 @@ onMounted(async () => {
       await fetchUser()
     } catch (e) {
       console.log(e)
-      window.location.reload()
+      // window.location.reload()
     }
   }
 })
