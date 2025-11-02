@@ -1,7 +1,7 @@
 export const uniq = <T>(array: Array<T | undefined | null>): T[] =>
   Array.from(new Set(array.filter((x): x is T => x !== undefined && x !== null && x !== '')))
 
-export function debounce<T extends (...args: unknown[]) => void>(func: T, timeout = 300) {
+export function debounce<T extends (...args: unknown[]) => void>(func: T, timeout = 1500) {
   let timer: ReturnType<typeof setTimeout> | undefined
   return (...args: Parameters<T>) => {
     clearTimeout(timer)
