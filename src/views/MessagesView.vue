@@ -80,7 +80,10 @@ const sendMessage = async () => {
 
 const refresh = async () => {
   if (discussionID.value) {
+    const oldLength = messages.value.length
     messages.value = (await getMessages(discussionID.value as string)).reverse()
+    const newLength = messages.value.length
+
     if (messages.value.length === 0 && !getUserInfo().has_beta_access) {
       router.push({ name: 'beta' })
     }
@@ -88,13 +91,15 @@ const refresh = async () => {
       await refreshDiscussions()
     }
 
-    // scroll to last message
-    nextTick(() => {
-      const messagesContainer = document.querySelector('.chat-messages')
-      if (messagesContainer) {
-        messagesContainer.scrollTop = messagesContainer.scrollHeight
-      }
-    })
+    if (oldLength !== newLength) {
+      // scroll to last message
+      nextTick(() => {
+        const messagesContainer = document.querySelector('.chat-messages')
+        if (messagesContainer) {
+          messagesContainer.scrollTop = messagesContainer.scrollHeight
+        }
+      })
+    }
   }
 }
 watch(discussionID, refresh)
