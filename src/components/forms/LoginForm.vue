@@ -24,6 +24,8 @@ const form = reactive({
   password: '',
 })
 
+const email = computed(() => form.email.toLowerCase())
+
 const submitError = ref()
 const submitting = ref(false)
 const passwordSuccess = ref(false)
@@ -57,7 +59,7 @@ const submit = async () => {
   submitting.value = true
   try {
     if (props.withoutPassword) {
-      passwordSuccess.value = (await sendMagicLink(form.email, form.friendId)) === 'ok'
+      passwordSuccess.value = (await sendMagicLink(email.value, form.friendId)) === 'ok'
 
       if (passwordSuccess.value) {
         form.email = ''
@@ -69,7 +71,7 @@ const submit = async () => {
 
     let success = false
     if (props.withoutId) {
-      await setLogin(form.email, form.password)
+      await setLogin(email.value, form.password)
       success = await fetchUser()
     } else {
       success = await createUser(form)
@@ -132,7 +134,7 @@ if (!import.meta.env.SSR) {
         id="email"
         class="email-input"
         placeholder="Enter your email"
-        v-model="form.email"
+        v-model.trim="form.email"
         required
       />
     </div>
@@ -159,7 +161,7 @@ if (!import.meta.env.SSR) {
       <span v-if="submitError" class="error-message">Error: {{ submitError }}</span>
       <router-link
         v-if="submitError === 'invalid password'"
-        :to="'/forgotten-password?email=' + form.email"
+        :to="'/forgotten-password?email=' + email"
       >
         Forgotten password?
       </router-link>
