@@ -9,7 +9,7 @@ import ToggleSwitch from '@/components/atoms/ToggleSwitch.vue'
 import { getUserInfo, setUserInfo, type RarityRule } from '@/services/store'
 import { updateUser } from '@/services/api'
 
-const MAX_AVATAR_NUMBER = 54
+const MAX_AVATAR_NUMBER = 60
 const languages = ['ENG', 'SPA', 'FRA', 'GER', 'ITA', 'POR', 'JPN', 'KOR', 'CHT']
 
 const router = useRouter()
