@@ -23,7 +23,9 @@ const filters = defineModel<{
 })
 
 const rarityOptions = computed(() => {
-  return Array.from(new Set(props.cards.map((card) => card.rarityCode)))
+  return Array.from(
+    new Set(props.cards.map(({ rarityCode }) => (rarityCode === 'SAR' ? 'SR' : rarityCode))),
+  )
 })
 
 const toggle =
@@ -40,7 +42,13 @@ const toggle =
     }
   }
 
-const toggleRarity = toggle('raritySelection')
+const toggleRarity = (rarity: string) => {
+  // Ensure SR and SAR are toggled together
+  if (rarity === 'SR') {
+    toggle('raritySelection')('SAR')
+  }
+  toggle('raritySelection')(rarity)
+}
 const toggleLanguage = toggle('languageSelection')
 const togglePseudonym = toggle('pseudonymSelection')
 </script>
