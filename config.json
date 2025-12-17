@@ -1,4 +1,4 @@
 {
-  "AUTHORIZED_RARITIES": ["C", "U", "R", "RR", "AR", "SR", "SAR", "S", "SSR"],
-  "AUTHORIZED_SETS": ["A1", "A1A", "A2", "A2A", "A2B", "A3", "A3A", "A3B", "A4", "A4A", "A4B", "B1"]
+  "UNAUTHORIZED_RARITIES": ["IM", "UR"],
+  "UNAUTHORIZED_SETS": ["PROMO-A", "PROMO-B"]
 }

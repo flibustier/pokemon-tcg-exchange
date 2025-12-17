@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
-import { AUTHORIZED_RARITIES, AUTHORIZED_SETS } from '@/../config.json' with { type: 'json' }
+import { UNAUTHORIZED_RARITIES, UNAUTHORIZED_SETS } from '@/../config.json' with { type: 'json' }
 import { wantedCardsCountById, givingCardsCountById } from '@/services/store'
 import { cards, allSets } from '@/services/cards'
 import type { Card } from '@/services/cards'
@@ -17,7 +17,7 @@ const filters = ref({
 })
 
 const isRestricted = (card: Card) => {
-  return !AUTHORIZED_RARITIES.includes(card.rarityCode) || !AUTHORIZED_SETS.includes(card.set)
+  return UNAUTHORIZED_RARITIES.includes(card.rarityCode) || UNAUTHORIZED_SETS.includes(card.set)
 }
 
 const title = (card: Card) => {
