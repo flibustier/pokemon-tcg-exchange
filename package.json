@@ -16,14 +16,14 @@
     "convert": "./scripts/convert.sh"
   },
   "dependencies": {
-    "vue": "^3.5.25",
+    "vue": "^3.5.26",
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
     "@playwright/test": "^1.57.0",
     "@tsconfig/node22": "^22.0.5",
     "@types/node": "^24.10.4",
-    "@unhead/vue": "^2.0.19",
+    "@unhead/vue": "^2.1.1",
     "@vitejs/plugin-vue": "^6.0.3",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.6.0",
@@ -33,12 +33,12 @@
     "eslint-plugin-vue": "^10.6.2",
     "jiti": "^2.6.1",
     "npm-run-all2": "^8.0.4",
-    "pokemon-tcg-pocket-database": "^1.13.0",
+    "pokemon-tcg-pocket-database": "2.0.0-beta.4",
     "prettier": "^3.7.4",
     "typescript": "~5.8.3",
     "vite": "^7.3.0",
     "vite-plugin-vue-devtools": "^8.0.5",
     "vite-ssg": "^28.2.2",
-    "vue-tsc": "^3.1.8"
+    "vue-tsc": "^3.2.1"
   }
 }

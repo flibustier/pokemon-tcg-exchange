@@ -2,10 +2,10 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import type { Proposal, ProposalCard } from '@/types'
+import type { Proposal } from '@/types'
 
 import { uniq } from '@/services/utils'
-import { cards } from '@/services/cards'
+import { cards, rarities, type Card } from '@/services/cards'
 import { getProposals } from '@/services/api'
 import { givingCardsCountById } from '@/services/store'
 
@@ -50,16 +50,16 @@ type ProposalGroup = {
   language?: string
   rarity: string
   friendID: string
-  wantedCards: ProposalCard[]
-  givenCards: ProposalCard[]
+  wantedCards: Card[]
+  givenCards: Card[]
 }
 
-const cardContainsFilterTerms = (card: ProposalCard) =>
-  card.label.eng.toLowerCase().includes((filters.value.cardName || '').toLowerCase())
+const cardContainsFilterTerms = (card: Card) =>
+  card.name.toLowerCase().includes((filters.value.cardName || '').toLowerCase())
 
 const proposalsByRarityAndFriendId = computed(() => {
   return data.value.reduce((acc: ProposalGroup[], proposal: Proposal): ProposalGroup[] => {
-    const rarity = proposal.card1.rarityCode
+    const rarity = proposal.card1.rarity
     const { friend_id: friendID, icon, pseudo, language } = proposal
 
     if (
@@ -102,25 +102,9 @@ const proposalsByRarityAndFriendId = computed(() => {
 
 const countGivenCard = (cardId: string) => givingCardsCountById.value[cardId] || 0
 
-const findCard = (id: string) => {
-  const [set, number] = id.split('-')
-  return {
-    id,
-    ...cards.find((card) => card.set === set && card.number === parseInt(number)),
-  }
-}
+const findCard = (id: string) => cards.find((card) => card.id === id)
 
-const exchangeTokenCost = (rarity: string) => {
-  switch (rarity) {
-    case 'R':
-      return 1200
-    case 'RR':
-      return 5000
-    case 'AR':
-      return 4000
-  }
-  return 0
-}
+const exchangeCost = (rarity: string) => rarities[rarity as keyof typeof rarities].tradePrice
 
 const sendMessage = (proposal: ProposalGroup) => {
   router.push({
@@ -183,9 +167,10 @@ onMounted(async () => {
           <div class="cards">
             <div class="card-container" v-for="(card, index) in group.wantedCards" :key="index">
               <img
-                :src="`/images/cards/thumbnails/${card.imageName}`"
-                :alt="card.label.eng"
+                :src="`/images/cards/thumbnails/${card.image}`"
+                :alt="card.name"
                 class="card-image"
+                :title="card.id"
               />
             </div>
           </div>
@@ -194,9 +179,10 @@ onMounted(async () => {
           <div class="cards">
             <div class="card-container" v-for="(card, index) in group.givenCards" :key="index">
               <img
-                :src="`/images/cards/thumbnails/${card.imageName}`"
-                :alt="card.label.eng"
+                :src="`/images/cards/thumbnails/${card.image}`"
+                :alt="card.name"
                 class="card-image"
+                :title="card.id"
               />
               <span class="card-count">{{ countGivenCard(card.id) }}</span>
             </div>
@@ -205,7 +191,7 @@ onMounted(async () => {
             <div v-if="group.language">{{ group.language }}</div>
             <div>
               <img src="/images/shinedust.webp" alt="Trade Token" class="trade-token" height="32" />
-              <span class="token-count">{{ exchangeTokenCost(group.rarity) }}</span>
+              <span class="token-count">{{ exchangeCost(group.rarity) }}</span>
             </div>
             <div class="clickable" @click="sendMessage(group)">
               <img src="/images/icons/message.svg" height="20" alt="Message" />
