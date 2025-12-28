@@ -141,7 +141,7 @@ const getCardsAsArray = (cardsStore: Record<string, number>) => {
         set,
         number,
         count,
-        rarity: additionalInformations?.rarityCode,
+        rarity: additionalInformations?.rarity,
         packs: additionalInformations?.packs,
       }
     })

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
-import { UNAUTHORIZED_RARITIES, UNAUTHORIZED_SETS } from '@/../config.json' with { type: 'json' }
+import { UNAUTHORIZED_SETS } from '@/../config.json' with { type: 'json' }
 import { wantedCardsCountById, givingCardsCountById } from '@/services/store'
-import { cards, allSets } from '@/services/cards'
+import { cards, allSets, rarities } from '@/services/cards'
 import type { Card } from '@/services/cards'
 
 import NumberInput from './atoms/NumberInput.vue'
@@ -17,7 +17,10 @@ const filters = ref({
 })
 
 const isRestricted = (card: Card) => {
-  return UNAUTHORIZED_RARITIES.includes(card.rarityCode) || UNAUTHORIZED_SETS.includes(card.set)
+  return (
+    !rarities[card.rarity as keyof typeof rarities].tradeable ||
+    UNAUTHORIZED_SETS.includes(card.set)
+  )
 }
 
 const title = (card: Card) => {
@@ -26,7 +29,7 @@ const title = (card: Card) => {
   } else if (isWantedCard(card)) {
     return 'Already in your want list'
   }
-  return card.label.eng
+  return card.name
 }
 
 const props = defineProps<{
@@ -44,12 +47,12 @@ const filteredCards = (set?: string) =>
     (card) =>
       (!set || card.set === set.toUpperCase()) &&
       (!filters.value.cardName ||
-        card.label.eng.toLowerCase().includes(filters.value.cardName.toLowerCase())) &&
+        card.name.toLowerCase().includes(filters.value.cardName.toLowerCase())) &&
       (!filters.value.hideEmpty || cardCountById.value[cardId(card)] > 0) &&
       (!filters.value.hideUnavailable ||
         (!isRestricted(card) && (!isWantedCard(card) || props.step === 1))) &&
       (filters.value.raritySelection.length === 0 ||
-        filters.value.raritySelection.includes(card.rarityCode)),
+        filters.value.raritySelection.includes(card.rarity)),
   )
 
 const cardCountById = computed(() => {
@@ -85,7 +88,7 @@ const increase = (card: Card) => {
           <a v-if="index > 0" :href="'#' + sets[index - 1].code">
             <img
               :src="`/images/sets/LOGO_expansion_${sets[index - 1].code}_en_US.webp`"
-              :alt="sets[index - 1].label.en"
+              :alt="sets[index - 1].name.en"
               width="136"
               height="60"
               class="hidden-sm"
@@ -97,7 +100,7 @@ const increase = (card: Card) => {
 
           <img
             :src="`/images/sets/LOGO_expansion_${set.code}_en_US.webp`"
-            :alt="set.label.en"
+            :alt="set.name.en"
             class="set-current-logo"
             width="192"
             heigh="85"
@@ -108,7 +111,7 @@ const increase = (card: Card) => {
             <img src="/images/double-arrow-right.png" alt="»" width="47" height="50" />
             <img
               :src="`/images/sets/LOGO_expansion_${sets[index + 1].code}_en_US.webp`"
-              :alt="sets[index + 1].label.en"
+              :alt="sets[index + 1].name.en"
               width="136"
               height="60"
               class="hidden-sm"
@@ -117,18 +120,18 @@ const increase = (card: Card) => {
           </a>
           <div v-else class="bumper"></div>
         </div>
-        <CardsFilters v-model="filters" :cards="cards" />
+        <CardsFilters v-model="filters" :cards />
       </div>
       <div class="card-grid" :id="set.code">
         <div class="card" v-for="(card, index) in filteredCards(set.code)" :key="index">
-          <h3 :title="card.label.eng">
-            <span class="card-label hidden-sm">{{ card.label.eng }}</span>
+          <h3 :title="card.name">
+            <span class="card-label hidden-sm">{{ card.name }}</span>
             <span class="card-number">{{ card.number.toString().padStart(3, '0') }}</span>
           </h3>
           <img v-if="false" src="/images/wanted.png" alt="wanted" class="corner-icon" />
           <img
-            :src="'/images/cards/thumbnails/' + card.imageName"
-            :alt="card.label.slug"
+            :src="'/images/cards/thumbnails/' + card.image"
+            :alt="card.name"
             class="card-image"
             :class="{ disabled: isWantedCard(card) || isRestricted(card) }"
             @click="increase(card)"
@@ -141,7 +144,7 @@ const increase = (card: Card) => {
       </div>
     </div>
     <template v-if="filteredCards().length === 0">
-      <CardsFilters v-model="filters" :cards="cards" />
+      <CardsFilters v-model="filters" :cards />
       <p class="no-results">No results :/<br />Please adjust your filters.value</p>
     </template>
   </div>

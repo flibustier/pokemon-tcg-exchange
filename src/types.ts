@@ -1,11 +1,4 @@
-export interface ProposalCard {
-  id: string
-  rarityCode: string
-  set: string
-  number: number
-  label: Record<string, string>
-  imageName: string
-}
+import type { Card } from './services/cards'
 
 export interface Proposal {
   icon?: string
@@ -14,8 +7,8 @@ export interface Proposal {
   friend_id: string
   card_wanted: string
   card_to_give: string
-  card1: ProposalCard
-  card2: ProposalCard
+  card1: Card
+  card2: Card
 }
 
 export interface Discussion {

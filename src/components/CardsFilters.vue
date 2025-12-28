@@ -3,10 +3,10 @@ import { computed } from 'vue'
 
 import RarityImage from '@/components/atoms/RarityImage.vue'
 
-import { rarityLabels } from '@/services/cards'
+import { rarities } from '@/services/cards'
 
 const props = defineProps<{
-  cards: { rarityCode: string }[]
+  cards: { rarity: string }[]
   languages?: string[]
   pseudonyms?: string[]
 }>()
@@ -23,9 +23,7 @@ const filters = defineModel<{
 })
 
 const rarityOptions = computed(() => {
-  return Array.from(
-    new Set(props.cards.map(({ rarityCode }) => (rarityCode === 'SAR' ? 'SR' : rarityCode))),
-  )
+  return Array.from(new Set(props.cards.map(({ rarity }) => (rarity === 'SAR' ? 'SR' : rarity))))
 })
 
 const toggle =
@@ -65,10 +63,10 @@ const togglePseudonym = toggle('pseudonymSelection')
       }"
       v-for="rarity in rarityOptions"
       :key="rarity"
-      :title="rarityLabels[rarity as keyof typeof rarityLabels] || ''"
+      :title="rarities[rarity as keyof typeof rarities].label || ''"
       @click="toggleRarity(rarity)"
     >
-      <RarityImage :rarity="rarity" />
+      <RarityImage :rarity />
     </div>
     <div
       v-if="filters.hideUnavailable != undefined"
