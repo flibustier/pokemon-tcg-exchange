@@ -4,16 +4,19 @@ import { useRoute, useRouter } from 'vue-router'
 
 import type { Message } from '@/types'
 
-import { getMessages, postMessage, refreshDiscussions } from '@/services/api'
+import { getMessages, getProposals, postMessage, refreshDiscussions } from '@/services/api'
 import { getUserInfo, discussions } from '@/services/store'
 
 import UserBadge from '@/components/atoms/UserBadge.vue'
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
+import { cards, type Card } from '@/services/cards'
 
 const route = useRoute()
 const router = useRouter()
 
-const discussionID = computed(() => route.params.id)
+const discussionID = computed(() =>
+  Array.isArray(route.params.id) ? route.params.id[0] : route.params.id,
+)
 
 const messages = ref([] as Message[])
 const composedMessage = ref('')
@@ -51,13 +54,9 @@ const formatDate = (date: string) => {
   }
 }
 
-const navigateToDiscussion = (friendID: string) => {
+const navigateToDiscussion = async (friendID: string) => {
   showMobileDiscussions.value = false
-  router.push({ name: 'message', params: { id: friendID } })
-}
-
-const navigateToProposals = () => {
-  router.push({ name: 'proposals', query: { id: discussionID.value } })
+  await router.push({ name: 'message', params: { id: friendID } })
 }
 
 const sendMessage = async () => {
@@ -104,18 +103,86 @@ const refresh = async () => {
 }
 watch(discussionID, refresh)
 
+const proposalsCards = ref([] as Card[])
+watch(
+  discussionID,
+  async () => {
+    if (proposalsCards.value.length > 0) {
+      proposalsCards.value = []
+    }
+
+    if (discussionID.value) {
+      console.log('refreshing ', discussionID.value)
+      const proposals = await getProposals(discussionID.value)
+      proposals.forEach(({ card_wanted, card_to_give }) => {
+        const card1 = cards.find((card) => card.id === card_wanted)
+        if (card1 && !proposalsCards.value.find((card) => card.id === card1.id)) {
+          proposalsCards.value.push(card1)
+        }
+        const card2 = cards.find((card) => card.id === card_to_give)
+        if (card2 && !proposalsCards.value.find((card) => card.id === card2.id)) {
+          proposalsCards.value.push(card2)
+        }
+      })
+    }
+  },
+  { immediate: true },
+)
+
+const findCardsInMessage = (message: string) => {
+  // search by ID
+  const cardIDRegex = /([a-zA-Z][0-9][abAB]?\-[0-9]{1,3})/g
+  const cardRefs = []
+  let match
+  while ((match = cardIDRegex.exec(message)) !== null) {
+    const cardID = match[1].toUpperCase()
+
+    const card = cards.find((card) => card.id === cardID)
+    if (card) {
+      cardRefs.push(card)
+    }
+  }
+
+  // search by name
+  message.split(' ').forEach((word) => {
+    const found = proposalsCards.value.filter(
+      (card) => card.name.toLowerCase() === word.toLowerCase(),
+    )
+    if (found.length > 0) {
+      cardRefs.push(...found)
+    }
+  })
+
+  return cardRefs.map((card) => ({
+    ...card,
+    image: `/images/cards/thumbnails/${card.image}`,
+  }))
+}
+const enhancedMessages = computed(() => {
+  return messages.value.map((message) => ({
+    ...message,
+    images: findCardsInMessage(message.message),
+  }))
+})
+
 let refreshInterval: number
 onMounted(async () => {
   await refreshDiscussions()
 
   if (!discussionID.value && discussions.value.length > 0) {
-    navigateToDiscussion(discussions.value[0].friend_id)
+    await navigateToDiscussion(discussions.value[0].friend_id)
   }
   refresh()
   // 10 seconds = 10 * 1000 ms
   refreshInterval = setInterval(refresh, 10 * 1000)
+
+  composedMessage.value = localStorage.getItem('draft_message') || ''
+  localStorage.removeItem('draft_message')
 })
 onUnmounted(() => {
+  if (composedMessage.value.length > 0) {
+    localStorage.setItem('draft_message', composedMessage.value)
+  }
   clearInterval(refreshInterval)
 })
 </script>
@@ -202,27 +269,22 @@ onUnmounted(() => {
           without-border
         />
         <div class="actions">
-          <button title="Check common proposals" @click="navigateToProposals">
+          <RouterLink
+            :to="{ name: 'proposals', query: { id: discussionID } }"
+            title="Check common proposals"
+          >
             <img src="/images/icons/exchange.svg" alt="" height="28" />
-          </button>
+          </RouterLink>
           <button v-if="false" class="more">...</button>
         </div>
       </div>
       <div class="chat-messages">
-        <div v-if="false" class="message message-sent">
-          <img
-            src="/images/cards/thumbnails/cPK_10_000030_00_FUSHIGIBANA_R.webp"
-            alt=""
-            class="message-image"
-          />
-          <p>Salut</p>
-        </div>
         <div v-if="false" class="message message-file">
           <a href="#" download="Menu.pdf">Menu.pdf</a>
           <span>2 Mo</span>
         </div>
         <div
-          v-for="(message, index) in messages"
+          v-for="(message, index) in enhancedMessages"
           :key="index"
           class="message"
           :class="{
@@ -230,6 +292,17 @@ onUnmounted(() => {
             'message-error': message.from === 'error',
           }"
         >
+          <div class="message-image-container" v-if="message.images.length > 0">
+            <img
+              v-for="(card, index) in message.images"
+              :key="index"
+              class="message-image"
+              :src="card.image"
+              :alt="card.name"
+              :title="card.id"
+              width="150"
+            />
+          </div>
           <p>{{ message.message }}</p>
         </div>
       </div>
@@ -270,6 +343,7 @@ h2 {
 }
 .discussions {
   width: 300px;
+  min-width: fit-content;
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
@@ -417,6 +491,11 @@ h2 {
 .message-image {
   max-width: 100%;
   border-radius: 12px;
+}
+.message-image-container {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: scroll;
 }
 .message-file {
   display: flex;
