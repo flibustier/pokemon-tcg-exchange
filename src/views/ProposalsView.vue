@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import type { Proposal } from '@/types'
@@ -28,11 +28,7 @@ const filters = ref({
   cardName: undefined as string | undefined,
 })
 
-const data = computed(() =>
-  allProposals.value.filter((proposal: Proposal) =>
-    route.query.id ? proposal.friend_id === route.query.id : true,
-  ),
-)
+const data = computed(() => allProposals.value)
 
 const cardsForFilters = computed(() => {
   return data.value.map((proposal) => proposal.card1)
@@ -121,10 +117,10 @@ const reload = () => {
   window.location.reload()
 }
 
-onMounted(async () => {
+const fetchProposals = async () => {
   loading.value = true
   try {
-    const response = await getProposals()
+    const response = await getProposals(route.query.id as string | undefined)
     allProposals.value = response.map(
       (proposal: Proposal) =>
         ({
@@ -138,7 +134,10 @@ onMounted(async () => {
   }
 
   loading.value = false
-})
+}
+
+watch(() => route.query.id, fetchProposals)
+onMounted(fetchProposals)
 </script>
 
 <template>

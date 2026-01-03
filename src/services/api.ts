@@ -132,7 +132,8 @@ export const updateUser = async () => {
   }
 }
 
-export const getProposals = (): Promise<Proposal[]> => useAPI('/user/proposals')
+export const getProposals = (id?: string): Promise<Proposal[]> =>
+  useAPI('/user/proposals' + (id ? `?id=${id}` : ''))
 
 const getDiscussions = (): Promise<Discussion[]> => useAPI('/user/discussions')
 export const refreshDiscussions = (): Promise<void> =>
