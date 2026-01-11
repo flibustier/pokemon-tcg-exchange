@@ -116,7 +116,24 @@ const save = async () => {
     </div>
     <div class="form-group">
       <label for="pseudo" class="form-label">Pseudonym (14 characters max)</label>
-      <input v-model="user.pseudo" type="text" id="pseudo" class="friend-id" maxlength="14" />
+      <input
+        v-model="user.pseudo"
+        type="text"
+        id="pseudo"
+        class="friend-id"
+        maxlength="14"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="language-input" class="form-label">Your card’s language</label>
+      <select id="language-input" v-model="user.language" class="language-input" required>
+        <option value="">Please select</option>
+        <option v-for="language in languages" :key="language" :value="language">
+          {{ language }}
+        </option>
+      </select>
     </div>
 
     <div class="form-group">
@@ -152,16 +169,8 @@ const save = async () => {
     </div>
 
     <div class="form-group">
-      <label for="language-input" class="form-label">Your card’s language</label>
-      <select id="language-input" v-model="user.language" class="language-input">
-        <option value="">Please select</option>
-        <option v-for="language in languages" :key="language" :value="language">
-          {{ language }}
-        </option>
-      </select>
-    </div>
+      <ToggleSwitch v-model="user.accept_notifications"> Email notifications </ToggleSwitch>
 
-    <div class="form-group">
       <ToggleSwitch
         :model-value="user.has_beta_access"
         :disabled="user.has_beta_access"
@@ -174,6 +183,8 @@ const save = async () => {
     <PlainButton type="submit" role="button" :disabled="success">{{
       success ? 'Saved!' : 'Save'
     }}</PlainButton>
+
+    <RouterLink to="/logout" class="danger">Logout</RouterLink>
   </form>
 </template>
 
@@ -284,5 +295,11 @@ h2,
 .icon-item img {
   max-width: 100%;
   max-height: 100%;
+}
+
+.danger {
+  margin-top: 1.5rem;
+  color: #ff5252;
+  text-align: center;
 }
 </style>
