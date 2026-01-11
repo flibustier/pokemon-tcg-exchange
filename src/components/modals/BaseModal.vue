@@ -1,21 +1,16 @@
 <script setup lang="ts">
 defineProps({
-  isVisible: {
-    type: Boolean,
-    default: false,
-  },
   title: {
     type: String,
-    default: "",
+    default: '',
   },
-});
+})
 
-const emit = defineEmits(["update:isVisible"]);
+const isVisible = defineModel<boolean>()
 
 const closeModal = () => {
-  emit("update:isVisible", false);
-  window.location.hash = "";
-};
+  isVisible.value = false
+}
 </script>
 
 <template>
@@ -23,9 +18,13 @@ const closeModal = () => {
     <div class="modal-content" @click.stop="">
       <div class="modal-header">
         <h2>{{ title }}</h2>
+        <button class="close" @click="closeModal" title="Close this dialog" />
       </div>
       <div class="column modal-body">
         <slot></slot>
+        <div class="modal-footer" v-if="$slots.footer">
+          <slot name="footer"></slot>
+        </div>
       </div>
     </div>
   </div>
@@ -50,9 +49,23 @@ const closeModal = () => {
   background-color: var(--color-background);
   margin: auto;
   padding: 1.5rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius);
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
   max-width: var(--max-width);
+}
+
+.close {
+  background: none;
+  border: 1px solid var(--primary-color);
+  border-radius: 100%;
+  padding: 0 0.5rem;
+  font-weight: bold;
+}
+
+.close::after {
+  display: inline-block;
+  content: '\00d7'; /* This will render the 'X' */
+  color: var(--primary-color);
 }
 
 .close:hover,
@@ -74,14 +87,5 @@ const closeModal = () => {
 
 .modal-body {
   margin-top: 1rem;
-}
-
-.modal-footer {
-  margin-top: 1rem;
-  font-size: 0.8rem;
-  line-height: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
 }
 </style>

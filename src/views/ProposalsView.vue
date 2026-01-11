@@ -13,6 +13,7 @@ import CenteredLayout from '@/layouts/CenteredLayout.vue'
 import PlainButton from '@/components/atoms/PlainButton.vue'
 import CardsFilters from '@/components/CardsFilters.vue'
 import UserBadge from '@/components/atoms/UserBadge.vue'
+import CardImageAndModal from '@/components/molecules/CardImageAndModal.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -141,7 +142,7 @@ onMounted(fetchProposals)
 </script>
 
 <template>
-  <CenteredLayout style="padding: 2rem 0">
+  <CenteredLayout>
     <h2 v-if="loading">Loading your proposals…</h2>
     <template v-else-if="error">
       <h2 style="margin-bottom: 2rem">{{ error }}</h2>
@@ -165,24 +166,14 @@ onMounted(fetchProposals)
           <UserBadge class="tile-title" v-bind="group" />
           <div class="cards">
             <div class="card-container" v-for="(card, index) in group.wantedCards" :key="index">
-              <img
-                :src="`/images/cards/thumbnails/${card.image}`"
-                :alt="card.name"
-                class="card-image"
-                :title="card.id"
-              />
+              <CardImageAndModal :card />
             </div>
           </div>
 
           <div class="exchange-icon"></div>
           <div class="cards">
             <div class="card-container" v-for="(card, index) in group.givenCards" :key="index">
-              <img
-                :src="`/images/cards/thumbnails/${card.image}`"
-                :alt="card.name"
-                class="card-image"
-                :title="card.id"
-              />
+              <CardImageAndModal :card />
               <span class="card-count">{{ countGivenCard(card.id) }}</span>
             </div>
           </div>
