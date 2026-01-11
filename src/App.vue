@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { RouterView, useRouter } from 'vue-router'
-
-const router = useRouter()
+import { RouterView } from 'vue-router'
 
 import { fetchUser } from '@/services/api'
 import { isLogged } from '@/services/store'
@@ -23,7 +21,7 @@ onMounted(async () => {
 
 <template>
   <header class="container">
-    <div class="brand" @click="router.push(isLogged() ? '/account' : '/')">
+    <RouterLink class="brand" :to="isLogged() ? '/account' : '/'">
       <h1>
         <img
           alt="Pokemon Trading Card Game Pocket"
@@ -33,14 +31,13 @@ onMounted(async () => {
           id="tcg-pocket-logo"
         />
         <img alt="" class="logo" src="/images/exchange.png" id="exchange-logo" height="60" />
-        Exchange Center
+        Pocket Exchange Center
       </h1>
-    </div>
+    </RouterLink>
 
     <div class="actions">
       <RouterLink to="/help"> Help & FAQ </RouterLink>
-      <PrimaryButton v-if="isLogged()" @click="router.push('/logout')">Logout</PrimaryButton>
-      <PrimaryButton v-else @click="router.push('/login')">Sign In</PrimaryButton>
+      <PrimaryButton v-if="!isLogged()" to="/login">Sign In</PrimaryButton>
     </div>
   </header>
   <div class="separator"></div>
@@ -121,16 +118,6 @@ main {
   100% {
     background-position: 0% 50%;
   }
-}
-
-.footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  box-sizing: border-box;
-  z-index: 1000;
-  flex-shrink: 0;
 }
 
 .actions {
