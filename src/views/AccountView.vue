@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-import { hasUnreadMessages } from '@/services/store'
+import { hasUnreadMessages, isAccountIncomplete } from '@/services/store'
 
 import MessagesView from '@/views/MessagesView.vue'
 import ProposalsView from '@/views/ProposalsView.vue'
@@ -36,7 +36,12 @@ const isCardManaging = computed(() =>
           :active="(activeRoute as string).startsWith('message')"
           :with-notification-dot="hasUnreadMessages"
         />
-        <MenuButton label="Account" icon="gear" :active="activeRoute === 'account'" />
+        <MenuButton
+          label="Account"
+          icon="gear"
+          :active="activeRoute === 'account'"
+          :with-notification-dot="isAccountIncomplete"
+        />
       </nav>
       <PricesTable id="prices" v-if="isCardManaging" :showGiving="activeRoute === 'offers'" />
     </div>

@@ -16,7 +16,7 @@ const navigate = () => router.push({ name: props.label.toLowerCase() })
 
 <template>
   <button class="portfolio-btn" :class="{ active }" :disabled="disabled ?? false" @click="navigate">
-    <span :class="{ 'notification-dot': withNotificationDot }" v-if="icon === 'message'"></span>
+    <span :class="{ 'notification-dot': withNotificationDot }" />
     <span class="icon">
       <!-- Simple book icon SVG -->
       <svg v-if="icon === 'portfolio'" width="32" height="32" viewBox="0 0 32 32" fill="none">
