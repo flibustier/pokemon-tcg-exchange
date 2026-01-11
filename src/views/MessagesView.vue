@@ -10,6 +10,7 @@ import { getUserInfo, discussions } from '@/services/store'
 import UserBadge from '@/components/atoms/UserBadge.vue'
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
 import { cards, type Card } from '@/services/cards'
+import CardImageAndModal from '@/components/molecules/CardImageAndModal.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -112,7 +113,6 @@ watch(
     }
 
     if (discussionID.value) {
-      console.log('refreshing ', discussionID.value)
       const proposals = await getProposals(discussionID.value)
       proposals.forEach(({ card_wanted, card_to_give }) => {
         const card1 = cards.find((card) => card.id === card_wanted)
@@ -153,10 +153,7 @@ const findCardsInMessage = (message: string) => {
     }
   })
 
-  return cardRefs.map((card) => ({
-    ...card,
-    image: `/images/cards/thumbnails/${card.image}`,
-  }))
+  return cardRefs
 }
 const enhancedMessages = computed(() => {
   return messages.value.map((message) => ({
@@ -293,14 +290,11 @@ onUnmounted(() => {
           }"
         >
           <div class="message-image-container" v-if="message.images.length > 0">
-            <img
+            <CardImageAndModal
               v-for="(card, index) in message.images"
               :key="index"
+              :card
               class="message-image"
-              :src="card.image"
-              :alt="card.name"
-              :title="card.id"
-              width="150"
             />
           </div>
           <p>{{ message.message }}</p>
