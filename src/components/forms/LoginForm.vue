@@ -2,7 +2,7 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 import { createUser, fetchUser, sendMagicLink } from '@/services/api'
-import { isAccountIncomplete, setLogin } from '@/services/store'
+import { isCardsIncomplete, setLogin } from '@/services/store'
 
 const props = defineProps({
   withoutId: {
@@ -52,7 +52,7 @@ const formIncomplete = computed(() => {
 })
 
 const redirect = () => {
-  window.location.replace(isAccountIncomplete.value ? '/account/wishlist' : '/account/proposals')
+  window.location.replace(isCardsIncomplete.value ? '/account/wishlist' : '/account/proposals')
 }
 
 const submit = async () => {

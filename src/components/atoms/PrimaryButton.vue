@@ -1,9 +1,20 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router'
+
 const emit = defineEmits(['click'])
+
+defineProps({
+  to: {
+    type: String,
+  },
+})
 </script>
 
 <template>
-  <button class="btn-primary" @click="emit('click')">
+  <router-link v-if="to" :to="to" class="btn-primary">
+    <slot></slot>
+  </router-link>
+  <button v-else class="btn-primary" @click="emit('click')">
     <slot></slot>
   </button>
 </template>

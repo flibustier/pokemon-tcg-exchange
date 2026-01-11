@@ -52,10 +52,6 @@ export const getClientID = () => {
   return clientID
 }
 
-export const getUserInfo = (): User => {
-  return JSON.parse(storage.getItem(ObjectName.User) || '{}')
-}
-
 export type RarityRule = {
   rarity: string
   enabled: 1 | 0
@@ -71,14 +67,18 @@ type User = {
   has_beta_access?: boolean
 }
 
+export const getUserInfo = (): User => {
+  return JSON.parse(storage.getItem(ObjectName.User) || '{}')
+}
+
+export const userInfo = ref<User>(getUserInfo())
+
 export const setUserInfo = (user: User) => {
-  storage.setItem(
-    ObjectName.User,
-    JSON.stringify({
-      ...getUserInfo(),
-      ...user,
-    }),
-  )
+  userInfo.value = {
+    ...getUserInfo(),
+    ...user,
+  }
+  storage.setItem(ObjectName.User, JSON.stringify(userInfo.value))
 }
 
 export const getWantedCards = () => {
@@ -122,9 +122,22 @@ export const isGivingStepCompleted = computed(() =>
   Object.values(givingCardsCountById.value).some((value) => value > 0),
 )
 
-export const isAccountIncomplete = computed(
+export const isCardsIncomplete = computed(
   () => !isWantedStepCompleted.value || !isGivingStepCompleted.value,
 )
+
+export const isAccountIncomplete = computed(() => {
+  const { pseudo, icon, language } = userInfo.value
+
+  return (
+    !pseudo ||
+    pseudo.length === 0 ||
+    !icon ||
+    icon.length === 0 ||
+    !language ||
+    language.length === 0
+  )
+})
 
 const getCardsAsArray = (cardsStore: Record<string, number>) => {
   return Object.entries(cardsStore)
