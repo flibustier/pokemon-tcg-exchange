@@ -156,10 +156,21 @@ const findCardsInMessage = (message: string) => {
   return cardRefs
 }
 const enhancedMessages = computed(() => {
-  return messages.value.map((message) => ({
-    ...message,
-    images: findCardsInMessage(message.message),
-  }))
+  return messages.value.map((message, index) => {
+    const isFromMe = ['me', 'error'].includes(message.from)
+    return {
+      ...message,
+      images: findCardsInMessage(message.message),
+      formattedSentDate: formatDate(message.sent),
+      isFromMe,
+      formattedReadDate:
+        message.read &&
+        isFromMe &&
+        (index === messages.value.length - 1 || messages.value[index + 1].read === null)
+          ? formatDate(message.read)
+          : null,
+    }
+  })
 })
 
 let refreshInterval: number
@@ -285,9 +296,15 @@ onUnmounted(() => {
           :key="index"
           class="message"
           :class="{
-            'message-sent': ['me', 'error'].includes(message.from),
+            'message-sent': message.isFromMe,
             'message-error': message.from === 'error',
           }"
+          :title="
+            'Message sent ' +
+            message.formattedSentDate +
+            ' and ' +
+            (message.read ? 'read ' + formatDate(message.read) : 'not read yet')
+          "
         >
           <div class="message-image-container" v-if="message.images.length > 0">
             <CardImageAndModal
@@ -298,6 +315,11 @@ onUnmounted(() => {
             />
           </div>
           <p>{{ message.message }}</p>
+          <div class="time">
+            <span v-if="message.formattedReadDate">sent </span>
+            {{ message.formattedSentDate }}
+            <span v-if="message.formattedReadDate">- seen {{ message.formattedReadDate }}</span>
+          </div>
         </div>
       </div>
       <div class="chat-input">
