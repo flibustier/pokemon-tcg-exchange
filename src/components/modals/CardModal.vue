@@ -43,7 +43,8 @@ defineExpose({ showModal })
             :src="`/images/packs/${pack}.webp`"
             :alt="pack"
             class="responsive-image"
-            width="160"
+            height="192"
+            width="120"
             loading="lazy"
           />
         </div>
@@ -67,22 +68,19 @@ defineExpose({ showModal })
 .flex {
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
 }
 
+.row,
 .column {
   display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 0.5rem;
 }
 
-.row {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
+.column {
+  flex-direction: column;
 }
 
 img.responsive-image {
