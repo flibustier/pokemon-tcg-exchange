@@ -7,6 +7,7 @@ export interface Proposal {
   friend_id: string
   card_wanted: string
   card_to_give: string
+  other_user_date: string
   card1: Card
   card2: Card
 }

@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import type { Proposal } from '@/types'
 
-import { uniq } from '@/services/utils'
+import { formatDate, uniq } from '@/services/utils'
 import { cards, rarities, type Card } from '@/services/cards'
 import { getProposals } from '@/services/api'
 import { givingCardsCountById } from '@/services/store'
@@ -49,6 +49,7 @@ type ProposalGroup = {
   friendID: string
   wantedCards: Card[]
   givenCards: Card[]
+  lastUpdate: string
 }
 
 const cardContainsFilterTerms = (card: Card) =>
@@ -57,7 +58,7 @@ const cardContainsFilterTerms = (card: Card) =>
 const proposalsByRarityAndFriendId = computed(() => {
   return data.value.reduce((acc: ProposalGroup[], proposal: Proposal): ProposalGroup[] => {
     const rarity = proposal.card1.rarity
-    const { friend_id: friendID, icon, pseudo, language } = proposal
+    const { friend_id: friendID, icon, pseudo, language, other_user_date } = proposal
 
     if (
       (filters.value.raritySelection.length && !filters.value.raritySelection.includes(rarity)) ||
@@ -89,6 +90,7 @@ const proposalsByRarityAndFriendId = computed(() => {
         icon,
         pseudo,
         language,
+        lastUpdate: formatDate(other_user_date),
         wantedCards: [proposal.card1],
         givenCards: [proposal.card2],
       })

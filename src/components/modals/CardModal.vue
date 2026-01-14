@@ -55,7 +55,7 @@ defineExpose({ showModal })
           <span>{{ rarities[card.rarity as keyof typeof rarities].tradePrice }}</span>
         </div>
         <div class="row">
-          <img src="/images/BoosterPoints.png" height="32" alt="Shine dust cost" />
+          <img src="/images/BoosterPoints.png" height="32" alt="Booster points cost" />
 
           <span>{{ rarities[card.rarity as keyof typeof rarities].points }}</span>
         </div>
