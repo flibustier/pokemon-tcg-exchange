@@ -4,13 +4,14 @@ import { useRoute, useRouter } from 'vue-router'
 
 import type { Message } from '@/types'
 
-import { getMessages, getProposals, postMessage, refreshDiscussions } from '@/services/api'
+import { formatDate } from '@/services/utils'
+import { cards, type Card } from '@/services/cards'
 import { getUserInfo, discussions } from '@/services/store'
+import { getMessages, getProposals, postMessage, refreshDiscussions } from '@/services/api'
 
 import UserBadge from '@/components/atoms/UserBadge.vue'
-import CenteredLayout from '@/layouts/CenteredLayout.vue'
-import { cards, type Card } from '@/services/cards'
 import CardImageAndModal from '@/components/molecules/CardImageAndModal.vue'
+import CenteredLayout from '@/layouts/CenteredLayout.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -26,34 +27,6 @@ const showMobileDiscussions = ref(false)
 const currentDiscussion = computed(() => {
   return discussions.value.find((discussion) => discussion.friend_id === discussionID.value)
 })
-
-const formatDate = (date: string) => {
-  // if it's today, return the time
-  // if it's yesterday, return "Yesterday"
-  // if it’s the same week, return the day of the week
-  // if it’s the same year, return the day and the month
-  // else return the full date
-
-  const now = new Date()
-  const messageDate = new Date(date + ' UTC')
-  const diff = now.getTime() - messageDate.getTime()
-  const diffDays = Math.floor(diff / (1000 * 3600 * 24))
-  if (diffDays === 0) {
-    return messageDate.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
-  } else if (diffDays === 1) {
-    return 'Yesterday'
-  } else if (diffDays < 7) {
-    return messageDate.toLocaleDateString(undefined, { weekday: 'long' })
-  } else if (now.getFullYear() === messageDate.getFullYear()) {
-    return messageDate.toLocaleDateString(undefined, { day: '2-digit', month: 'long' })
-  } else {
-    return messageDate.toLocaleDateString(undefined, {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-    })
-  }
-}
 
 const navigateToDiscussion = async (friendID: string) => {
   showMobileDiscussions.value = false
@@ -307,12 +280,7 @@ onUnmounted(() => {
           "
         >
           <div class="message-image-container" v-if="message.images.length > 0">
-            <CardImageAndModal
-              v-for="(card, index) in message.images"
-              :key="index"
-              :card
-              class="message-image"
-            />
+            <CardImageAndModal v-for="(card, index) in message.images" :key="index" :card />
           </div>
           <p>{{ message.message }}</p>
           <div class="time">
