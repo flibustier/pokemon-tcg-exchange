@@ -1,1 +1,0 @@
-import{_ as t,a as o,L as s,o as n}from"./app-MJ6-oECH.js";const a={},c={class:"centered-layout"};function r(e,d){return n(),o("div",c,[s(e.$slots,"default",{},void 0)])}const f=t(a,[["render",r],["__scopeId","data-v-2d6fe895"]]);export{f as C};
