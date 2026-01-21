@@ -73,8 +73,18 @@ export const routes = [
         component: AccountView,
       },
       {
+        path: 'settings',
+        name: 'settings',
+        component: AccountView,
+      },
+      {
         path: 'beta',
         name: 'beta',
+        component: AccountView,
+      },
+      {
+        path: 'insights',
+        name: 'insights',
         component: AccountView,
       },
       {

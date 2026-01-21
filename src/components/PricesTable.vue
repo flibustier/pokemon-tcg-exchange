@@ -50,9 +50,9 @@ const totalCost = computed(() => {
         class="centered"
         :class="countGivingByRarity[rarity] >= countWantedByRarity[rarity] ? 'success' : 'warning'"
       >
-        <span>{{ countGivingByRarity[rarity] || 0 }}</span>
+        <span title="Number of cards you’re giving">{{ countGivingByRarity[rarity] || 0 }}</span>
         /
-        <span>{{ countWantedByRarity[rarity] }}</span>
+        <span title="Number of cards you want">{{ countWantedByRarity[rarity] }}</span>
       </span>
       <span v-else>{{ countWantedByRarity[rarity] }}</span>
       <span>x</span>
@@ -69,10 +69,9 @@ const totalCost = computed(() => {
   border-radius: 12px;
   padding: 1rem;
   display: flex;
+  align-items: center;
   flex-direction: column;
   gap: 1rem;
-  align-items: center;
-  width: 200px;
 }
 
 .price {

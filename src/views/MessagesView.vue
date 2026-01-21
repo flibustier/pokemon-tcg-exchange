@@ -198,7 +198,7 @@ onUnmounted(() => {
           @click="navigateToDiscussion(discussion.friend_id)"
         >
           <img
-            v-if="discussion.avatar !== ''"
+            v-if="discussion.avatar && discussion.avatar !== ''"
             :src="`/images/avatars/${discussion.avatar}.png`"
             class="avatar"
             height="40px"
@@ -206,7 +206,7 @@ onUnmounted(() => {
           />
           <div v-else class="avatar">{{ discussion.friend_id.slice(-4) }}</div>
           <div class="content">
-            <div v-if="discussion.pseudo !== ''" class="name">
+            <div v-if="discussion.pseudo && discussion.pseudo !== ''" class="name">
               {{ discussion.pseudo }}
               <span class="language" v-if="discussion.language !== ''"
                 >({{ discussion.language }})</span
@@ -323,7 +323,7 @@ h2 {
 .messenger {
   display: flex;
   gap: 1rem;
-  height: calc(100vh - 300px);
+  height: calc(100vh - 150px);
 }
 .discussions {
   width: 300px;
@@ -378,12 +378,12 @@ h2 {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #ccc;
+  background: #eee;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  color: white;
+  color: #333;
   font-size: 1rem;
   flex-shrink: 0;
 }
@@ -424,7 +424,6 @@ h2 {
 .chat-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
   padding: 1rem;
   border-bottom: 1px solid #ddd;
   justify-content: space-between;
@@ -459,7 +458,7 @@ h2 {
   gap: 1rem;
 }
 .message {
-  max-width: 60%;
+  max-width: 80%;
   background: #f0f0f0;
   padding: 0.75rem 1rem;
   border-radius: 12px;
@@ -537,12 +536,6 @@ h2 {
   }
   .discussions {
     width: 100%;
-  }
-}
-
-@media (max-width: 520px) {
-  .messenger {
-    height: calc(100vh - 400px);
   }
 }
 </style>
