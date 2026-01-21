@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { RouterView } from 'vue-router'
+import { RouterView, RouterLink } from 'vue-router'
 
 import { fetchUser } from '@/services/api'
 import { isLogged } from '@/services/store'
 
 import PrimaryButton from '@/components/atoms/PrimaryButton.vue'
+import MenuModal from './components/modals/MenuModal.vue'
 
 onMounted(async () => {
   if (isLogged()) {
@@ -21,7 +22,7 @@ onMounted(async () => {
 
 <template>
   <header class="container">
-    <RouterLink class="brand" :to="isLogged() ? '/account' : '/'">
+    <RouterLink class="brand" :to="isLogged() ? '/account/proposals' : '/'">
       <h1>
         <img
           alt="Pokemon Trading Card Game Pocket"
@@ -36,8 +37,14 @@ onMounted(async () => {
     </RouterLink>
 
     <div class="actions">
-      <RouterLink to="/help"> Help & FAQ </RouterLink>
-      <PrimaryButton v-if="!isLogged()" to="/login">Sign In</PrimaryButton>
+      <template v-if="isLogged()">
+        <RouterLink to="/help" class="desktop-only"> Help & FAQ </RouterLink>
+        <MenuModal />
+      </template>
+      <template v-else>
+        <RouterLink to="/help"> Help & FAQ </RouterLink>
+        <PrimaryButton to="/login">Sign In</PrimaryButton>
+      </template>
     </div>
   </header>
   <div class="separator"></div>
@@ -153,6 +160,12 @@ a {
   }
   .actions {
     gap: 0.5rem;
+  }
+}
+
+@media (max-width: 1111px) {
+  .desktop-only {
+    display: none;
   }
 }
 </style>

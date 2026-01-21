@@ -22,7 +22,7 @@ const countWantedByPack = computed(() =>
 
 <template>
   <div class="prices" v-if="getWantedCardsAsArray.length > 0">
-    <h3>ℹ️ Best packs matching your wishes :</h3>
+    <h3>Best packs to open :</h3>
 
     <div class="price" v-for="[pack, count] of countWantedByPack" :key="pack">
       <div class="rarity">
@@ -49,6 +49,12 @@ const countWantedByPack = computed(() =>
   align-items: center;
   max-height: 500px;
   overflow-y: auto;
+}
+
+@media (max-width: 600px) {
+  .prices {
+    max-height: none;
+  }
 }
 
 .price {

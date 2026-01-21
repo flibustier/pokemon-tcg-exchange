@@ -7,12 +7,17 @@ import { hasUnreadMessages, isAccountIncomplete } from '@/services/store'
 import MessagesView from '@/views/MessagesView.vue'
 import ProposalsView from '@/views/ProposalsView.vue'
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
-import PacksInformations from '@/components/PacksInformations.vue'
 import BetaAccessForm from '@/components/forms/BetaAccessForm.vue'
 import SettingsForm from '@/components/forms/SettingsForm.vue'
-import PricesTable from '@/components/PricesTable.vue'
 import MenuButton from '@/components/atoms/MenuButton.vue'
 import CardsGrid from '@/components/CardsGrid.vue'
+import InsightView from './InsightView.vue'
+import HeartIcon from '@/components/icons/HeartIcon.vue'
+import CardIcon from '@/components/icons/CardIcon.vue'
+import ExchangeIcon from '@/components/icons/ExchangeIcon.vue'
+import MessageIcon from '@/components/icons/MessageIcon.vue'
+import GearIcon from '@/components/icons/GearIcon.vue'
+import ChartIcon from '@/components/icons/ChartIcon.vue'
 
 const route = useRoute()
 
@@ -27,37 +32,29 @@ const isCardManaging = computed(() =>
   <main>
     <div class="aside">
       <nav>
-        <MenuButton label="Wishlist" icon="heart" :active="activeRoute === 'wishlist'" />
-        <MenuButton label="Offers" icon="portfolio" :active="activeRoute === 'offers'" />
-        <MenuButton label="Proposals" icon="exchange" :active="activeRoute === 'proposals'" />
-        <MenuButton
-          label="Messages"
-          icon="message"
-          :active="(activeRoute as string).startsWith('message')"
-          :with-notification-dot="hasUnreadMessages"
-        />
-        <MenuButton
-          label="Account"
-          icon="gear"
-          :active="activeRoute === 'account'"
-          :with-notification-dot="isAccountIncomplete"
-        />
+        <MenuButton route="wishlist"><HeartIcon /></MenuButton>
+        <MenuButton route="offers"><CardIcon /></MenuButton>
+        <MenuButton route="proposals"><ExchangeIcon /></MenuButton>
+        <MenuButton route="messages" :with-notification-dot="hasUnreadMessages">
+          <MessageIcon />
+        </MenuButton>
+        <MenuButton label="Account" route="settings" :with-notification-dot="isAccountIncomplete">
+          <GearIcon />
+        </MenuButton>
+        <MenuButton route="insights"><ChartIcon /></MenuButton>
       </nav>
-      <PricesTable id="prices" v-if="isCardManaging" :showGiving="activeRoute === 'offers'" />
     </div>
     <div class="content">
       <CardsGrid v-if="isCardManaging" :step="activeRoute === 'wishlist' ? 1 : 2" />
       <ProposalsView v-if="activeRoute === 'proposals'" />
-      <CenteredLayout v-if="activeRoute === 'account'">
-        <div class="row-xl">
-          <SettingsForm />
-          <PacksInformations />
-        </div>
+      <CenteredLayout v-if="activeRoute === 'settings' || activeRoute === 'account'">
+        <SettingsForm />
       </CenteredLayout>
       <CenteredLayout v-if="activeRoute === 'beta'">
         <BetaAccessForm />
       </CenteredLayout>
       <MessagesView v-if="(activeRoute as string).startsWith('message')" />
+      <InsightView v-if="activeRoute === 'insights'" />
     </div>
   </main>
 </template>
@@ -68,7 +65,7 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .content {
@@ -83,7 +80,7 @@ main {
   gap: 3rem;
   position: sticky;
   top: 125px;
-  min-width: 200px;
+  min-width: fit-content;
 }
 
 nav {
@@ -93,13 +90,6 @@ nav {
   gap: 16px;
 }
 
-.row-xl {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  align-items: center;
-}
-
 @media (max-width: 1111px) {
   main {
     flex-direction: column;
@@ -107,49 +97,7 @@ nav {
     gap: 0;
   }
   .aside {
-    position: fixed;
-    height: auto;
-    top: auto;
-    bottom: 0;
-    z-index: 11;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-bottom: 1rem;
-    width: 100%;
-    min-width: 100%;
-
-    #prices {
-      display: none;
-    }
-  }
-  .content {
-    margin-bottom: 160px;
-  }
-  nav {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .row-xl {
-    flex-direction: column;
-    gap: 2rem;
-    width: fit-content;
-  }
-
-  .portfolio-btn:deep() {
-    width: 5.5rem;
-    height: 6rem;
-  }
-}
-
-@media (max-width: 600px) {
-  nav {
-    gap: 2px;
-  }
-  .portfolio-btn:deep() {
-    width: 5rem;
-    height: 5rem;
+    display: none;
   }
 }
 </style>
