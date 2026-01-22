@@ -323,7 +323,7 @@ h2 {
 .messenger {
   display: flex;
   gap: 1rem;
-  height: calc(100vh - 150px);
+  height: calc(100dvh - 175px);
 }
 .discussions {
   width: 300px;
