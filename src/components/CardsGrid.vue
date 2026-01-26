@@ -87,7 +87,7 @@ const increase = (card: Card) => {
         <div class="set-logo">
           <a v-if="index > 0" :href="'#' + sets[index - 1].code">
             <img
-              :src="`/images/sets/LOGO_expansion_${sets[index - 1].code}_en_US.webp`"
+              :src="sets[index - 1].imagePath"
               :alt="sets[index - 1].name.en"
               width="136"
               height="60"
@@ -99,7 +99,7 @@ const increase = (card: Card) => {
           <div v-else class="bumper"></div>
 
           <img
-            :src="`/images/sets/LOGO_expansion_${set.code}_en_US.webp`"
+            :src="set.imagePath"
             :alt="set.name.en"
             class="set-current-logo"
             width="192"
@@ -110,7 +110,7 @@ const increase = (card: Card) => {
           <a v-if="index < sets.length - 1" :href="'#' + sets[index + 1].code">
             <img src="/images/double-arrow-right.png" alt="»" width="47" height="50" />
             <img
-              :src="`/images/sets/LOGO_expansion_${sets[index + 1].code}_en_US.webp`"
+              :src="sets[index + 1].imagePath"
               :alt="sets[index + 1].name.en"
               width="136"
               height="60"
@@ -130,7 +130,7 @@ const increase = (card: Card) => {
           </h3>
           <img v-if="false" src="/images/wanted.png" alt="wanted" class="corner-icon" />
           <img
-            :src="'/images/cards/thumbnails/' + card.image"
+            :src="card.imagePaths.thumbnail"
             :alt="card.name"
             class="card-image"
             :class="{ disabled: isWantedCard(card) || isRestricted(card) }"

@@ -12,7 +12,7 @@ defineProps<{
 
 <template>
   <img
-    :src="`/images/cards/thumbnails/${card.image}`"
+    :src="card.imagePaths.thumbnail"
     :alt="card.name"
     class="card-thumbnail"
     width="135"

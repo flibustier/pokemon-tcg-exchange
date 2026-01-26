@@ -21,7 +21,7 @@ defineExpose({ showModal })
   <BaseModal v-model="isVisible" :title="card.name + ` (${card.id})`">
     <div class="flex">
       <img
-        :src="`/images/cards/${card.image}`"
+        :src="card.imagePaths.full"
         class="responsive-image"
         width="367"
         height="512"
@@ -30,7 +30,7 @@ defineExpose({ showModal })
       />
       <div class="column">
         <img
-          :src="`/images/sets/LOGO_expansion_${card.set}_en_US.webp`"
+          :src="card.imagePaths.set"
           :alt="card.set"
           class="responsive-image"
           width="256"
