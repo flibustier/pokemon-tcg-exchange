@@ -29,16 +29,16 @@
     "@vue/eslint-config-typescript": "^14.6.0",
     "@vue/tsconfig": "^0.7.0",
     "eslint": "^9.39.2",
-    "eslint-plugin-playwright": "^2.5.0",
+    "eslint-plugin-playwright": "^2.5.1",
     "eslint-plugin-vue": "^10.7.0",
     "jiti": "^2.6.1",
     "npm-run-all2": "^8.0.4",
-    "pokemon-tcg-pocket-database": "^2.1.0",
+    "pokemon-tcg-pocket-database": "^2.2.0",
     "prettier": "^3.8.1",
     "typescript": "~5.8.3",
     "vite": "^7.3.1",
     "vite-plugin-vue-devtools": "^8.0.5",
     "vite-ssg": "^28.2.2",
-    "vue-tsc": "^3.2.3"
+    "vue-tsc": "^3.2.4"
   }
 }
