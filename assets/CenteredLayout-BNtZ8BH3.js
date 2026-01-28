@@ -1,0 +1,1 @@
+import{_ as t,c as o,r as s,o as c}from"./app-BN-WtZs8.js";const n={},r={class:"centered-layout"};function a(e,d){return c(),o("div",r,[s(e.$slots,"default",{},void 0)])}const f=t(n,[["render",a],["__scopeId","data-v-2d6fe895"]]);export{f as C};
