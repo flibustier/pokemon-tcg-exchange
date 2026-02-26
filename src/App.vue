@@ -154,10 +154,6 @@ a {
       line-height: 1.4rem;
     }
   }
-  .btn-primary {
-    padding: 5px 15px;
-    font-size: 14px;
-  }
   .actions {
     gap: 0.5rem;
   }
