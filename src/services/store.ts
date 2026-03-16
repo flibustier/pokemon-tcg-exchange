@@ -102,7 +102,7 @@ watch(
   () => wantedCardsCountById.value,
   (newStore) => {
     setWantedCards(newStore)
-    debouncedUpdateUser()
+    //debouncedUpdateUser()
   },
   { deep: true },
 )
@@ -110,7 +110,7 @@ watch(
   givingCardsCountById,
   (newStore) => {
     setGivingCards(newStore)
-    debouncedUpdateUser()
+    //debouncedUpdateUser()
   },
   { deep: true },
 )
