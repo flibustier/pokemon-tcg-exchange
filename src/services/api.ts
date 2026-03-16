@@ -14,6 +14,7 @@ import {
   storeDiscussions,
   setLogOut,
 } from './store'
+import type { Card } from './cards'
 
 const isProduction = import.meta.env.PROD
 
@@ -129,6 +130,30 @@ export const updateUser = async () => {
     return true
   } else {
     throw result
+  }
+}
+
+export const updateUserCard = async (isWishlist: boolean, card: Card, count: number) => {
+  if (!isLogged()) return
+
+  try {
+    const result = await useAPI(
+      '/user/' + (isWishlist ? 'wishlist' : 'offers'),
+      'PUT',
+      {
+        ...card,
+        count,
+      },
+      false,
+    )
+
+    if (result === 'updated') {
+      return true
+    } else {
+      throw result
+    }
+  } catch (error) {
+    console.log('toto', error)
   }
 }
 
