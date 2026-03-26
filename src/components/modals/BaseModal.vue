@@ -33,7 +33,7 @@ const closeModal = () => {
 <style scoped>
 .modal {
   position: fixed;
-  z-index: 2;
+  z-index: 11;
   left: 0;
   top: 0;
   width: 100%;

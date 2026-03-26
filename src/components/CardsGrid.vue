@@ -8,6 +8,9 @@ import type { Card } from '@/services/cards'
 
 import NumberInput from './atoms/NumberInput.vue'
 import CardsFilters from './CardsFilters.vue'
+import SetSelectorModal from './modals/SetSelectorModal.vue'
+
+const isSetSelectorModalVisible = ref(false)
 
 const filters = ref({
   hideUnavailable: false,
@@ -36,6 +39,8 @@ const props = defineProps<{
   step: number
 }>()
 
+const isWishlist = computed(() => props.step === 1)
+
 const sets = computed(() =>
   allSets
     .filter(({ code }) => !code.startsWith('PROMO'))
@@ -56,7 +61,7 @@ const filteredCards = (set?: string) =>
   )
 
 const cardCountById = computed(() => {
-  if (props.step === 1) {
+  if (isWishlist.value) {
     return wantedCardsCountById.value
   } else {
     return givingCardsCountById.value
@@ -82,6 +87,7 @@ const increase = (card: Card) => {
 
 <template>
   <div class="container">
+    <SetSelectorModal v-model="isSetSelectorModalVisible" :sets="sets" />
     <div class="set" v-for="(set, index) in sets" :key="index">
       <div class="set-header" v-if="filteredCards(set.code).length > 0">
         <div class="set-logo">
@@ -105,6 +111,8 @@ const increase = (card: Card) => {
             width="192"
             heigh="85"
             loading="lazy"
+            @click="isSetSelectorModalVisible = true"
+            title="Click to select another set"
           />
 
           <a v-if="index < sets.length - 1" :href="'#' + sets[index + 1].code">
@@ -194,6 +202,15 @@ const increase = (card: Card) => {
 
 .bumper {
   width: 20%;
+}
+
+.set-current-logo {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.set-current-logo:hover {
+  transform: scale(1.05);
 }
 
 .card-grid {
