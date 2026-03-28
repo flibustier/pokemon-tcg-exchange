@@ -13,7 +13,8 @@
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
     "deploy": "./scripts/deploy.sh",
-    "convert": "./scripts/convert.sh"
+    "convert": "./scripts/convert.sh",
+    "upload": "./scripts/upload_images.sh"
   },
   "dependencies": {
     "vue": "^3.5.31",

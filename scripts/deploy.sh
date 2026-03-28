@@ -18,6 +18,9 @@ yarn build-only
 
 cd dist
 
+# Remove images that are now hosted on the CDN to keep the gh-pages branch light
+rm -rf images/cards-by-set
+
 git add -A
 git commit -m $cdate
 
