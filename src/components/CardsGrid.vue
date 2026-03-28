@@ -47,18 +47,23 @@ const sets = computed(() =>
     .sort((a, b) => (a.code < b.code ? 1 : -1)),
 )
 
-const filteredCards = (set?: string) =>
-  cards.filter(
-    (card) =>
-      (!set || card.set === set.toUpperCase()) &&
-      (!filters.value.cardName ||
-        card.name.toLowerCase().includes(filters.value.cardName.toLowerCase())) &&
-      (!filters.value.hideEmpty || cardCountById.value[cardId(card)] > 0) &&
-      (!filters.value.hideUnavailable ||
-        (!isRestricted(card) && (!isWantedCard(card) || props.step === 1))) &&
-      (filters.value.raritySelection.length === 0 ||
-        filters.value.raritySelection.includes(card.rarity)),
-  )
+const filteredCardsBySet = computed(() => {
+  const result: Record<string, Card[]> = {}
+  for (const set of sets.value) {
+    result[set.code] = cards.filter(
+      (card) =>
+        card.set === set.code.toUpperCase() &&
+        (!filters.value.cardName ||
+          card.name.toLowerCase().includes(filters.value.cardName.toLowerCase())) &&
+        (!filters.value.hideEmpty || cardCountById.value[cardId(card)] > 0) &&
+        (!filters.value.hideUnavailable ||
+          (!isRestricted(card) && (!isWantedCard(card) || props.step === 1))) &&
+        (filters.value.raritySelection.length === 0 ||
+          filters.value.raritySelection.includes(card.rarity)),
+    )
+  }
+  return result
+})
 
 const cardCountById = computed(() => {
   if (isWishlist.value) {
@@ -89,7 +94,7 @@ const increase = (card: Card) => {
   <div class="container">
     <SetSelectorModal v-model="isSetSelectorModalVisible" :sets="sets" />
     <div class="set" v-for="(set, index) in sets" :key="index">
-      <div class="set-header" v-if="filteredCards(set.code).length > 0">
+      <div class="set-header" v-if="filteredCardsBySet[set.code].length > 0">
         <div class="set-logo">
           <a v-if="index > 0" :href="'#' + sets[index - 1].code">
             <img
@@ -109,8 +114,9 @@ const increase = (card: Card) => {
             :alt="set.name.en"
             class="set-current-logo"
             width="192"
-            heigh="85"
-            loading="lazy"
+            height="85"
+            :loading="index === 0 ? 'eager' : 'lazy'"
+            :fetchpriority="index === 0 ? 'high' : 'auto'"
             @click="isSetSelectorModalVisible = true"
             title="Click to select another set"
           />
@@ -131,7 +137,7 @@ const increase = (card: Card) => {
         <CardsFilters v-model="filters" :cards />
       </div>
       <div class="card-grid" :id="set.code">
-        <div class="card" v-for="(card, index) in filteredCards(set.code)" :key="index">
+        <div class="card" v-for="(card, cardIndex) in filteredCardsBySet[set.code]" :key="cardIndex">
           <h3 :title="card.name">
             <span class="card-label hidden-sm">{{ card.name }}</span>
             <span class="card-number">{{ card.number.toString().padStart(3, '0') }}</span>
@@ -141,9 +147,11 @@ const increase = (card: Card) => {
             :src="card.imagePaths.thumbnail"
             :alt="card.name"
             class="card-image"
+            width="200"
+            height="280"
             :class="{ disabled: isWantedCard(card) || isRestricted(card) }"
             @click="increase(card)"
-            loading="lazy"
+            :loading="index === 0 && cardIndex < 5 ? 'eager' : 'lazy'"
             :title="title(card)"
           />
           <span v-if="isRestricted(card)" class="card-decoration" :title="title(card)">🚫</span>
@@ -151,7 +159,7 @@ const increase = (card: Card) => {
         </div>
       </div>
     </div>
-    <template v-if="filteredCards().length === 0">
+    <template v-if="Object.values(filteredCardsBySet).flat().length === 0">
       <CardsFilters v-model="filters" :cards />
       <p class="no-results">No results :/<br />Please adjust your filters.value</p>
     </template>
@@ -232,6 +240,7 @@ const increase = (card: Card) => {
   align-self: stretch;
   img {
     width: 100%;
+    height: auto;
   }
 }
 

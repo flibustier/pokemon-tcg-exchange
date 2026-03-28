@@ -153,6 +153,9 @@ a {
       font-size: 1.2rem;
       line-height: 1.4rem;
     }
+    :deep(.btn-primary) {
+      padding: 5px 10px;
+    }
   }
   .actions {
     gap: 0.5rem;
