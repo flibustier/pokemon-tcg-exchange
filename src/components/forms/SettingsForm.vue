@@ -90,7 +90,11 @@ const save = async () => {
 
     <div class="form-group">
       <label for="icon" class="form-label label-center">Profile Icon</label>
-      <div class="selected-icon" @click="showIconList = !showIconList">
+      <div
+        class="selected-icon"
+        :class="{ invalid: !user.icon }"
+        @click="showIconList = !showIconList"
+      >
         <img :src="selectedIconUrl" alt="Selected Icon" id="icon" />
       </div>
       <div v-if="showIconList" class="icon-list">
@@ -129,7 +133,7 @@ const save = async () => {
     <div class="form-group">
       <label for="language-input" class="form-label">Your card’s language</label>
       <select id="language-input" v-model="user.language" class="language-input" required>
-        <option value="">Please select</option>
+        <option value="" disabled>Please select</option>
         <option v-for="language in languages" :key="language" :value="language">
           {{ language }}
         </option>
@@ -250,7 +254,9 @@ h2,
 
 /* Invalid state styling */
 .friend-id:invalid,
-.email-input:invalid {
+.email-input:invalid,
+.selected-icon.invalid,
+.language-input:invalid {
   border-color: #ff5252;
 }
 
