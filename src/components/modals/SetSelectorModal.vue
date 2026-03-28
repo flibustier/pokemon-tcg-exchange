@@ -36,9 +36,8 @@ const selectSet = () => {
 .set-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-evenly;
   gap: 1rem;
-  padding: 1rem;
   max-width: 50rem;
   max-height: 70vh;
   overflow-y: auto;
@@ -48,9 +47,10 @@ const selectSet = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem;
-  border-radius: 8px;
-  transition: background-color 0.2s, transform 0.2s;
+  border-radius: 10px;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
   cursor: pointer;
   text-decoration: none;
 }
