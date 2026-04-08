@@ -22,6 +22,7 @@ const discussionID = computed(() =>
 
 const messages = ref([] as Message[])
 const composedMessage = ref('')
+const isSending = ref(false)
 const showMobileDiscussions = ref(false)
 
 const currentDiscussion = computed(() => {
@@ -34,20 +35,25 @@ const navigateToDiscussion = async (friendID: string) => {
 }
 
 const sendMessage = async () => {
-  if (composedMessage.value.length < 1) return
+  if (isSending.value || composedMessage.value.length < 1) return
 
-  const response = await postMessage(discussionID.value as string, composedMessage.value)
-  if (response === 'created') {
-    composedMessage.value = ''
-    await refresh()
-  } else {
-    messages.value.push({
-      from: 'error',
-      to: discussionID.value as string,
-      message: response,
-      sent: new Date().toISOString(),
-      read: null,
-    })
+  isSending.value = true
+  try {
+    const response = await postMessage(discussionID.value as string, composedMessage.value)
+    if (response === 'created') {
+      composedMessage.value = ''
+      await refresh()
+    } else {
+      messages.value.push({
+        from: 'error',
+        to: discussionID.value as string,
+        message: response,
+        sent: new Date().toISOString(),
+        read: null,
+      })
+    }
+  } finally {
+    isSending.value = false
   }
 }
 
@@ -297,7 +303,11 @@ onUnmounted(() => {
           v-model="composedMessage"
           @keypress.enter="sendMessage"
         />
-        <button class="send" @click="sendMessage" :disabled="composedMessage.length < 1">
+        <button
+          class="send"
+          @click="sendMessage"
+          :disabled="composedMessage.length < 1 || isSending"
+        >
           <svg height="20px" viewBox="0 0 24 24" width="20px">
             <title>Press enter to send</title>
             <path

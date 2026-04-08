@@ -10,7 +10,6 @@ defineProps<{
 const isVisible = ref(false)
 
 const showModal = () => {
-  console.log('showModal')
   isVisible.value = true
 }
 
