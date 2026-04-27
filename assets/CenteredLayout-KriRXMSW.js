@@ -1,0 +1,1 @@
+import{O as e,j as t,l as n,t as r}from"./_plugin-vue_export-helper-lSVPVX0t.js";var i={},a={class:`centered-layout`};function o(r,i){return e(),n(`div`,a,[t(r.$slots,`default`,{},void 0,!0)])}var s=r(i,[[`render`,o],[`__scopeId`,`data-v-2d6fe895`]]);export{s as t};
