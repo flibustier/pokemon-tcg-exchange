@@ -17,29 +17,29 @@
     "upload": "./scripts/upload_images.sh"
   },
   "dependencies": {
-    "vue": "^3.5.31",
-    "vue-router": "^4.6.4"
+    "vue": "^3.5.33",
+    "vue-router": "^5.0.6"
   },
   "devDependencies": {
-    "@playwright/test": "^1.58.2",
+    "@playwright/test": "^1.59.1",
     "@tsconfig/node22": "^22.0.5",
-    "@types/node": "^24.12.0",
-    "@unhead/vue": "^2.1.12",
-    "@vitejs/plugin-vue": "^6.0.5",
+    "@types/node": "^25.6.0",
+    "@unhead/vue": "^3.1.0",
+    "@vitejs/plugin-vue": "^6.0.6",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.7.0",
-    "@vue/tsconfig": "^0.7.0",
-    "eslint": "^9.39.4",
-    "eslint-plugin-playwright": "^2.10.1",
-    "eslint-plugin-vue": "^10.8.0",
+    "@vue/tsconfig": "^0.9.1",
+    "eslint": "^10.2.1",
+    "eslint-plugin-playwright": "^2.10.2",
+    "eslint-plugin-vue": "^10.9.0",
     "jiti": "^2.6.1",
     "npm-run-all2": "^8.0.4",
-    "pokemon-tcg-pocket-database": "^2.5.1",
-    "prettier": "^3.8.1",
-    "typescript": "~5.8.3",
-    "vite": "^7.3.1",
+    "pokemon-tcg-pocket-database": "^2.6.0",
+    "prettier": "^3.8.3",
+    "typescript": "~6.0.3",
+    "vite": "^8.0.10",
     "vite-plugin-vue-devtools": "^8.1.1",
     "vite-ssg": "^28.3.0",
-    "vue-tsc": "^3.2.6"
+    "vue-tsc": "^3.2.7"
   }
 }
