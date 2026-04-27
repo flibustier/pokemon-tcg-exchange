@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "vue": "^3.5.33",
-    "vue-router": "^5.0.6"
+    "vue-router": "^4.6.4"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
@@ -34,10 +34,10 @@
     "eslint-plugin-vue": "^10.9.0",
     "jiti": "^2.6.1",
     "npm-run-all2": "^8.0.4",
-    "pokemon-tcg-pocket-database": "^2.6.0",
+    "pokemon-tcg-pocket-database": "^2.6.1",
     "prettier": "^3.8.3",
     "typescript": "~6.0.3",
-    "vite": "^8.0.10",
+    "vite": "^7.3.2",
     "vite-plugin-vue-devtools": "^8.1.1",
     "vite-ssg": "^28.3.0",
     "vue-tsc": "^3.2.7"
