@@ -55,8 +55,8 @@ importers:
         specifier: ^9.0.1
         version: 9.0.1
       pokemon-tcg-pocket-database:
-        specifier: ^2.7.0
-        version: 2.7.0
+        specifier: ^2.8.0
+        version: 2.8.0
       prettier:
         specifier: ^3.8.3
         version: 3.8.3
@@ -1656,8 +1656,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  pokemon-tcg-pocket-database@2.7.0:
-    resolution: {integrity: sha512-KBdU95f99Qods5i0162N5fwWJCJhbqClEvwSqi2AR+Q5mHbKxpQhH1b3T96LURaziXs1QJ+2txGSyLDzJ5ZScg==}
+  pokemon-tcg-pocket-database@2.8.0:
+    resolution: {integrity: sha512-rWQOUVWOw63jIyXFST8ZAorGeOFmm+AY8M0dArvAHLZfN18u8TsVfglvc0mOn8u8ay/tF3HDLsls1hDWOz1CVg==}
 
   postcss-selector-parser@7.1.1:
     resolution: {integrity: sha512-orRsuYpJVw8LdAwqqLykBj9ecS5/cRHlI5+nvTo8LcCKmzDmqVORXtOIYEEQuL9D4BxtA1lm5isAqzQZCoQ6Eg==}
@@ -3684,7 +3684,7 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.2
 
-  pokemon-tcg-pocket-database@2.7.0: {}
+  pokemon-tcg-pocket-database@2.8.0: {}
 
   postcss-selector-parser@7.1.1:
     dependencies:

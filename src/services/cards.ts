@@ -1,4 +1,4 @@
-import allCards from 'pokemon-tcg-pocket-database/dist/cards.no-image.min.json' assert { type: 'json' }
+import allCards from 'pokemon-tcg-pocket-database/dist/cards.no-image.min.json' with { type: 'json' }
 import sets from 'pokemon-tcg-pocket-database/dist/sets.json' with { type: 'json' }
 import rarities from 'pokemon-tcg-pocket-database/dist/rarities.json' with { type: 'json' }
 
