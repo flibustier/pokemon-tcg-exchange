@@ -4,4 +4,4 @@ start:
 
 .PHONY: deploy
 deploy:
-	pnpm run deploy
+    pnpm run upload && pnpm run deploy

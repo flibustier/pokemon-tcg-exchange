@@ -63,9 +63,11 @@ const refresh = async () => {
     messages.value = (await getMessages(discussionID.value as string)).reverse()
     const newLength = messages.value.length
 
+    /* disable beta access temporarily
     if (messages.value.length === 0 && !getUserInfo().has_beta_access) {
       router.push({ name: 'beta' })
     }
+    */
     if (currentDiscussion.value?.read === false) {
       await refreshDiscussions()
     }
