@@ -1,0 +1,1 @@
+import{J as e,c as t,dt as n,lt as r}from"./app-BkO9tW7N.js";var i={},a={class:`centered-layout`};function o(t,i){return r(),e(`div`,a,[n(t.$slots,`default`,{},void 0,!0)])}var s=t(i,[[`render`,o],[`__scopeId`,`data-v-2d6fe895`]]);export{s as t};

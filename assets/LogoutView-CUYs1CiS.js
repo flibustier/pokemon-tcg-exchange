@@ -1,1 +1,0 @@
-import{D as e,G as t,K as n,Z as r,_t as i,lt as a}from"./app-P2yWFkWa.js";import{t as o}from"./CenteredLayout-BzywkAzv.js";var s=r({__name:`LogoutView`,setup(r){return e(),window.location.replace(`/`),(e,r)=>(a(),n(o,null,{default:i(()=>[...r[0]||=[t(`h1`,null,`Logging out...`,-1)]]),_:1}))}});export{s as default};
