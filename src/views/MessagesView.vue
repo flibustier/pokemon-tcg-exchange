@@ -415,16 +415,6 @@ h2 {
   color: #999;
   flex-shrink: 0;
 }
-.status {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #ccc;
-  margin-left: 0.5rem;
-}
-.status.online {
-  background: #4caf50;
-}
 .chat {
   flex-grow: 1;
   border-radius: 12px;

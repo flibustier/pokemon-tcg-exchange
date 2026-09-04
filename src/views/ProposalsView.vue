@@ -250,10 +250,6 @@ h2 {
   flex-direction: column;
 }
 
-.card-image {
-  height: 188px;
-}
-
 .card-count {
   position: relative;
   height: 25px;
