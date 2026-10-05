@@ -18,7 +18,7 @@ export const cards = allCards.map((card) => ({
   set: card.set.toUpperCase(),
   id: card.set.toUpperCase() + '-' + card.number,
   imagePaths: {
-    thumbnail: `${CDN_URL}/images/cards-by-set/thumbnails/${card.set}/${card.number}.webp`,
+    thumbnail: `${CDN_URL}/images/thumbnails/${card.set}/${card.number}.webp`,
     full: `${CDN_URL}/images/cards-by-set/${card.set}/${card.number}.webp`,
     set: `/images/sets/LOGO_expansion_${card.set}_en_US.webp`,
   },

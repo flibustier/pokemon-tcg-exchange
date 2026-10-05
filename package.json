@@ -17,14 +17,14 @@
     "upload": "./scripts/upload_images.sh"
   },
   "dependencies": {
-    "vue": "3.5.41",
-    "vue-router": "5.2.0"
+    "vue": "3.5.43",
+    "vue-router": "5.3.1"
   },
   "devDependencies": {
     "@playwright/test": "1.62.1",
     "@tsconfig/node22": "^22.0.5",
     "@types/node": "^26.1.2",
-    "@unhead/vue": "3.3.1",
+    "@unhead/vue": "3.4.2",
     "@vitejs/plugin-vue": "6.0.7",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.9.0",
@@ -34,7 +34,7 @@
     "eslint-plugin-vue": "^10.10.0",
     "jiti": "^2.7.0",
     "npm-run-all2": "^9.0.3",
-    "pokemon-tcg-pocket-database": "2.10.0",
+    "pokemon-tcg-pocket-database": "2.11.1",
     "prettier": "^3.9.6",
     "typescript": "~6.0.3",
     "vite": "8.0.14",
