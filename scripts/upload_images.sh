@@ -3,9 +3,9 @@
 # Abort on errors
 set -e
 
-SOURCE_DIR="public/images/cards-by-set/"
+SOURCE_DIR="public/images/"
 REMOTE_HOST="nyx"
-REMOTE_PATH="/srv/cdn/dracaufeu/images/cards-by-set/"
+REMOTE_PATH="/srv/cdn/dracaufeu/images/"
 DESTINATION="$REMOTE_HOST:$REMOTE_PATH"
 
 echo "Ensuring remote directory exists..."
