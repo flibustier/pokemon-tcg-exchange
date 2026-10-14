@@ -53,3 +53,12 @@ export const formatDate = (date: string) => {
     })
   }
 }
+
+export const formatFriendID = (friendID: string) =>
+  friendID.replace(/(\d{4})(\d{4})(\d{4})(\d{4})/, '$1-$2-$3-$4')
+
+// Same content as the in-game "Add Friend" QR code: the dashed ID, twice, comma separated
+export const friendQRPayload = (friendID: string) => {
+  const formatted = formatFriendID(friendID)
+  return `${formatted},${formatted}`
+}
