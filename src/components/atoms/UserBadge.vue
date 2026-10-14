@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
-const { friendID } = defineProps<{
+import FriendQRModal from '@/components/modals/FriendQRModal.vue'
+import { formatFriendID } from '@/services/utils'
+
+const { friendID, pseudo } = defineProps<{
   icon?: string
   pseudo?: string
   language?: string
@@ -10,9 +13,9 @@ const { friendID } = defineProps<{
   lastUpdate?: string
 }>()
 
-const formattedFriendID = computed(() => {
-  return friendID.replace(/(\d{4})(\d{4})(\d{4})(\d{4})/, '$1-$2-$3-$4')
-})
+const formattedFriendID = computed(() => formatFriendID(friendID))
+
+const isQRVisible = ref(false)
 
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text)
@@ -44,6 +47,24 @@ const copyToClipboard = (text: string) => {
             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
           </svg>
         </button>
+        <button @click="isQRVisible = true" class="copy-button" title="Show QR code">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+            <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+            <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+            <path d="M14 14h3v3h-3zM20 14v1M14 20h1M17 17h4v4h-4z"></path>
+          </svg>
+        </button>
       </div>
       <div
         v-if="lastUpdate"
@@ -53,6 +74,7 @@ const copyToClipboard = (text: string) => {
         {{ lastUpdate }}
       </div>
     </div>
+    <FriendQRModal v-model="isQRVisible" :friendID :pseudo />
   </div>
 </template>
 
