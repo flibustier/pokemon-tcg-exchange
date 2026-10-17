@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, useId, watch } from 'vue'
 
 import BaseModal from './BaseModal.vue'
+import { renderFriendQRSVG } from '@/services/qr'
 import { formatFriendID, friendQRPayload } from '@/services/utils'
 
 const { friendID, pseudo } = defineProps<{
@@ -12,14 +13,16 @@ const { friendID, pseudo } = defineProps<{
 const isVisible = defineModel<boolean>()
 
 const svg = ref('')
+const id = useId()
 
 watch(
   [isVisible, () => friendID],
   async ([visible]) => {
     if (!visible || !friendID) return
     // Loaded on demand to keep the QR library out of the main bundle
-    const { renderSVG } = await import('uqr')
-    svg.value = renderSVG(friendQRPayload(friendID), { ecc: 'M', border: 4 })
+    const { encode } = await import('uqr')
+    // High error correction, like the in-game code, so it still scans with the logo in the middle
+    svg.value = renderFriendQRSVG(encode(friendQRPayload(friendID), { ecc: 'H', border: 0 }), id)
   },
   { immediate: true },
 )
@@ -36,10 +39,14 @@ watch(
           :aria-label="`QR code for ID ${formatFriendID(friendID)}`"
         ></div>
         <div class="friend-id">ID {{ formatFriendID(friendID) }}</div>
-        <p>
-          In Pokemon TCG Pocket, open <strong>Friends</strong>, tap <strong>Add Friend</strong>,
-          then <strong>Scan Code</strong>.
-        </p>
+        <div>
+          <p class="mb-0">In Pokemon TCG Pocket :</p>
+          <ol>
+            <li>open <strong>"Friends"</strong>,</li>
+            <li>tap <strong>"Add Friend"</strong>,</li>
+            <li>then <strong>"Scan Code"</strong>.</li>
+          </ol>
+        </div>
       </div>
     </BaseModal>
   </Teleport>
@@ -57,7 +64,6 @@ watch(
 .qr-code {
   width: min(280px, 70vw);
   aspect-ratio: 1;
-  background: white;
 }
 
 .qr-code :deep(svg) {
@@ -69,5 +75,15 @@ watch(
 .friend-id {
   font-weight: 500;
   color: #5f6368;
+}
+
+ol {
+  li {
+    width: fit-content;
+  }
+}
+
+.mb-0 {
+  margin-bottom: 0;
 }
 </style>
