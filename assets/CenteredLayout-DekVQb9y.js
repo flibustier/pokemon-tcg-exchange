@@ -1,0 +1,1 @@
+import{Q as e,gt as t,l as n,mt as r}from"./app-BwC6YfEc.js";var i={},a={class:`centered-layout`};function o(n,i){return r(),e(`div`,a,[t(n.$slots,`default`,{},void 0,!0)])}var s=n(i,[[`render`,o],[`__scopeId`,`data-v-2d6fe895`]]);export{s as t};
