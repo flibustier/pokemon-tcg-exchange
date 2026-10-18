@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 
 import { UNAUTHORIZED_SETS } from '@/../config.json' with { type: 'json' }
 import { wantedCardsCountById, givingCardsCountById } from '@/services/store'
@@ -88,81 +88,114 @@ const increase = (card: Card) => {
     cardCountById.value[cardId(card)] = (cardCountById.value[cardId(card)] || 0) + 1
   }
 }
+
+const header = useTemplateRef('header')
+const headerHeight = ref(0)
+const currentSetIndex = ref(0)
+const currentSet = computed(() => sets.value[currentSetIndex.value])
+
+// The current set is the last one (with visible cards) whose grid starts above the header bottom
+const updateCurrentSet = () => {
+  const headerBottom = header.value?.getBoundingClientRect().bottom ?? 0
+  let index = -1
+  sets.value.forEach(({ code }, i) => {
+    if (filteredCardsBySet.value[code].length === 0) return
+    const top = document.getElementById(code)?.getBoundingClientRect().top ?? Infinity
+    if (index === -1 || top <= headerBottom + 1) index = i
+  })
+  if (index !== -1) currentSetIndex.value = index
+}
+
+watch(filteredCardsBySet, () => nextTick(updateCurrentSet))
+
+const resizeObserver =
+  typeof ResizeObserver === 'undefined'
+    ? undefined
+    : new ResizeObserver(([entry]) => {
+        headerHeight.value = entry.borderBoxSize[0].blockSize
+      })
+
+onMounted(() => {
+  if (header.value) resizeObserver?.observe(header.value)
+  window.addEventListener('scroll', updateCurrentSet, { passive: true })
+  window.addEventListener('resize', updateCurrentSet)
+  updateCurrentSet()
+})
+
+onUnmounted(() => {
+  resizeObserver?.disconnect()
+  window.removeEventListener('scroll', updateCurrentSet)
+  window.removeEventListener('resize', updateCurrentSet)
+})
 </script>
 
 <template>
-  <div class="container">
+  <div class="container" :style="{ '--header-height': `${headerHeight}px` }">
     <SetSelectorModal v-model="isSetSelectorModalVisible" :sets="sets" />
-    <div class="set" v-for="(set, index) in sets" :key="index">
-      <div class="set-header" v-if="filteredCardsBySet[set.code].length > 0">
-        <div class="set-logo">
-          <a v-if="index > 0" :href="'#' + sets[index - 1].code">
-            <img
-              :src="sets[index - 1].imagePath"
-              :alt="sets[index - 1].name.en"
-              width="136"
-              height="60"
-              class="hidden-sm"
-              loading="lazy"
-            />
-            <img src="/images/double-arrow-left.png" alt="«" width="47" height="50" />
-          </a>
-          <div v-else class="bumper"></div>
-
+    <div class="set-header" ref="header">
+      <div class="set-logo" v-if="currentSet">
+        <a v-if="currentSetIndex > 0" :href="'#' + sets[currentSetIndex - 1].code">
           <img
-            :src="set.imagePath"
-            :alt="set.name.en"
-            class="set-current-logo"
-            width="192"
-            height="85"
-            :loading="index === 0 ? 'eager' : 'lazy'"
-            :fetchpriority="index === 0 ? 'high' : 'auto'"
-            @click="isSetSelectorModalVisible = true"
-            title="Click to select another set"
+            :src="sets[currentSetIndex - 1].imagePath"
+            :alt="sets[currentSetIndex - 1].name.en"
+            width="136"
+            height="60"
+            class="hidden-sm"
           />
+          <img src="/images/double-arrow-left.png" alt="«" width="47" height="50" />
+        </a>
+        <div v-else class="bumper"></div>
 
-          <a v-if="index < sets.length - 1" :href="'#' + sets[index + 1].code">
-            <img src="/images/double-arrow-right.png" alt="»" width="47" height="50" />
-            <img
-              :src="sets[index + 1].imagePath"
-              :alt="sets[index + 1].name.en"
-              width="136"
-              height="60"
-              class="hidden-sm"
-              loading="lazy"
-            />
-          </a>
-          <div v-else class="bumper"></div>
-        </div>
-        <CardsFilters v-model="filters" :cards />
+        <img
+          :src="currentSet.imagePath"
+          :alt="currentSet.name.en"
+          class="set-current-logo"
+          width="192"
+          height="85"
+          fetchpriority="high"
+          @click="isSetSelectorModalVisible = true"
+          title="Click to select another set"
+        />
+
+        <a v-if="currentSetIndex < sets.length - 1" :href="'#' + sets[currentSetIndex + 1].code">
+          <img src="/images/double-arrow-right.png" alt="»" width="47" height="50" />
+          <img
+            :src="sets[currentSetIndex + 1].imagePath"
+            :alt="sets[currentSetIndex + 1].name.en"
+            width="136"
+            height="60"
+            class="hidden-sm"
+          />
+        </a>
+        <div v-else class="bumper"></div>
       </div>
-      <div class="card-grid" :id="set.code">
-        <div class="card" v-for="(card, cardIndex) in filteredCardsBySet[set.code]" :key="cardIndex">
-          <h3 :title="card.name">
-            <span class="card-label hidden-sm">{{ card.name }}</span>
-            <span class="card-number">{{ card.number.toString().padStart(3, '0') }}</span>
-          </h3>
-          <img v-if="false" src="/images/wanted.png" alt="wanted" class="corner-icon" />
-          <img
-            :src="card.imagePaths.thumbnail"
-            :alt="card.name"
-            class="card-image"
-            width="200"
-            height="280"
-            :class="{ disabled: isWantedCard(card) || isRestricted(card) }"
-            @click="increase(card)"
-            :loading="index === 0 && cardIndex < 5 ? 'eager' : 'lazy'"
-            :title="title(card)"
-          />
-          <span v-if="isRestricted(card)" class="card-decoration" :title="title(card)">🚫</span>
-          <NumberInput v-else-if="!isWantedCard(card)" v-model="cardCountById[cardId(card)]" />
-        </div>
+      <CardsFilters v-model="filters" :cards />
+    </div>
+    <div class="card-grid" v-for="(set, index) in sets" :key="set.code" :id="set.code">
+      <div class="card" v-for="(card, cardIndex) in filteredCardsBySet[set.code]" :key="cardIndex">
+        <h3 :title="card.name">
+          <span class="card-label hidden-sm">{{ card.name }}</span>
+          <span class="card-number">{{ card.number.toString().padStart(3, '0') }}</span>
+        </h3>
+        <img v-if="false" src="/images/wanted.png" alt="wanted" class="corner-icon" />
+        <img
+          :src="card.imagePaths.thumbnail"
+          :alt="card.name"
+          class="card-image"
+          width="200"
+          height="280"
+          :class="{ disabled: isWantedCard(card) || isRestricted(card) }"
+          @click="increase(card)"
+          :loading="index === 0 && cardIndex < 5 ? 'eager' : 'lazy'"
+          :title="title(card)"
+        />
+        <span v-if="isRestricted(card)" class="card-decoration" :title="title(card)">🚫</span>
+        <NumberInput v-else-if="!isWantedCard(card)" v-model="cardCountById[cardId(card)]" />
       </div>
     </div>
-    <template v-if="Object.values(filteredCardsBySet).flat().length === 0">
-      <CardsFilters v-model="filters" :cards />
-      <p class="no-results">No results :/<br />Please adjust your filters.value</p>
-    </template>
+    <p v-if="Object.values(filteredCardsBySet).flat().length === 0" class="no-results">
+      No results :/<br />Please adjust your filters
+    </p>
   </div>
 </template>
 
@@ -172,13 +205,6 @@ const increase = (card: Card) => {
   flex-direction: column;
   align-items: center;
   margin-bottom: 2rem;
-}
-
-.set {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
 }
 
 .set-header {
@@ -222,6 +248,7 @@ const increase = (card: Card) => {
 }
 
 .card-grid {
+  scroll-margin-top: var(--header-height);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
