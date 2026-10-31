@@ -1,2 +1,2 @@
 minimumReleaseAgeExclude:
-  - pokemon-tcg-pocket-database@2.11.1
+  - pokemon-tcg-pocket-database@2.11.1 || 2.13.0 || 2.13.1
