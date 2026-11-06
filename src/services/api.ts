@@ -1,3 +1,5 @@
+import { ref } from 'vue'
+
 import type { Discussion, Message, Proposal } from '@/types'
 
 import { debounce } from './utils'
@@ -18,6 +20,19 @@ import {
 const isProduction = import.meta.env.PROD
 
 const endpoint = isProduction ? 'https://api.pokemon-tcg.exchange' : 'http://localhost:8090'
+
+// Bodies of the server's 401 responses. Any other failure says nothing about the credentials.
+const AUTH_ERRORS: unknown[] = [
+  'invalid password',
+  'insufficient credentials',
+  'Authorization header not found',
+]
+const isAuthError = (error: unknown) => AUTH_ERRORS.includes(error)
+
+const MAX_SAVE_RETRIES = 5
+const SAVE_RETRY_DELAY = 10000
+
+export const saveFailed = ref(false)
 
 const useAPI = async (
   route: string,
@@ -68,7 +83,10 @@ export const fetchUser = async () => {
     }
   } catch (error) {
     console.error('Error:', error)
-    setLogOut()
+
+    if (isAuthError(error)) {
+      setLogOut()
+    }
 
     throw error
   }
@@ -110,25 +128,55 @@ export const createUser = async (user: { email: string; password: string; friend
   }
 }
 
-export const debouncedUpdateUser = debounce(() => updateUser(), 1000)
+let saveRetries = 0
+
+// Each save sends the whole collection, so trying again cannot apply a change twice.
+const saveCards = async () => {
+  try {
+    await updateUser()
+    saveRetries = 0
+  } catch (error) {
+    console.error('Error:', error)
+
+    if (!isAuthError(error) && saveRetries < MAX_SAVE_RETRIES) {
+      saveRetries++
+      retrySaveCards()
+    }
+  }
+}
+const retrySaveCards = debounce(() => saveCards(), SAVE_RETRY_DELAY)
+
+export const debouncedUpdateUser = debounce(() => {
+  saveRetries = 0
+  saveCards()
+}, 1000)
+
 export const updateUser = async () => {
   if (!isLogged()) return
 
-  const result = await useAPI(
-    '/user/',
-    'PUT',
-    {
-      ...getUserInfo(),
-      wanted: getWantedCardsAsArray.value,
-      giving: getGivingCardsAsArray.value,
-    },
-    false,
-  )
+  try {
+    const result = await useAPI(
+      '/user/',
+      'PUT',
+      {
+        ...getUserInfo(),
+        wanted: getWantedCardsAsArray.value,
+        giving: getGivingCardsAsArray.value,
+      },
+      false,
+    )
 
-  if (result === 'updated') {
+    if (result !== 'updated') {
+      throw result
+    }
+
+    saveFailed.value = false
+
     return true
-  } else {
-    throw result
+  } catch (error) {
+    saveFailed.value = true
+
+    throw error
   }
 }
 

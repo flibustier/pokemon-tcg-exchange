@@ -82,7 +82,7 @@ const submit = async () => {
     }
   } catch (error) {
     if (error !== 'insufficient credentials') {
-      submitError.value = error
+      submitError.value = error === 'ko' ? 'the server is busy, please try again' : error
     }
     emit('error', error)
   } finally {

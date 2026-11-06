@@ -2,7 +2,7 @@
 import { onMounted } from 'vue'
 import { RouterView, RouterLink } from 'vue-router'
 
-import { fetchUser } from '@/services/api'
+import { fetchUser, saveFailed } from '@/services/api'
 import { isLogged } from '@/services/store'
 
 import PrimaryButton from '@/components/atoms/PrimaryButton.vue'
@@ -53,10 +53,29 @@ onMounted(async () => {
     <RouterView />
   </main>
 
+  <p v-if="saveFailed" class="save-error" role="alert">
+    Your latest changes could not be saved yet, please stay on this page.
+  </p>
+
   <footer class="container"></footer>
 </template>
 
 <style scoped>
+.save-error {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: max-content;
+  max-width: calc(100% - 2rem);
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  color: #8a1c1c;
+  background-color: #fdecea;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 20%);
+}
+
 header {
   width: 100%;
   display: flex;
