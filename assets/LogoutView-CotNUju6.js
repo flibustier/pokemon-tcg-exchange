@@ -1,0 +1,1 @@
+import{O as e,R as t,h as n,o as r,s as i}from"./_plugin-vue_export-helper-oU5ONlvc.js";import{t as a}from"./CenteredLayout-D03Q2rEs.js";import{D as o}from"./app-DzKnN5aO.js";var s=n({__name:`LogoutView`,setup(n){return o(),window.location.replace(`/`),(n,o)=>(e(),i(a,null,{default:t(()=>[...o[0]||=[r(`h1`,null,`Logging out...`,-1)]]),_:1}))}});export{s as default};
