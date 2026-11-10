@@ -56,7 +56,7 @@ defineExpose({ showModal })
         <div class="row">
           <img src="/images/BoosterPoints.png" height="32" alt="Booster points cost" />
 
-          <span>{{ rarities[card.rarity as keyof typeof rarities].points }}</span>
+          <span>{{ (rarities[card.rarity as keyof typeof rarities] as { points?: number }).points ?? '–' }}</span>
         </div>
       </div>
     </div>

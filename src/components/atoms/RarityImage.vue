@@ -22,6 +22,8 @@ const props = defineProps({
 })
 
 const rarity = computed(() => rarities[props.rarity as keyof typeof rarities])
+// Some rarities, like AN, have no symbol to repeat
+const count = computed(() => ('count' in rarity.value ? rarity.value.count : 0))
 
 const imgProps = computed(() => {
   let height, width
@@ -47,6 +49,6 @@ const imgProps = computed(() => {
 
 <template>
   <span :title="rarity.label || ''" style="display: flex">
-    <img v-bind="imgProps" v-for="i in rarity.count" :key="i" />
+    <img v-bind="imgProps" v-for="i in count" :key="i" />
   </span>
 </template>

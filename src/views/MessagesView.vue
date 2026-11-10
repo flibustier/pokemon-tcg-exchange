@@ -6,7 +6,7 @@ import type { Message } from '@/types'
 
 import { formatDate } from '@/services/utils'
 import { cards, type Card } from '@/services/cards'
-import { getUserInfo, discussions } from '@/services/store'
+import { discussions } from '@/services/store'
 import { getMessages, getProposals, postMessage, refreshDiscussions } from '@/services/api'
 
 import UserBadge from '@/components/atoms/UserBadge.vue'
@@ -63,7 +63,7 @@ const refresh = async () => {
     messages.value = (await getMessages(discussionID.value as string)).reverse()
     const newLength = messages.value.length
 
-    /* disable beta access temporarily
+    /* disable beta access temporarily (import getUserInfo from the store again to restore it)
     if (messages.value.length === 0 && !getUserInfo().has_beta_access) {
       router.push({ name: 'beta' })
     }
