@@ -1,8 +1,13 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test'
 
-// See here how to get started:
-// https://playwright.dev/docs/intro
-test('visits the app root url', async ({ page }) => {
-  await page.goto('/');
-  await expect(page.locator('div.greetings > h1')).toHaveText('You did it!');
+test('shows the cards on the home page', async ({ page }) => {
+  await page.route(
+    (url) => url.hostname !== 'localhost',
+    (route) => route.abort(),
+  )
+  await page.goto('/')
+
+  await expect(page.getByText('Pocket Exchange Center')).toBeVisible()
+  await expect(page.locator('.card-grid .card').first()).toBeVisible()
+  await expect(page.locator('.input-search')).toHaveCount(1)
 })

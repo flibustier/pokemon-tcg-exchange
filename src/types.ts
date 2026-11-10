@@ -8,6 +8,7 @@ export interface Proposal {
   card_wanted: string
   card_to_give: string
   other_user_date: string
+  other_last_seen?: string
   card1: Card
   card2: Card
 }

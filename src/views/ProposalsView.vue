@@ -50,6 +50,7 @@ type ProposalGroup = {
   wantedCards: Card[]
   givenCards: Card[]
   lastUpdate: string
+  lastSeen?: string
 }
 
 const cardContainsFilterTerms = (card: Card) =>
@@ -58,7 +59,14 @@ const cardContainsFilterTerms = (card: Card) =>
 const proposalsByRarityAndFriendId = computed(() => {
   return data.value.reduce((acc: ProposalGroup[], proposal: Proposal): ProposalGroup[] => {
     const rarity = proposal.card1.rarity
-    const { friend_id: friendID, icon, pseudo, language, other_user_date } = proposal
+    const {
+      friend_id: friendID,
+      icon,
+      pseudo,
+      language,
+      other_user_date,
+      other_last_seen,
+    } = proposal
 
     if (
       (filters.value.raritySelection.length && !filters.value.raritySelection.includes(rarity)) ||
@@ -91,6 +99,7 @@ const proposalsByRarityAndFriendId = computed(() => {
         pseudo,
         language,
         lastUpdate: formatDate(other_user_date),
+        lastSeen: other_last_seen ? formatDate(other_last_seen) : undefined,
         wantedCards: [proposal.card1],
         givenCards: [proposal.card2],
       })

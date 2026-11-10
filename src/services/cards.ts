@@ -26,4 +26,6 @@ export const cards = allCards.map((card) => ({
 
 export type Card = (typeof cards)[0]
 
+export const cardsById = new Map(cards.map((card) => [card.id, card]))
+
 export { rarities }

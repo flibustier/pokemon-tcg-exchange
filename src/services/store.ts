@@ -3,7 +3,7 @@ import { ref, watch, computed, reactive } from 'vue'
 import type { Discussion } from '@/types'
 
 import { debouncedUpdateUser } from './api'
-import { cards } from './cards'
+import { cardsById } from './cards'
 import { isEqual } from './utils'
 
 const storage = import.meta.env.SSR
@@ -145,9 +145,7 @@ const getCardsAsArray = (cardsStore: Record<string, number>) => {
       const [set, numberString] = id.split('-')
       const number = parseInt(numberString)
 
-      const additionalInformations = cards.find(
-        (card) => card.set === set && card.number === number,
-      )
+      const additionalInformations = cardsById.get(id)
 
       return {
         id,

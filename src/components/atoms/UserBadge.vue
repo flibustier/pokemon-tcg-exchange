@@ -11,6 +11,7 @@ const { friendID, pseudo } = defineProps<{
   friendID: string
   withoutBorder?: boolean
   lastUpdate?: string
+  lastSeen?: string
 }>()
 
 const formattedFriendID = computed(() => formatFriendID(friendID))
@@ -66,12 +67,13 @@ const copyToClipboard = (text: string) => {
           </svg>
         </button>
       </div>
-      <div
-        v-if="lastUpdate"
-        class="time"
-        :title="`The last update from this user is ` + lastUpdate"
-      >
-        {{ lastUpdate }}
+      <div v-if="lastUpdate" class="time">
+        <span :title="`This player last updated their cards: ${lastUpdate}`">
+          Updated {{ lastUpdate }}
+        </span>
+        <span v-if="lastSeen" :title="`This player last opened the site: ${lastSeen}`">
+          · Seen {{ lastSeen }}
+        </span>
       </div>
     </div>
     <FriendQRModal v-model="isQRVisible" :friendID :pseudo />
