@@ -5,10 +5,17 @@ import { UNAUTHORIZED_SETS } from '@/../config.json' with { type: 'json' }
 import { wantedCardsCountById, givingCardsCountById } from '@/services/store'
 import { cards, allSets, rarities } from '@/services/cards'
 import type { Card } from '@/services/cards'
+import { debounce } from '@/services/utils'
 
-import NumberInput from './atoms/NumberInput.vue'
 import CardsFilters from './CardsFilters.vue'
+import CardsSet from './CardsSet.vue'
 import SetSelectorModal from './modals/SetSelectorModal.vue'
+
+const props = defineProps<{
+  step: number
+}>()
+
+const isWishlist = computed(() => props.step === 1)
 
 const isSetSelectorModalVisible = ref(false)
 
@@ -19,90 +26,82 @@ const filters = ref({
   cardName: undefined as string | undefined,
 })
 
-const isRestricted = (card: Card) => {
-  return (
+const sets = allSets
+  .filter(({ code }) => !code.startsWith('PROMO'))
+  .sort((a, b) => (a.code < b.code ? 1 : -1))
+
+// Computed once: the cards of each set, whether they can be traded, their name for the search
+const cardsBySet: Record<string, Card[]> = Object.fromEntries(sets.map(({ code }) => [code, []]))
+const restricted: Record<string, boolean> = {}
+const searchName: Record<string, string> = {}
+for (const card of cards) {
+  cardsBySet[card.set]?.push(card)
+  restricted[card.id] =
     !rarities[card.rarity as keyof typeof rarities].tradeable ||
     UNAUTHORIZED_SETS.includes(card.set)
-  )
+  searchName[card.id] = card.name.toLowerCase()
 }
 
-const title = (card: Card) => {
-  if (isRestricted(card)) {
-    return 'Cannot be exchange due to Pokemon TCG Pocket rules'
-  } else if (isWantedCard(card)) {
-    return 'Already in your want list'
-  }
-  return card.name
-}
-
-const props = defineProps<{
-  step: number
-}>()
-
-const isWishlist = computed(() => props.step === 1)
-
-const sets = computed(() =>
-  allSets
-    .filter(({ code }) => !code.startsWith('PROMO'))
-    .sort((a, b) => (a.code < b.code ? 1 : -1)),
+const cardCountById = computed(() =>
+  isWishlist.value ? wantedCardsCountById.value : givingCardsCountById.value,
 )
 
-const filteredCardsBySet = computed(() => {
-  const result: Record<string, Card[]> = {}
-  for (const set of sets.value) {
-    result[set.code] = cards.filter(
-      (card) =>
-        card.set === set.code.toUpperCase() &&
-        (!filters.value.cardName ||
-          card.name.toLowerCase().includes(filters.value.cardName.toLowerCase())) &&
-        (!filters.value.hideEmpty || cardCountById.value[cardId(card)] > 0) &&
-        (!filters.value.hideUnavailable ||
-          (!isRestricted(card) && (!isWantedCard(card) || props.step === 1))) &&
-        (filters.value.raritySelection.length === 0 ||
-          filters.value.raritySelection.includes(card.rarity)),
+// Going through every card takes a few dozen milliseconds on a phone: the search waits for a
+// pause in typing, so the letters show up as they are typed.
+const searchedName = ref<string>()
+watch(
+  () => filters.value.cardName,
+  debounce(() => (searchedName.value = filters.value.cardName?.toLowerCase()), 150),
+)
+
+const isSameSet = (a: Set<string>, b: Set<string>) =>
+  a.size === b.size && [...a].every((id) => b.has(id))
+
+// Ids of the cards the filters let through, by set. Counts are only read when a filter
+// needs them, so changing a count does not recompute this. A set whose result did not
+// change keeps the same object, so it is not rendered again.
+const visibleIds = computed<Record<string, Set<string>>>((previous) => {
+  const { hideEmpty, hideUnavailable, raritySelection } = filters.value
+  const name = searchedName.value
+  const result: Record<string, Set<string>> = {}
+  for (const { code } of sets) {
+    const ids = new Set(
+      cardsBySet[code]
+        .filter(
+          (card) =>
+            (!name || searchName[card.id].includes(name)) &&
+            (!hideEmpty || cardCountById.value[card.id] > 0) &&
+            (!hideUnavailable ||
+              (!restricted[card.id] &&
+                (isWishlist.value || !(wantedCardsCountById.value[card.id] > 0)))) &&
+            (raritySelection.length === 0 || raritySelection.includes(card.rarity)),
+        )
+        .map(({ id }) => id),
     )
+    const before = previous?.[code]
+    result[code] = before && isSameSet(before, ids) ? before : ids
   }
   return result
 })
 
-const cardCountById = computed(() => {
-  if (isWishlist.value) {
-    return wantedCardsCountById.value
-  } else {
-    return givingCardsCountById.value
-  }
-})
-
-const isWantedCard = (card: Card) => {
-  if (props.step === 2) {
-    return wantedCardsCountById.value[cardId(card)] > 0
-  }
-
-  return false
-}
-
-const cardId = (card: Card) => `${card.set}-${card.number}`
-
-const increase = (card: Card) => {
-  if (!isWantedCard(card) && !isRestricted(card)) {
-    cardCountById.value[cardId(card)] = (cardCountById.value[cardId(card)] || 0) + 1
-  }
-}
+const hasVisibleCards = (code: string) => visibleIds.value[code].size > 0
+const firstVisibleCode = computed(() => sets.find(({ code }) => hasVisibleCards(code))?.code)
+const hasNoResults = computed(() => firstVisibleCode.value === undefined)
 
 const header = useTemplateRef('header')
 const headerHeight = ref(0)
 const currentSetIndex = ref(0)
-const currentSet = computed(() => sets.value[currentSetIndex.value])
+const currentSet = computed(() => sets[currentSetIndex.value])
 
-// The « » arrows skip the sets the filters emptied: those are not rendered.
+// The « » arrows skip the sets the filters emptied
 const visibleSetIndexes = computed(() =>
-  sets.value.flatMap(({ code }, i) => (filteredCardsBySet.value[code].length > 0 ? [i] : [])),
+  sets.flatMap(({ code }, i) => (hasVisibleCards(code) ? [i] : [])),
 )
 const neighbourSet = (offset: number) => {
   const position = visibleSetIndexes.value.indexOf(currentSetIndex.value)
   if (position === -1) return undefined
   const index = visibleSetIndexes.value[position + offset]
-  return index === undefined ? undefined : sets.value[index]
+  return index === undefined ? undefined : sets[index]
 }
 const previousSet = computed(() => neighbourSet(-1))
 const nextSet = computed(() => neighbourSet(1))
@@ -111,15 +110,15 @@ const nextSet = computed(() => neighbourSet(1))
 const updateCurrentSet = () => {
   const headerBottom = header.value?.getBoundingClientRect().bottom ?? 0
   let index = -1
-  sets.value.forEach(({ code }, i) => {
-    if (filteredCardsBySet.value[code].length === 0) return
+  sets.forEach(({ code }, i) => {
+    if (!hasVisibleCards(code)) return
     const top = document.getElementById(code)?.getBoundingClientRect().top ?? Infinity
     if (index === -1 || top <= headerBottom + 1) index = i
   })
   if (index !== -1) currentSetIndex.value = index
 }
 
-watch(filteredCardsBySet, () => nextTick(updateCurrentSet))
+watch(visibleIds, () => nextTick(updateCurrentSet))
 
 const resizeObserver =
   typeof ResizeObserver === 'undefined'
@@ -184,49 +183,18 @@ onUnmounted(() => {
       </div>
       <CardsFilters v-model="filters" :cards />
     </div>
-    <template v-for="(set, index) in sets" :key="set.code">
-      <section v-if="filteredCardsBySet[set.code].length > 0" class="set" :id="set.code">
-        <div class="set-divider">
-          <img
-            :src="set.imagePath"
-            :alt="set.name.en"
-            :title="set.name.en"
-            width="192"
-            height="85"
-            loading="lazy"
-          />
-        </div>
-        <div class="card-grid">
-          <div
-            class="card"
-            v-for="(card, cardIndex) in filteredCardsBySet[set.code]"
-            :key="cardIndex"
-          >
-            <h3 :title="card.name">
-              <span class="card-label hidden-sm">{{ card.name }}</span>
-              <span class="card-number">{{ card.number.toString().padStart(3, '0') }}</span>
-            </h3>
-            <img v-if="false" src="/images/wanted.png" alt="wanted" class="corner-icon" />
-            <img
-              :src="card.imagePaths.thumbnail"
-              :alt="card.name"
-              class="card-image"
-              width="200"
-              height="280"
-              :class="{ disabled: isWantedCard(card) || isRestricted(card) }"
-              @click="increase(card)"
-              :loading="index === 0 && cardIndex < 5 ? 'eager' : 'lazy'"
-              :title="title(card)"
-            />
-            <span v-if="isRestricted(card)" class="card-decoration" :title="title(card)">🚫</span>
-            <NumberInput v-else-if="!isWantedCard(card)" v-model="cardCountById[cardId(card)]" />
-          </div>
-        </div>
-      </section>
-    </template>
-    <p v-if="Object.values(filteredCardsBySet).flat().length === 0" class="no-results">
-      No results :/<br />Please adjust your filters
-    </p>
+    <CardsSet
+      v-for="(set, index) in sets"
+      :key="set.code"
+      :class="{ 'is-first': set.code === firstVisibleCode }"
+      :set
+      :cards="cardsBySet[set.code]"
+      :visible-ids="visibleIds[set.code]"
+      :restricted
+      :is-wishlist="isWishlist"
+      :eager-count="index === 0 ? 5 : 0"
+    />
+    <p v-if="hasNoResults" class="no-results">No results :/<br />Please adjust your filters</p>
   </div>
 </template>
 
@@ -278,103 +246,10 @@ onUnmounted(() => {
   transform: scale(1.05);
 }
 
-.set {
-  scroll-margin-top: var(--header-height);
-  width: 100%;
-}
-
-/* Between two sets: a line, the set's logo, a line */
-.set-divider {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  margin: 1.5rem 0 1rem;
-
-  &::before,
-  &::after {
-    content: '';
-    flex: 1;
-    border-top: 2px solid #e4e4e4;
-  }
-
-  img {
-    height: 56px;
-    width: auto;
-  }
-}
-
-/* The sticky header already shows the first set's logo */
-.set:first-of-type .set-divider {
-  display: none;
-}
-
-.card-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.card {
-  width: 20%;
-  padding: 0.5rem;
-  margin-bottom: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  align-self: stretch;
-  img {
-    width: 100%;
-    height: auto;
-  }
-}
-
 .no-results {
   text-align: center;
   font-size: 1.5rem;
   margin-top: 2rem;
-}
-
-h3 {
-  max-width: 100%;
-  display: flex;
-}
-
-.card-label {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  max-width: 100%;
-  white-space: nowrap;
-  margin-right: 0.5rem;
-}
-
-.card-number {
-  font-size: 1.2rem;
-}
-
-.card-image {
-  cursor: pointer;
-}
-
-.card-image.disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-.card-decoration {
-  position: relative;
-  bottom: 55%;
-  height: 0;
-  font-size: 32px;
-  cursor: not-allowed;
-}
-
-.corner-icon {
-  position: relative;
-  width: 10px;
 }
 
 @media (max-width: 700px) {
@@ -389,10 +264,6 @@ h3 {
   .set-current-logo {
     height: 83px;
     width: auto;
-  }
-
-  .card {
-    padding: 2px;
   }
 }
 </style>
