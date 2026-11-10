@@ -304,8 +304,9 @@ onUnmounted(() => {
   }
 }
 
+/* The sticky header already shows the first set's logo */
 .set:first-of-type .set-divider {
-  margin-top: 0.5rem;
+  display: none;
 }
 
 .card-grid {
