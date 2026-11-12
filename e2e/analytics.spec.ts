@@ -29,7 +29,7 @@ test('counts the pages visited inside the app, not the landing page', async ({ p
   expect(counted).toEqual(['/help', '/'])
 })
 
-test('counts the landing page without its parameters', async ({ page }) => {
+test('counts the landing page without its parameters or player id', async ({ page }) => {
   await stubAnalytics(page)
   await page.goto('/help?email=someone%40example.com&token=secret')
   await page.waitForFunction(() => window.goatcounter?.count)
@@ -37,7 +37,11 @@ test('counts the landing page without its parameters', async ({ page }) => {
   // count.js calls this with the landing path and counts what it returns
   const counted = await page.evaluate(() => {
     const settings = window.goatcounter as unknown as { path: (path: string) => string }
-    return settings.path(location.pathname + location.search)
+    return [
+      settings.path(location.pathname + location.search),
+      settings.path('/account/messages/1234567890123456?i=1&p=2'),
+      settings.path('/account/messages'),
+    ]
   })
-  expect(counted).toBe('/help')
+  expect(counted).toEqual(['/help', '/account/messages/:id', '/account/messages'])
 })
