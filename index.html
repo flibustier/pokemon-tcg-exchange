@@ -56,6 +56,11 @@
       content="Exchange your Pokemon TCG Pocket cards with anyone in the world"
     />
     <meta property="twitter:image" content="https://pokemon-tcg.exchange/images/open-graph.png" />
+    <script>
+      // GoatCounter counts the landing page without its parameters: a sign-in link carries the
+      // email address and a token, which must not end up in the statistics.
+      window.goatcounter = { path: (path) => path.split('?')[0] }
+    </script>
   </head>
   <body>
     <div id="app"></div>
