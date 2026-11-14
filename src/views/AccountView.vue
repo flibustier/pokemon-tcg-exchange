@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-import { hasUnreadMessages, isAccountIncomplete } from '@/services/store'
+import { hasUnreadMessages, isAccountIncomplete, isEmailPending } from '@/services/store'
 
 import MessagesView from '@/views/MessagesView.vue'
 import ProposalsView from '@/views/ProposalsView.vue'
@@ -11,6 +11,7 @@ import BetaAccessForm from '@/components/forms/BetaAccessForm.vue'
 import SettingsForm from '@/components/forms/SettingsForm.vue'
 import MenuButton from '@/components/atoms/MenuButton.vue'
 import CardsGrid from '@/components/CardsGrid.vue'
+import EmailConfirmationBanner from '@/components/EmailConfirmationBanner.vue'
 import InsightView from './InsightView.vue'
 import HeartIcon from '@/components/icons/HeartIcon.vue'
 import CardIcon from '@/components/icons/CardIcon.vue'
@@ -45,6 +46,7 @@ const isCardManaging = computed(() =>
       </nav>
     </div>
     <div class="content">
+      <EmailConfirmationBanner v-if="isEmailPending" />
       <CardsGrid v-if="isCardManaging" :step="activeRoute === 'wishlist' ? 1 : 2" />
       <ProposalsView v-if="activeRoute === 'proposals'" />
       <CenteredLayout v-if="activeRoute === 'settings' || activeRoute === 'account'">

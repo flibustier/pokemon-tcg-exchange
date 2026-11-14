@@ -57,8 +57,14 @@ export type RarityRule = {
   enabled: 1 | 0
 }
 
+// 'legacy': signed up before emails were confirmed, nothing to do. 'pending': a new player
+// who hasn't opened their confirmation mail yet, no notifications nor messages until then.
+export type EmailStatus = 'legacy' | 'pending' | 'verified'
+
 type User = {
   friend_id: string
+  email?: string
+  email_status?: EmailStatus
   pseudo?: string
   icon?: string
   language?: string
@@ -125,6 +131,8 @@ export const isGivingStepCompleted = computed(() =>
 export const isCardsIncomplete = computed(
   () => !isWantedStepCompleted.value || !isGivingStepCompleted.value,
 )
+
+export const isEmailPending = computed(() => userInfo.value.email_status === 'pending')
 
 export const isAccountIncomplete = computed(() => {
   const { pseudo, icon, language } = userInfo.value
@@ -202,6 +210,13 @@ export const setLogin = async (email: string, password: string, hashedPassword?:
     hashedPassword = await passwordToSha512(password)
   }
 
+  storage.setItem(ObjectName.LogIn, btoa(email + ':' + hashedPassword))
+}
+
+// The email is the login: after a change of email, sign in with the new one and the same password.
+export const changeLoginEmail = (email: string) => {
+  const login = atob(getBasicAuth())
+  const hashedPassword = login.slice(login.indexOf(':') + 1)
   storage.setItem(ObjectName.LogIn, btoa(email + ':' + hashedPassword))
 }
 

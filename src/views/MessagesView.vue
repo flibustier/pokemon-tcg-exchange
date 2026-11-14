@@ -6,7 +6,7 @@ import type { Message } from '@/types'
 
 import { formatDate } from '@/services/utils'
 import { cards, type Card } from '@/services/cards'
-import { discussions } from '@/services/store'
+import { discussions, isEmailPending } from '@/services/store'
 import { getMessages, getProposals, postMessage, refreshDiscussions } from '@/services/api'
 
 import UserBadge from '@/components/atoms/UserBadge.vue'
@@ -28,6 +28,12 @@ const showMobileDiscussions = ref(false)
 const currentDiscussion = computed(() => {
   return discussions.value.find((discussion) => discussion.friend_id === discussionID.value)
 })
+
+// A player who deleted their account is `deleted-<id>`: their messages stay readable, nobody can
+// answer them any more.
+const DELETED_PLAYER = 'Deleted player'
+const isDeletedID = (friendID?: string) => !!friendID?.startsWith('deleted-')
+const isCounterpartDeleted = computed(() => isDeletedID(discussionID.value))
 
 const navigateToDiscussion = async (friendID: string) => {
   showMobileDiscussions.value = false
@@ -93,7 +99,7 @@ watch(
       proposalsCards.value = []
     }
 
-    if (discussionID.value) {
+    if (discussionID.value && !isDeletedID(discussionID.value)) {
       const proposals = await getProposals(discussionID.value)
       proposals.forEach(({ card_wanted, card_to_give }) => {
         const card1 = cards.find((card) => card.id === card_wanted)
@@ -212,9 +218,11 @@ onUnmounted(() => {
             height="40px"
             alt=""
           />
+          <div v-else-if="discussion.deleted" class="avatar">?</div>
           <div v-else class="avatar">{{ discussion.friend_id.slice(-4) }}</div>
           <div class="content">
-            <div v-if="discussion.pseudo && discussion.pseudo !== ''" class="name">
+            <div v-if="discussion.deleted" class="name deleted">{{ DELETED_PLAYER }}</div>
+            <div v-else-if="discussion.pseudo && discussion.pseudo !== ''" class="name">
               {{ discussion.pseudo }}
               <span class="language" v-if="discussion.language !== ''"
                 >({{ discussion.language }})</span
@@ -251,13 +259,15 @@ onUnmounted(() => {
             </svg>
           </button>
         </div>
+        <div v-if="isCounterpartDeleted" class="name deleted">{{ DELETED_PLAYER }}</div>
         <UserBadge
+          v-else
           :icon="currentDiscussion?.avatar || (route.query.i as string)"
           :pseudo="currentDiscussion?.pseudo || (route.query.p as string)"
           :friendID="currentDiscussion?.friend_id || (discussionID as string) || ''"
           without-border
         />
-        <div class="actions">
+        <div v-if="!isCounterpartDeleted" class="actions">
           <RouterLink
             :to="{ name: 'proposals', query: { id: discussionID } }"
             title="Check common proposals"
@@ -298,7 +308,13 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
-      <div class="chat-input">
+      <p v-if="isCounterpartDeleted" class="chat-closed">
+        This player deleted their account, you can no longer answer them.
+      </p>
+      <p v-else-if="isEmailPending" class="chat-closed">
+        Please confirm your email to send messages: the link is in the email we sent you.
+      </p>
+      <div v-else class="chat-input">
         <input
           type="text"
           placeholder="Write a message..."
@@ -495,6 +511,16 @@ h2 {
   color: #333;
   text-decoration: none;
   font-weight: bold;
+}
+.name.deleted {
+  font-style: italic;
+  color: #666;
+}
+.chat-closed {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #ddd;
+  color: #666;
+  text-align: center;
 }
 .chat-input {
   padding: 0.5rem 1rem;

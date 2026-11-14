@@ -5,16 +5,25 @@ import { useRouter } from 'vue-router'
 import PlainButton from '@/components/atoms/PlainButton.vue'
 import RarityImage from '@/components/atoms/RarityImage.vue'
 import ToggleSwitch from '@/components/atoms/ToggleSwitch.vue'
+import BaseModal from '@/components/modals/BaseModal.vue'
 
-import { getUserInfo, setUserInfo, type RarityRule } from '@/services/store'
-import { updateUser } from '@/services/api'
+import { getUserInfo, setLogOut, setUserInfo, userInfo, type RarityRule } from '@/services/store'
+import { deleteAccount, updateUser } from '@/services/api'
 
 const MAX_AVATAR_NUMBER = 123
 const languages = ['ENG', 'SPA', 'FRA', 'GER', 'ITA', 'POR', 'JPN', 'KOR', 'CHT']
 
 const router = useRouter()
 
-const { rarity_rules, ...info } = getUserInfo()
+// email and email_status come from the server: they are not settings saved with the others
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const { rarity_rules, email, email_status, ...info } = getUserInfo()
+
+const emailStatusLabel = computed(() => {
+  if (userInfo.value.email_status === 'pending') return 'not confirmed yet'
+  if (userInfo.value.email_status === 'verified') return 'confirmed'
+  return ''
+})
 
 const user = reactive<{
   accept_notifications: boolean
@@ -82,6 +91,37 @@ const save = async () => {
   })
   success.value = (await updateUser()) || false
 }
+
+const CONFIRMATION_WORD = 'DELETE'
+const showDeletion = ref(false)
+const typedConfirmation = ref('')
+const isDeleting = ref(false)
+const deletionError = ref('')
+
+const openDeletion = () => {
+  typedConfirmation.value = ''
+  deletionError.value = ''
+  showDeletion.value = true
+}
+
+const confirmDeletion = async () => {
+  if (typedConfirmation.value !== CONFIRMATION_WORD || isDeleting.value) return
+
+  isDeleting.value = true
+  deletionError.value = ''
+  try {
+    const result = await deleteAccount()
+    if (result === 'deleted') {
+      setLogOut()
+      window.location.replace('/')
+      return
+    }
+    deletionError.value = result === 'ko' ? 'the server is busy, please try again' : result
+  } catch {
+    deletionError.value = 'the server could not be reached, please try again'
+  }
+  isDeleting.value = false
+}
 </script>
 
 <template>
@@ -117,6 +157,12 @@ const save = async () => {
         maxlength="16"
         :disabled="true"
       />
+    </div>
+    <div class="form-group" v-if="userInfo.email">
+      <label for="email" class="form-label"
+        >Email <span v-if="emailStatusLabel">({{ emailStatusLabel }})</span></label
+      >
+      <input :value="userInfo.email" type="email" id="email" class="friend-id" :disabled="true" />
     </div>
     <div class="form-group">
       <label for="pseudo" class="form-label">Pseudonym (14 characters max)</label>
@@ -189,7 +235,43 @@ const save = async () => {
     }}</PlainButton>
 
     <RouterLink to="/logout" class="danger">Logout</RouterLink>
+
+    <div class="danger-zone">
+      <button type="button" class="delete-button" @click="openDeletion">Delete my account</button>
+    </div>
   </form>
+
+  <BaseModal v-model="showDeletion" title="Delete your account">
+    <form class="deletion" @submit.prevent="confirmDeletion">
+      <p>This deletes for good, and cannot be undone:</p>
+      <ul>
+        <li>your wishlist, your offers and your settings,</li>
+        <li>your email, your password and your friend ID.</li>
+      </ul>
+      <p>
+        The players you talked with keep your messages, from a “Deleted player” they can no longer
+        answer.
+      </p>
+      <label for="delete-confirmation"
+        >Type <strong>{{ CONFIRMATION_WORD }}</strong> to confirm</label
+      >
+      <input
+        v-model.trim="typedConfirmation"
+        id="delete-confirmation"
+        class="friend-id"
+        autocomplete="off"
+        autocapitalize="characters"
+      />
+      <button
+        type="submit"
+        class="delete-button"
+        :disabled="typedConfirmation !== CONFIRMATION_WORD || isDeleting"
+      >
+        {{ isDeleting ? 'Deleting…' : 'Delete my account for good' }}
+      </button>
+      <p v-if="deletionError" class="deletion-error" role="alert">Error: {{ deletionError }}</p>
+    </form>
+  </BaseModal>
 </template>
 
 <style scoped>
@@ -307,5 +389,48 @@ h2,
   margin-top: 1.5rem;
   color: #ff5252;
   text-align: center;
+}
+
+.danger-zone {
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.delete-button {
+  padding: 8px 20px;
+  border: 1px solid #ff5252;
+  border-radius: 25px;
+  background: white;
+  color: #ff5252;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.delete-button:hover:not(:disabled) {
+  background: #ff5252;
+  color: white;
+}
+
+.delete-button:disabled {
+  border-color: #e0e0e0;
+  color: #9e9e9e;
+  cursor: not-allowed;
+}
+
+.deletion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 420px;
+}
+
+.deletion ul {
+  padding-left: 1.5rem;
+}
+
+.deletion-error {
+  color: #ff5252;
 }
 </style>

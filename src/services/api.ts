@@ -16,6 +16,7 @@ import {
   getBasicAuth,
   storeDiscussions,
   setLogOut,
+  changeLoginEmail,
   wantedCardsCountById,
   givingCardsCountById,
 } from './store'
@@ -134,6 +135,8 @@ export const createUser = async (user: { email: string; password: string; friend
       await setLogin(user.email, user.password)
       setUserInfo({
         friend_id: user.friendId,
+        email: user.email,
+        email_status: 'pending',
       })
 
       return true
@@ -297,3 +300,30 @@ export const sendMagicLink = (email: string, friend_id: string) =>
     },
     false,
   )
+
+// Public: the confirmation mail is often opened on another device than the one signed in.
+export const confirmEmail = async (token: string): Promise<string> => {
+  const response = await fetch(endpoint + '/confirm_email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token }),
+  })
+  return response.text()
+}
+
+export const resendConfirmationEmail = (): Promise<string> =>
+  useAPI('/user/confirmation_email', 'POST', undefined, false)
+
+// Only while the email is pending. The server sends a new confirmation mail to the new address.
+export const changeEmail = async (email: string): Promise<string> => {
+  const newEmail = email.trim().toLowerCase()
+  const result = await useAPI('/user/email', 'PUT', { email: newEmail }, false)
+  if (result === 'updated') {
+    changeLoginEmail(newEmail)
+    setUserInfo({ ...getUserInfo(), email: newEmail })
+  }
+  return result
+}
+
+export const deleteAccount = (): Promise<string> =>
+  useAPI('/user/', 'DELETE', { confirm: 'DELETE' }, false)

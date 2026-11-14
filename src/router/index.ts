@@ -32,6 +32,11 @@ export const routes = [
     component: () => import('../views/LoginView.vue'),
   },
   {
+    path: '/confirm-email',
+    name: 'confirm-email',
+    component: () => import('../views/ConfirmEmailView.vue'),
+  },
+  {
     path: '/logout',
     name: 'logout',
     component: () => import('../views/LogoutView.vue'),

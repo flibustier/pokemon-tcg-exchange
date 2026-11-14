@@ -21,6 +21,8 @@ export interface Discussion {
   last_message: string
   last_message_date: string
   read: boolean
+  // The other player deleted their account: friend_id is then `deleted-<id>`.
+  deleted?: boolean
 }
 
 export interface Message {
