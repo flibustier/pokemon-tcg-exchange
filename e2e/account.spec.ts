@@ -142,6 +142,32 @@ test.describe('email confirmation', () => {
     expect(await loginOf(page)).toBe(`sacha@pallet.fr:${HASH}`)
   })
 
+  test('hides the banner when the player confirmed elsewhere, without reloading the cards', async ({
+    page,
+  }) => {
+    await signIn(page, 'pending')
+    let status = 'pending'
+    await mockApi(page, {
+      // Once confirmed, the server has other cards than this tab, which didn't save its own yet
+      'GET /user/session': (route) =>
+        route.fulfill({
+          status: 200,
+          json: { ...session(status), ...(status === 'verified' && { wanted: '[]' }) },
+          headers: cors,
+        }),
+    })
+
+    await page.goto('/account/settings')
+    await expect(page.getByText('Please confirm your email')).toBeVisible()
+    const cardsBefore = await page.evaluate(() => localStorage.getItem('wanted_cards'))
+
+    status = 'verified'
+    await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')))
+
+    await expect(page.getByText('Please confirm your email')).toBeHidden()
+    expect(await page.evaluate(() => localStorage.getItem('wanted_cards'))).toBe(cardsBefore)
+  })
+
   test('cannot write messages before confirming', async ({ page }) => {
     await signIn(page, 'pending')
     await mockApi(page, {

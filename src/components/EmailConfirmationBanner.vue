@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 
-import { changeEmail, fetchUser, resendConfirmationEmail } from '@/services/api'
+import { changeEmail, refreshEmailStatus, resendConfirmationEmail } from '@/services/api'
 import { userInfo } from '@/services/store'
 
 const RESENT = 'sent'
@@ -52,7 +52,7 @@ const saveEmail = async () => {
 // The link is often opened on another device or in another tab: check again when the player
 // comes back to this one.
 const refreshOnReturn = () => {
-  if (document.visibilityState === 'visible') fetchUser().catch(() => {})
+  if (document.visibilityState === 'visible') refreshEmailStatus().catch(() => {})
 }
 onMounted(() => document.addEventListener('visibilitychange', refreshOnReturn))
 onUnmounted(() => document.removeEventListener('visibilitychange', refreshOnReturn))

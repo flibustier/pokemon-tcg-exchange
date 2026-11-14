@@ -311,6 +311,13 @@ export const confirmEmail = async (token: string): Promise<string> => {
   return response.text()
 }
 
+// Reads only the email from the session: fetchUser would also replace the cards, and lose the
+// changes not saved yet.
+export const refreshEmailStatus = async () => {
+  const { email, email_status } = await useAPI('/user/session')
+  if (email_status) setUserInfo({ ...getUserInfo(), email, email_status })
+}
+
 export const resendConfirmationEmail = (): Promise<string> =>
   useAPI('/user/confirmation_email', 'POST', undefined, false)
 

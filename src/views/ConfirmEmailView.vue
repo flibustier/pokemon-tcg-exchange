@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue'
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
 import PlainButton from '@/components/atoms/PlainButton.vue'
 
-import { confirmEmail, fetchUser, resendConfirmationEmail } from '@/services/api'
+import { confirmEmail, refreshEmailStatus, resendConfirmationEmail } from '@/services/api'
 import { getUserInfo, isEmailPending, isLogged, setUserInfo } from '@/services/store'
 
 const state = ref<'confirming' | 'confirmed' | 'invalid' | 'error'>('confirming')
@@ -19,7 +19,7 @@ const confirm = async (token: string) => {
       if (isLogged()) {
         setUserInfo({ ...getUserInfo(), email_status: 'verified' })
         // The session loaded by App may have been read before the confirmation
-        fetchUser().catch(() => {})
+        refreshEmailStatus().catch(() => {})
       }
     } else {
       state.value = result === 'ko' ? 'error' : 'invalid'
