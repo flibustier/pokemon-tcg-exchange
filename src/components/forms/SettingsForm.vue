@@ -234,10 +234,9 @@ const confirmDeletion = async () => {
       success ? 'Saved!' : 'Save'
     }}</PlainButton>
 
-    <RouterLink to="/logout" class="danger">Logout</RouterLink>
-
     <div class="danger-zone">
-      <button type="button" class="delete-button" @click="openDeletion">Delete my account</button>
+      <RouterLink to="/logout" class="danger-button">Logout</RouterLink>
+      <button type="button" class="danger-button" @click="openDeletion">Delete my account</button>
     </div>
   </form>
 
@@ -264,7 +263,7 @@ const confirmDeletion = async () => {
       />
       <button
         type="submit"
-        class="delete-button"
+        class="danger-button"
         :disabled="typedConfirmation !== CONFIRMATION_WORD || isDeleting"
       >
         {{ isDeleting ? 'Deleting…' : 'Delete my account for good' }}
@@ -385,35 +384,36 @@ h2,
   max-height: 100%;
 }
 
-.danger {
-  margin-top: 1.5rem;
-  color: #ff5252;
-  text-align: center;
-}
-
 .danger-zone {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
   padding-top: 1rem;
   border-top: 1px solid #e0e0e0;
 }
 
-.delete-button {
+.danger-button {
+  display: inline-block;
   padding: 8px 20px;
   border: 1px solid #ff5252;
   border-radius: 25px;
   background: white;
   color: #ff5252;
+  font-family: inherit;
   font-size: 14px;
+  line-height: normal;
+  text-decoration: none;
   cursor: pointer;
 }
 
-.delete-button:hover:not(:disabled) {
+.danger-button:hover:not(:disabled) {
   background: #ff5252;
   color: white;
 }
 
-.delete-button:disabled {
+.danger-button:disabled {
   border-color: #e0e0e0;
   color: #9e9e9e;
   cursor: not-allowed;
