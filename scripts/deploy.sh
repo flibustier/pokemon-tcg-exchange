@@ -16,6 +16,9 @@ cdate=$(date +"%m-%d-%Y")
 
 yarn build-only
 
+# Source maps go to Bugsink, not to the site
+./scripts/sourcemaps.sh
+
 cd dist
 
 # Remove images that are now hosted on the CDN to keep the gh-pages branch light

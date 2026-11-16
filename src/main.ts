@@ -5,6 +5,7 @@ import { ViteSSG } from 'vite-ssg'
 import App from './App.vue'
 import { routes } from './router'
 import { countPageViews } from './services/analytics'
+import { trackErrors } from './services/errors'
 import { watchTheme } from './services/theme'
 
 // `export const createApp` is required instead of the original `createApp(App).mount('#app')`
@@ -14,8 +15,9 @@ export const createApp = ViteSSG(
   // vue-router options
   { routes },
   // function to have custom setups
-  ({ router, isClient }) => {
+  ({ app, router, isClient }) => {
     if (isClient) {
+      trackErrors(app, router)
       countPageViews(router)
       watchTheme()
     }
