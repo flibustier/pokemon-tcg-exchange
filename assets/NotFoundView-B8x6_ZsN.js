@@ -1,1 +1,4 @@
+
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="8c25a37e-40cb-5461-8a9e-1bfdb633a978")}catch(e){}}();
 import{O as e,R as t,h as n,m as r,o as i,p as a,s as o}from"./_plugin-vue_export-helper-oU5ONlvc.js";import{t as s}from"./CenteredLayout-D03Q2rEs.js";import{t as c}from"./PlainButton-Dq5WpWnw.js";var l=n({__name:`NotFoundView`,setup(n){return(n,l)=>(e(),o(s,null,{default:t(()=>[l[2]||=i(`h1`,{style:{"margin-bottom":`2rem`}},`404: Page not found :/`,-1),r(c,{onClick:l[0]||=e=>n.$router.push(`/`)},{default:t(()=>[...l[1]||=[a(`Return to the home`,-1)]]),_:1})]),_:1}))}});export{l as default};
+//# debugId=8c25a37e-40cb-5461-8a9e-1bfdb633a978
