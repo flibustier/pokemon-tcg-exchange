@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { wantedCardsCountById, givingCardsCountById } from '@/services/store'
+import {
+  wantedCardsCountById,
+  givingCardsCountById,
+  isCoveredByJoker,
+  jokerExclusions,
+  jokerKey,
+  jokers,
+} from '@/services/store'
 import type { Card } from '@/services/cards'
 
 import NumberInput from './atoms/NumberInput.vue'
@@ -11,6 +18,7 @@ const props = defineProps<{
   card: Card
   restricted: boolean
   isWishlist: boolean
+  withJokers?: boolean
   eager: boolean
 }>()
 
@@ -21,11 +29,32 @@ const counts = computed(() =>
 // A card already in the want list cannot be offered
 const isWanted = computed(() => !props.isWishlist && wantedCardsCountById.value[props.card.id] > 0)
 
+// A joker covers this card's set and rarity: the card is given by it, unless the player wants
+// it, lists it with a count, or left it out
+const hasJoker = computed(
+  () =>
+    props.withJokers &&
+    !props.restricted &&
+    jokers.value[jokerKey(props.card.set, props.card.rarity)] === true,
+)
+const isCovered = computed(() => hasJoker.value && isCoveredByJoker(props.card))
+const isLeftOut = computed(
+  () =>
+    hasJoker.value &&
+    jokerExclusions.value[props.card.id] === true &&
+    !isWanted.value &&
+    !(givingCardsCountById.value[props.card.id] > 0),
+)
+
 const title = computed(() => {
   if (props.restricted) {
     return 'Cannot be exchange due to Pokemon TCG Pocket rules'
   } else if (isWanted.value) {
     return 'Already in your want list'
+  } else if (isCovered.value) {
+    return `${props.card.name}: given by your joker. Click to leave it out`
+  } else if (isLeftOut.value) {
+    return `${props.card.name}: left out of your joker. Click to give it again`
   }
   return props.card.name
 })
@@ -33,6 +62,16 @@ const title = computed(() => {
 const increase = () => {
   if (!isWanted.value && !props.restricted) {
     counts.value[props.card.id] = (counts.value[props.card.id] || 0) + 1
+  }
+}
+
+const select = () => {
+  if (isCovered.value) {
+    jokerExclusions.value[props.card.id] = true
+  } else if (isLeftOut.value) {
+    delete jokerExclusions.value[props.card.id]
+  } else {
+    increase()
   }
 }
 </script>
@@ -49,12 +88,22 @@ const increase = () => {
       class="card-image"
       width="200"
       height="280"
-      :class="{ disabled: isWanted || restricted }"
-      @click="increase"
+      :class="{ disabled: isWanted || restricted, 'in-joker': isCovered }"
+      @click="select"
       :loading="eager ? 'eager' : 'lazy'"
       :title="title"
     />
     <span v-if="restricted" class="card-decoration" :title="title">🚫</span>
+    <button
+      v-else-if="isCovered || isLeftOut"
+      type="button"
+      class="joker-badge"
+      :class="{ 'is-left-out': isLeftOut }"
+      :title="title"
+      @click="select"
+    >
+      {{ isCovered ? '🃏 Joker' : 'Left out' }}
+    </button>
     <NumberInput v-else-if="!isWanted" v-model="counts[card.id]" />
   </div>
 </template>
@@ -105,6 +154,34 @@ h3 {
 .card-image.disabled {
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+/* Given by a joker: nothing to count, the card fades behind its badge */
+.card-image.in-joker {
+  opacity: 0.55;
+}
+
+.joker-badge {
+  height: 24px;
+  padding: 0 0.6rem;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: var(--active-color);
+  color: var(--color-text);
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.joker-badge.is-left-out {
+  background: transparent;
+  border: 1px dashed var(--color-border-strong);
+  color: var(--color-text-muted);
+}
+
+.joker-badge:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .card-decoration {

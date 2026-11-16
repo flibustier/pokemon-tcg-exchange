@@ -20,6 +20,8 @@ enum ObjectName {
   GivingCards = 'giving_cards',
   LogIn = 'token',
   User = 'user',
+  Jokers = 'jokers',
+  JokerExclusions = 'joker_exclusions',
 }
 
 const sessionStorage = reactive({
@@ -121,11 +123,64 @@ watch(
   { deep: true },
 )
 
+// A joker gives every card of a rarity in a set, except the cards the player wants, lists with a
+// count, or excluded from it. Keyed by 'A1:C', and by card id for the exclusions. Each card reads
+// its own key, so changing one re-renders only the cards concerned.
+export const JOKER_RARITIES = ['C', 'U', 'R', 'RR']
+export const jokerKey = (set: string, rarity: string) => `${set}:${rarity}`
+
+const readFlags = (name: ObjectName): Record<string, boolean> =>
+  JSON.parse(storage.getItem(name) || '{}')
+
+export const jokers = ref<Record<string, boolean>>(readFlags(ObjectName.Jokers))
+export const jokerExclusions = ref<Record<string, boolean>>(readFlags(ObjectName.JokerExclusions))
+
+watch(
+  jokers,
+  (newJokers) => {
+    storage.setItem(ObjectName.Jokers, JSON.stringify(newJokers))
+    debouncedUpdateUser()
+  },
+  { deep: true },
+)
+watch(
+  jokerExclusions,
+  (newExclusions) => {
+    storage.setItem(ObjectName.JokerExclusions, JSON.stringify(newExclusions))
+    debouncedUpdateUser()
+  },
+  { deep: true },
+)
+
+export const isCoveredByJoker = (card: { id: string; set: string; rarity: string }) =>
+  jokers.value[jokerKey(card.set, card.rarity)] === true &&
+  !(wantedCardsCountById.value[card.id] > 0) &&
+  !(givingCardsCountById.value[card.id] > 0) &&
+  !jokerExclusions.value[card.id]
+
+const asFlags = (keys: string[]) => Object.fromEntries(keys.map((key) => [key, true]))
+
+export const importJokers = (
+  serverJokers: { set: string; rarity: string }[],
+  exclusions: string[],
+) => {
+  const newJokers = asFlags(serverJokers.map(({ set, rarity }) => jokerKey(set, rarity)))
+  if (!isEqual(jokers.value, newJokers)) {
+    jokers.value = newJokers
+  }
+  const newExclusions = asFlags(exclusions)
+  if (!isEqual(jokerExclusions.value, newExclusions)) {
+    jokerExclusions.value = newExclusions
+  }
+}
+
 export const isWantedStepCompleted = computed(() =>
   Object.values(wantedCardsCountById.value).some((value) => value > 0),
 )
-export const isGivingStepCompleted = computed(() =>
-  Object.values(givingCardsCountById.value).some((value) => value > 0),
+export const isGivingStepCompleted = computed(
+  () =>
+    Object.values(givingCardsCountById.value).some((value) => value > 0) ||
+    Object.keys(jokers.value).length > 0,
 )
 
 export const isCardsIncomplete = computed(
@@ -224,6 +279,8 @@ export const setLogOut = () => {
   storage.removeItem(ObjectName.LogIn)
   storage.removeItem(ObjectName.WantedCards)
   storage.removeItem(ObjectName.GivingCards)
+  storage.removeItem(ObjectName.Jokers)
+  storage.removeItem(ObjectName.JokerExclusions)
   storage.removeItem(ObjectName.User)
 }
 

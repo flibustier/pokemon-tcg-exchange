@@ -47,7 +47,11 @@ const isCardManaging = computed(() =>
     </div>
     <div class="content">
       <EmailConfirmationBanner v-if="isEmailPending" />
-      <CardsGrid v-if="isCardManaging" :step="activeRoute === 'wishlist' ? 1 : 2" />
+      <CardsGrid
+        v-if="isCardManaging"
+        :step="activeRoute === 'wishlist' ? 1 : 2"
+        :jokers-enabled="activeRoute === 'offers'"
+      />
       <ProposalsView v-if="activeRoute === 'proposals'" />
       <CenteredLayout v-if="activeRoute === 'settings' || activeRoute === 'account'">
         <SettingsForm />

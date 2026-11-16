@@ -19,11 +19,17 @@ import {
   changeLoginEmail,
   wantedCardsCountById,
   givingCardsCountById,
+  importJokers,
+  jokers,
+  jokerExclusions,
 } from './store'
 
 const isProduction = import.meta.env.PROD
 
-const endpoint = isProduction ? 'https://api.pokemon-tcg.exchange' : 'http://localhost:8090'
+// VITE_API_URL points the front at another server, like a branch running on another port
+const endpoint =
+  import.meta.env.VITE_API_URL ??
+  (isProduction ? 'https://api.pokemon-tcg.exchange' : 'http://localhost:8090')
 
 // Bodies of the server's 401 responses. Any other failure says nothing about the credentials.
 const AUTH_ERRORS: unknown[] = [
@@ -50,6 +56,26 @@ const copyCounts = (counts: Counts): Counts =>
 const rememberSavedCards = (wanted: Counts, giving: Counts) => {
   savedCards = { wanted: copyCounts(wanted), giving: copyCounts(giving) }
 }
+
+type Flags = Record<string, boolean>
+
+// The jokers as the server has them. Until the session is loaded they are unknown, and the page
+// shows no joker: there is no request to send them all at once.
+let savedJokers: { jokers: Flags; exclusions: Flags } | undefined
+export const areJokersLoaded = ref(false)
+
+const rememberSavedJokers = () => {
+  savedJokers = { jokers: { ...jokers.value }, exclusions: { ...jokerExclusions.value } }
+  areJokersLoaded.value = true
+}
+
+// Keys whose flag differs between what the server has and what the page shows
+const changedFlags = (saved: Flags, current: Flags) =>
+  [...new Set([...Object.keys(saved), ...Object.keys(current)])]
+    .map((key) => ({ key, on: current[key] === true }))
+    .filter(({ key, on }) => on !== (saved[key] === true))
+
+const MAX_JOKER_SETS = 100
 
 export const saveFailed = ref(false)
 
@@ -86,10 +112,22 @@ export const fetchUser = async () => {
     const response = await useAPI('/user/session')
 
     if (response.friend_id) {
-      const { wanted, giving, rarity_rules, ...info } = response
+      const {
+        wanted,
+        giving,
+        rarity_rules,
+        jokers: playerJokers,
+        joker_exclusions,
+        ...info
+      } = response
 
       importCards(JSON.parse(wanted), JSON.parse(giving))
       rememberSavedCards(wantedCardsCountById.value, givingCardsCountById.value)
+      // A server older than the jokers sends none: the page then shows no joker
+      if (playerJokers !== undefined) {
+        importJokers(JSON.parse(playerJokers), JSON.parse(joker_exclusions))
+        rememberSavedJokers()
+      }
       setUserInfo({
         ...info,
         rarity_rules: JSON.parse(rarity_rules),
@@ -138,6 +176,9 @@ export const createUser = async (user: { email: string; password: string; friend
         email: user.email,
         email_status: 'pending',
       })
+      // A new account has no joker: they can be set right away
+      importJokers([], [])
+      rememberSavedJokers()
 
       return true
     } else {
@@ -195,8 +236,46 @@ const sendCardChanges = async () => {
   }
 }
 
-// Saves send absolute counts, so trying again cannot apply a change twice. One save runs at a
-// time: two crossing on the network could leave the older count last.
+// Saves the jokers turned on or off, one request per rarity and state: the shortcut for every set
+// is one request. Then the cards taken out of a joker or put back, one request each.
+const sendJokerChanges = async () => {
+  if (!isLogged() || !savedJokers) return
+  const saved = savedJokers
+
+  const setsByChange = new Map<string, string[]>()
+  for (const { key, on } of changedFlags(saved.jokers, jokers.value)) {
+    const [set, rarity] = key.split(':')
+    const change = `${rarity}:${on}`
+    setsByChange.set(change, [...(setsByChange.get(change) ?? []), set])
+  }
+  for (const [change, sets] of setsByChange) {
+    const [rarity, on] = change.split(':')
+    const enabled = on === 'true'
+    for (let i = 0; i < sets.length; i += MAX_JOKER_SETS) {
+      const chunk = sets.slice(i, i + MAX_JOKER_SETS)
+      const result = await useAPI('/user/jokers', 'PUT', { sets: chunk, rarity, enabled }, false)
+      if (result !== 'updated') {
+        throw result
+      }
+      for (const set of chunk) {
+        if (enabled) saved.jokers[`${set}:${rarity}`] = true
+        else delete saved.jokers[`${set}:${rarity}`]
+      }
+    }
+  }
+
+  for (const { key: id, on: excluded } of changedFlags(saved.exclusions, jokerExclusions.value)) {
+    const result = await useAPI('/user/jokers/exclusions', 'PUT', { id, excluded }, false)
+    if (result !== 'updated') {
+      throw result
+    }
+    if (excluded) saved.exclusions[id] = true
+    else delete saved.exclusions[id]
+  }
+}
+
+// Saves send absolute counts and states, so trying again cannot apply a change twice. One save
+// runs at a time: two crossing on the network could leave the older count last.
 const saveCards = async () => {
   if (isSaving) {
     saveRequested = true
@@ -206,6 +285,7 @@ const saveCards = async () => {
   let succeeded = false
   try {
     await sendCardChanges()
+    await sendJokerChanges()
     saveRetries = 0
     saveFailed.value = false
     succeeded = true

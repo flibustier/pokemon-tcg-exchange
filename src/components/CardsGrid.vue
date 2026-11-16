@@ -2,20 +2,34 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 
 import { UNAUTHORIZED_SETS } from '@/../config.json' with { type: 'json' }
-import { wantedCardsCountById, givingCardsCountById } from '@/services/store'
+import {
+  wantedCardsCountById,
+  givingCardsCountById,
+  isCoveredByJoker,
+  JOKER_RARITIES,
+  jokerKey,
+  jokers,
+} from '@/services/store'
+import { areJokersLoaded } from '@/services/api'
 import { cards, allSets, rarities } from '@/services/cards'
 import type { Card } from '@/services/cards'
 import { debounce } from '@/services/utils'
 
 import CardsFilters from './CardsFilters.vue'
 import CardsSet from './CardsSet.vue'
+import JokerToggles from './molecules/JokerToggles.vue'
 import SetSelectorModal from './modals/SetSelectorModal.vue'
 
 const props = defineProps<{
   step: number
+  // The offers of a signed-in player: the jokers show once the server sent them
+  jokersEnabled?: boolean
 }>()
 
 const isWishlist = computed(() => props.step === 1)
+const withJokers = computed(
+  () => !!props.jokersEnabled && !isWishlist.value && areJokersLoaded.value,
+)
 
 const isSetSelectorModalVisible = ref(false)
 
@@ -70,7 +84,9 @@ const visibleIds = computed<Record<string, Set<string>>>((previous) => {
         .filter(
           (card) =>
             (!name || searchName[card.id].includes(name)) &&
-            (!hideEmpty || cardCountById.value[card.id] > 0) &&
+            (!hideEmpty ||
+              cardCountById.value[card.id] > 0 ||
+              (withJokers.value && !restricted[card.id] && isCoveredByJoker(card))) &&
             (!hideUnavailable ||
               (!restricted[card.id] &&
                 (isWishlist.value || !(wantedCardsCountById.value[card.id] > 0)))) &&
@@ -83,6 +99,48 @@ const visibleIds = computed<Record<string, Set<string>>>((previous) => {
   }
   return result
 })
+
+// The shortcut for every set: a rarity is on when its joker is on in every set that has it
+const setsWithRarity = Object.fromEntries(
+  JOKER_RARITIES.map((rarity) => [
+    rarity,
+    sets
+      .filter(({ code }) =>
+        cardsBySet[code].some((card) => card.rarity === rarity && !restricted[card.id]),
+      )
+      .map(({ code }) => code),
+  ]),
+)
+
+const allSetsToggles = computed(() =>
+  JOKER_RARITIES.filter((rarity) => setsWithRarity[rarity].length > 0).map((rarity) => {
+    const label = rarities[rarity as keyof typeof rarities].label
+    const on = setsWithRarity[rarity].filter((code) => jokers.value[jokerKey(code, rarity)])
+    const state =
+      on.length === setsWithRarity[rarity].length
+        ? ('on' as const)
+        : on.length > 0
+          ? ('some' as const)
+          : ('off' as const)
+    return {
+      rarity,
+      state,
+      title:
+        state === 'on'
+          ? `You give all your ${label} cards in every set. Click to stop in every set`
+          : `Give all your ${label} cards in every set, except the ones you want. ` +
+            'Sets to come start without it',
+    }
+  }),
+)
+
+const toggleAllSets = (rarity: string) => {
+  const everywhere = allSetsToggles.value.find((toggle) => toggle.rarity === rarity)?.state === 'on'
+  for (const code of setsWithRarity[rarity]) {
+    if (everywhere) delete jokers.value[jokerKey(code, rarity)]
+    else jokers.value[jokerKey(code, rarity)] = true
+  }
+}
 
 const hasVisibleCards = (code: string) => visibleIds.value[code].size > 0
 const firstVisibleCode = computed(() => sets.find(({ code }) => hasVisibleCards(code))?.code)
@@ -144,6 +202,14 @@ onUnmounted(() => {
 <template>
   <div class="container" :style="{ '--header-height': `${headerHeight}px` }">
     <SetSelectorModal v-model="isSetSelectorModalVisible" :sets="sets" />
+    <!-- Above the header, so it reads as the setting of no set in particular -->
+    <JokerToggles
+      v-if="withJokers"
+      class="all-sets-jokers"
+      label="In every set, I give all my"
+      :toggles="allSetsToggles"
+      @toggle="toggleAllSets"
+    />
     <div class="set-header" ref="header">
       <div class="set-logo" v-if="currentSet">
         <a v-if="previousSet" :href="'#' + previousSet.code">
@@ -183,15 +249,18 @@ onUnmounted(() => {
       </div>
       <CardsFilters v-model="filters" :cards />
     </div>
+    <!-- With jokers, every set shows its divider: the first one too, even without jokers, so
+         that each set reads as its own -->
     <CardsSet
       v-for="(set, index) in sets"
       :key="set.code"
-      :class="{ 'is-first': set.code === firstVisibleCode }"
+      :class="{ 'is-first': set.code === firstVisibleCode && !withJokers }"
       :set
       :cards="cardsBySet[set.code]"
       :visible-ids="visibleIds[set.code]"
       :restricted
       :is-wishlist="isWishlist"
+      :with-jokers="withJokers"
       :eager-count="index === 0 ? 5 : 0"
     />
     <p v-if="hasNoResults" class="no-results">No results :/<br />Please adjust your filters</p>
@@ -248,6 +317,14 @@ onUnmounted(() => {
 
 .set-current-logo:hover {
   transform: scale(1.05);
+}
+
+.all-sets-jokers {
+  margin: 0.5rem 0;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background: var(--color-surface-soft);
 }
 
 .no-results {

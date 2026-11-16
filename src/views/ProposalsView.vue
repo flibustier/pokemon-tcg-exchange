@@ -7,7 +7,7 @@ import type { Proposal } from '@/types'
 import { formatDate, uniq } from '@/services/utils'
 import { cards, rarities, type Card } from '@/services/cards'
 import { getProposals } from '@/services/api'
-import { givingCardsCountById } from '@/services/store'
+import { givingCardsCountById, isCoveredByJoker } from '@/services/store'
 
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
 import PlainButton from '@/components/atoms/PlainButton.vue'
@@ -109,7 +109,9 @@ const proposalsByRarityAndFriendId = computed(() => {
   }, [])
 })
 
-const countGivenCard = (cardId: string) => givingCardsCountById.value[cardId] || 0
+// How many copies I offer, or the joker that gives it
+const countGivenCard = (card: Card) =>
+  givingCardsCountById.value[card.id] || (isCoveredByJoker(card) ? '🃏' : 0)
 
 const findCard = (id: string) => cards.find((card) => card.id === id)
 
@@ -186,7 +188,7 @@ onMounted(fetchProposals)
           <div class="cards">
             <div class="card-container" v-for="(card, index) in group.givenCards" :key="index">
               <CardImageAndModal :card />
-              <span class="card-count">{{ countGivenCard(card.id) }}</span>
+              <span class="card-count">{{ countGivenCard(card) }}</span>
             </div>
           </div>
           <div class="tile-footer">

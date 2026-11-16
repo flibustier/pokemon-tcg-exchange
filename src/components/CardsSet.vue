@@ -1,18 +1,55 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
+import { rarities } from '@/services/cards'
 import type { Card } from '@/services/cards'
+import { JOKER_RARITIES, jokerKey, jokers } from '@/services/store'
 
 import CardTile from './CardTile.vue'
+import JokerToggles from './molecules/JokerToggles.vue'
 
 // One set: its divider and its cards. Cards the filters exclude stay mounted, hidden:
 // mounting thousands of cards again on each keystroke is what made typing slow.
-defineProps<{
+const props = defineProps<{
   set: { code: string; imagePath: string; name: { en: string } }
   cards: Card[]
   visibleIds: Set<string>
   restricted: Record<string, boolean>
   isWishlist: boolean
   eagerCount: number
+  // On the offers of a signed-in player: the divider holds the set's jokers
+  withJokers: boolean
 }>()
+
+const label = (rarity: string) => rarities[rarity as keyof typeof rarities].label
+
+// The rarities a joker can cover that this set has, among the cards that can be traded
+const jokerRarities = computed(() =>
+  props.withJokers
+    ? JOKER_RARITIES.filter((rarity) =>
+        props.cards.some((card) => card.rarity === rarity && !props.restricted[card.id]),
+      )
+    : [],
+)
+
+const jokerToggles = computed(() =>
+  jokerRarities.value.map((rarity) => {
+    const on = jokers.value[jokerKey(props.set.code, rarity)] === true
+    return {
+      rarity,
+      state: on ? ('on' as const) : ('off' as const),
+      title: on
+        ? `You give all your ${label(rarity)} cards of ${props.set.name.en}. Click to stop`
+        : `Give all your ${label(rarity)} cards of ${props.set.name.en}, except the ones you want`,
+    }
+  }),
+)
+
+const toggleJoker = (rarity: string) => {
+  const key = jokerKey(props.set.code, rarity)
+  if (jokers.value[key]) delete jokers.value[key]
+  else jokers.value[key] = true
+}
 </script>
 
 <template>
@@ -27,6 +64,14 @@ defineProps<{
         loading="lazy"
       />
     </div>
+    <JokerToggles
+      v-if="jokerToggles.length > 0"
+      class="set-jokers"
+      label="I give all my"
+      hint="except the ones I want"
+      :toggles="jokerToggles"
+      @toggle="toggleJoker"
+    />
     <div class="card-grid">
       <CardTile
         v-for="(card, cardIndex) in cards"
@@ -35,6 +80,7 @@ defineProps<{
         :card
         :restricted="restricted[card.id]"
         :is-wishlist="isWishlist"
+        :with-jokers="withJokers"
         :eager="cardIndex < eagerCount"
       />
     </div>
@@ -71,6 +117,10 @@ defineProps<{
 /* The sticky header already shows the first set's logo */
 .set.is-first .set-divider {
   display: none;
+}
+
+.set-jokers {
+  margin-bottom: 1rem;
 }
 
 .card-grid {
