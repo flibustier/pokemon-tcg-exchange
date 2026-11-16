@@ -11,6 +11,7 @@ import { getMessages, getProposals, postMessage, refreshDiscussions } from '@/se
 
 import UserBadge from '@/components/atoms/UserBadge.vue'
 import CardImageAndModal from '@/components/molecules/CardImageAndModal.vue'
+import ExchangeIcon from '@/components/icons/ExchangeIcon.vue'
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
 
 const route = useRoute()
@@ -272,7 +273,7 @@ onUnmounted(() => {
             :to="{ name: 'proposals', query: { id: discussionID } }"
             title="Check common proposals"
           >
-            <img src="/images/icons/exchange.svg" alt="" height="28" />
+            <ExchangeIcon class="exchange-icon" aria-hidden="true" />
           </RouterLink>
           <button v-if="false" class="more">...</button>
         </div>
@@ -356,22 +357,26 @@ h2 {
 .discussions {
   width: 300px;
   min-width: fit-content;
-  background: white;
+  background: var(--color-surface);
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  box-shadow:
+    0 2px 8px var(--shadow-color),
+    0 0 0 1px var(--ring-color);
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 .search-bar {
   padding: 0.5rem 1rem;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--color-border);
 }
 .search-bar input {
   width: 100%;
   padding: 0.5rem;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 .discussion-list {
   list-style: none;
@@ -406,12 +411,12 @@ h2 {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #eee;
+  background: var(--color-surface-mute);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  color: #333;
+  color: var(--color-text);
   font-size: 1rem;
   flex-shrink: 0;
 }
@@ -421,20 +426,23 @@ h2 {
 }
 .last-message {
   font-size: 0.875rem;
-  color: #666;
+  color: var(--color-text-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .time {
   font-size: 0.75rem;
-  color: #999;
+  color: var(--color-text-subtle);
   flex-shrink: 0;
 }
 .chat {
   flex-grow: 1;
+  background: var(--color-surface);
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  box-shadow:
+    0 2px 8px var(--shadow-color),
+    0 0 0 1px var(--ring-color);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -443,7 +451,7 @@ h2 {
   display: flex;
   align-items: center;
   padding: 1rem;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--color-border);
   justify-content: space-between;
 }
 .chat-header .avatar {
@@ -458,7 +466,7 @@ h2 {
 }
 .chat-header .status {
   font-size: 0.875rem;
-  color: #666;
+  color: var(--color-text-muted);
 }
 .chat-header .actions button {
   background: none;
@@ -466,6 +474,12 @@ h2 {
   cursor: pointer;
   margin-left: 0.5rem;
   display: flex;
+}
+.exchange-icon {
+  display: block;
+  width: 28px;
+  height: 28px;
+  color: var(--color-text);
 }
 .chat-messages {
   flex-grow: 1;
@@ -477,7 +491,7 @@ h2 {
 }
 .message {
   max-width: 80%;
-  background: #f0f0f0;
+  background: var(--color-surface-mute);
   padding: 0.75rem 1rem;
   border-radius: 12px;
   word-wrap: break-word;
@@ -487,7 +501,7 @@ h2 {
   align-self: flex-end;
 }
 .message-sent.message-error {
-  background-color: #ffcccc;
+  background-color: var(--color-error-bubble);
 }
 .message-image {
   max-width: 100%;
@@ -502,29 +516,29 @@ h2 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #e0e0e0;
+  background: var(--color-surface-strong);
   padding: 0.5rem 1rem;
   border-radius: 12px;
   max-width: 40%;
 }
 .message-file a {
-  color: #333;
+  color: var(--color-text);
   text-decoration: none;
   font-weight: bold;
 }
 .name.deleted {
   font-style: italic;
-  color: #666;
+  color: var(--color-text-muted);
 }
 .chat-closed {
   padding: 0.75rem 1rem;
-  border-top: 1px solid #ddd;
-  color: #666;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-muted);
   text-align: center;
 }
 .chat-input {
   padding: 0.5rem 1rem;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--color-border);
   display: flex;
   gap: 0.5rem;
 }
@@ -532,7 +546,9 @@ h2 {
   flex-grow: 1;
   padding: 0.5rem;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 .chat-input .send {
   background: var(--primary-color);
@@ -545,9 +561,9 @@ h2 {
   align-items: center;
 }
 .chat-input .send:disabled {
-  background: #ccc;
+  background: var(--color-border-strong);
   cursor: not-allowed;
-  color: #666;
+  color: var(--color-text-muted);
   opacity: 0.5;
 }
 

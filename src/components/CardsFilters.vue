@@ -145,7 +145,7 @@ const togglePseudonym = toggle('pseudonymSelection')
 .badge {
   height: 25px;
   padding: 0.4rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border-strong);
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -159,10 +159,10 @@ const togglePseudonym = toggle('pseudonymSelection')
 }
 
 .badge.is-active {
-  background-color: #e6f9f2;
+  background-color: var(--active-color);
   box-shadow:
-    0 2px 8px 0 rgba(60, 60, 120, 0.18),
-    inset 0 2px 8px 0 rgba(60, 60, 120, 0.16);
+    0 2px 8px 0 var(--shadow-tinted-strong),
+    inset 0 2px 8px 0 var(--shadow-tinted-strong);
   border-color: transparent;
 }
 
@@ -170,6 +170,8 @@ const togglePseudonym = toggle('pseudonymSelection')
   height: 30px;
   padding: 0 0.5rem;
   border-radius: 1rem;
-  border: 1px solid #9cc;
+  border: 1px solid var(--color-search-border);
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 </style>

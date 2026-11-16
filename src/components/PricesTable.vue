@@ -65,7 +65,7 @@ const totalCost = computed(() => {
 
 <style scoped>
 .prices {
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 1rem;
   display: flex;
@@ -88,10 +88,10 @@ const totalCost = computed(() => {
 }
 
 .warning {
-  color: #d93025;
+  color: var(--color-error);
 }
 
 .success {
-  color: #188038;
+  color: var(--color-success);
 }
 </style>

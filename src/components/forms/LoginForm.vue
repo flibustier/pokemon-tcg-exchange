@@ -186,7 +186,7 @@ if (!import.meta.env.SSR) {
   display: block;
   margin-bottom: 8px;
   font-size: 14px;
-  color: #5f6368;
+  color: var(--color-text-muted);
   font-weight: 500;
   padding-left: 16px;
 }
@@ -196,12 +196,12 @@ if (!import.meta.env.SSR) {
 .password-input {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border);
   border-radius: 25px;
   font-size: 14px;
-  color: #5f6368;
-  background: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  box-shadow: 0 1px 3px var(--shadow-color);
   transition: all 0.2s ease;
 }
 
@@ -209,48 +209,49 @@ if (!import.meta.env.SSR) {
 .email-input:focus,
 .password-input:focus {
   outline: none;
-  border-color: #5fd5ff;
-  box-shadow: 0 0 0 2px rgba(95, 213, 255, 0.2);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-shadow);
 }
 
 .friend-id::placeholder,
 .email-input::placeholder,
 .password-input::placeholder {
-  color: #9e9e9e;
+  color: var(--color-text-subtle);
 }
 
 /* Invalid state styling */
 .friend-id:invalid,
 .email-input:invalid {
-  border-color: #ff5252;
+  border-color: var(--color-danger);
 }
 
 .submit-button {
-  background: #5fd5ff;
+  background: var(--accent);
   border: none;
   border-radius: 25px;
   padding: 12px 32px;
-  color: white;
+  color: var(--on-accent);
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(95, 213, 255, 0.2);
+  box-shadow: 0 4px 12px var(--accent-shadow);
   transition: all 0.2s ease;
   width: 100%;
   margin-top: 24px;
 }
 
 .submit-button:hover {
-  background: #4cccff;
-  box-shadow: 0 6px 16px rgba(95, 213, 255, 0.3);
+  background: var(--accent-hover);
+  box-shadow: 0 6px 16px var(--accent-shadow-strong);
 }
 
 .submit-button:active {
-  box-shadow: 0 2px 8px rgba(95, 213, 255, 0.2);
+  box-shadow: 0 2px 8px var(--accent-shadow);
 }
 
 .submit-button:disabled {
-  background: #e0e0e0;
+  background: var(--color-disabled);
+  color: var(--on-disabled);
   cursor: not-allowed;
   box-shadow: none;
 }
@@ -263,11 +264,11 @@ if (!import.meta.env.SSR) {
 }
 
 .error-message {
-  color: #ff5252;
+  color: var(--color-danger);
 }
 
 .success-message {
-  color: #4caf50;
+  color: var(--color-success);
 }
 
 a {

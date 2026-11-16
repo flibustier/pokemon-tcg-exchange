@@ -14,6 +14,7 @@ import PlainButton from '@/components/atoms/PlainButton.vue'
 import CardsFilters from '@/components/CardsFilters.vue'
 import UserBadge from '@/components/atoms/UserBadge.vue'
 import CardImageAndModal from '@/components/molecules/CardImageAndModal.vue'
+import MessageIcon from '@/components/icons/MessageIcon.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -195,7 +196,7 @@ onMounted(fetchProposals)
               <span class="token-count">{{ exchangeCost(group.rarity) }}</span>
             </div>
             <div class="clickable" @click="sendMessage(group)">
-              <img src="/images/icons/message.svg" height="20" alt="Message" />
+              <MessageIcon class="message-icon" role="img" aria-label="Message" />
             </div>
           </div>
         </div>
@@ -236,9 +237,11 @@ h2 {
   align-items: center;
   justify-content: space-between;
   padding: 42px 32px 7px;
-  background: linear-gradient(to bottom, #f1f9f1, #e8f3e8);
+  background: linear-gradient(to bottom, var(--color-green-soft), var(--color-green-soft-hover));
   border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 1px 3px var(--shadow-color),
+    0 0 0 1px var(--ring-color);
   max-width: 600px;
   min-width: 270px;
   margin-bottom: 1rem;
@@ -274,18 +277,20 @@ h2 {
 .exchange-icon {
   width: 32px;
   height: 32px;
-  background: #f1f9f1;
+  background: var(--color-green-soft);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 1px 3px var(--shadow-color),
+    0 0 0 1px var(--ring-color);
   margin: 1rem;
 }
 
 .exchange-icon::before {
   content: '⇅';
-  color: #5f6368;
+  color: var(--color-text-muted);
   font-size: 18px;
 }
 
@@ -303,10 +308,12 @@ h2 {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: white;
+  background: var(--color-surface);
   padding: 4px 16px;
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 1px 3px var(--shadow-color),
+    0 0 0 1px var(--ring-color);
 }
 
 .tile-title {
@@ -321,8 +328,14 @@ h2 {
   object-fit: contain;
 }
 
+.message-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--color-text);
+}
+
 .token-count {
-  color: #5f6368;
+  color: var(--color-text-muted);
   font-weight: 500;
 }
 </style>

@@ -14,29 +14,30 @@ defineProps<{
 
 <style scoped>
 .next-button {
-  background: #5fd5ff;
+  background: var(--accent);
   border: none;
   border-radius: 25px;
   padding: 12px 32px;
-  color: white;
+  color: var(--on-accent);
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(95, 213, 255, 0.2);
+  box-shadow: 0 4px 12px var(--accent-shadow);
   transition: all 0.2s ease;
 }
 
 .next-button:hover {
-  background: #4cccff;
-  box-shadow: 0 6px 16px rgba(95, 213, 255, 0.3);
+  background: var(--accent-hover);
+  box-shadow: 0 6px 16px var(--accent-shadow-strong);
 }
 
 .next-button:active {
-  box-shadow: 0 2px 8px rgba(95, 213, 255, 0.2);
+  box-shadow: 0 2px 8px var(--accent-shadow);
 }
 
 .next-button:disabled {
-  background: #e0e0e0;
+  background: var(--color-disabled);
+  color: var(--on-disabled);
   cursor: not-allowed;
   box-shadow: none;
 }

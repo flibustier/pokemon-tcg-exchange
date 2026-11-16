@@ -41,10 +41,10 @@ h2 {
   max-width: 400px;
   margin: 0 auto;
   padding: 24px;
-  background: #f8f9fa;
+  background: var(--color-surface-soft);
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 8px var(--shadow-color);
+  border: 1px solid var(--color-border);
   transition: all 0.3s ease;
 }
 </style>

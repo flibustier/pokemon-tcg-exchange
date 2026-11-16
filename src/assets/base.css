@@ -1,42 +1,159 @@
+/* Colors of the light theme. Components only use these variables, so the dark theme below
+   only has to redefine them. */
 :root {
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
+  color-scheme: light;
 
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
+  --color-background: #ffffff;
+  --color-background-transparent: rgba(255, 255, 255, 0);
+  --color-background-glass: #fffd;
 
-  --vt-c-indigo: #2c3e50;
+  /* Panels, inputs and badges, from the most to the least prominent */
+  --color-surface: #ffffff;
+  --color-surface-soft: #f8f9fa;
+  --color-surface-mute: #f0f0f0;
+  --color-surface-strong: #e0e0e0;
+  --color-surface-hover: #f9f9f9;
 
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+  --color-border: #e0e0e0;
+  --color-border-strong: #cccccc;
 
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
-}
+  --color-text: #2c3e50;
+  --color-text-muted: #5f6368;
+  --color-text-subtle: #9e9e9e;
 
-/* semantic color variables for this project */
-:root {
-  --color-background: var(--vt-c-white);
-  --color-background-soft: var(--vt-c-white-soft);
-  --color-background-mute: var(--vt-c-white-mute);
+  --color-disabled: #e0e0e0;
+  --color-disabled-surface: #f1f1f1;
+  --color-disabled-text: #cccccc;
+  --on-disabled: #ffffff;
 
-  --color-border: var(--vt-c-divider-light-2);
-  --color-border-hover: var(--vt-c-divider-light-1);
+  --input-ring: rgba(95, 99, 104, 0.1);
+  --color-search-border: #99cccc;
 
-  --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
+  /* Shadows, and a hairline around panels that only the dark theme needs */
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --shadow-tinted: rgba(60, 60, 120, 0.13);
+  --shadow-tinted-strong: rgba(60, 60, 120, 0.18);
+  --ring-color: transparent;
 
-  --section-gap: 160px;
-
-  --active-color: #e6f9f2;
   --primary-color: #00e5ff;
   --text-primary: #1c4ea4;
+  --active-color: #e6f9f2;
+  --hover-tint: #e9f2f782;
+
+  --accent: #5fd5ff;
+  --accent-hover: #4cccff;
+  --accent-shadow: rgba(95, 213, 255, 0.2);
+  --accent-shadow-strong: rgba(95, 213, 255, 0.3);
+  --on-accent: #ffffff;
+
+  /* Exchange tiles, steps and counters */
+  --color-green-soft: #f1f9f1;
+  --color-green-soft-hover: #e8f3e8;
+
+  --color-teal: #2b7a78;
+  --color-teal-soft: #e6fbfa;
+
+  --color-success: #188038;
+  --color-error: #d93025;
+  --color-danger: #ff5252;
+  --color-error-surface: #fdecea;
+  --color-error-text: #8a1c1c;
+  --color-error-bubble: #ffcccc;
+
+  --color-warning-surface: #fff8e1;
+  --color-warning-border: #ffe08a;
+  --color-warning-text: #5f4b00;
+
+  /* Black icons drawn as images, like the GitHub logo */
+  --icon-filter: none;
+
+  /* Elements shown in one theme only, like the sun and moon of the theme button */
+  --display-if-light: block;
+  --display-if-dark: none;
+}
+
+/* Dark theme, set as `data-theme` on <html> before the first paint: the system's theme, or the
+   one picked with the theme button (see services/theme.ts) */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-background: #121519;
+  --color-background-transparent: rgba(18, 21, 25, 0);
+  --color-background-glass: rgba(18, 21, 25, 0.87);
+
+  --color-surface: #1e2329;
+  --color-surface-soft: #181c21;
+  --color-surface-mute: #2a3038;
+  --color-surface-strong: #353c45;
+  --color-surface-hover: #222830;
+
+  --color-border: #2f363f;
+  --color-border-strong: #444c56;
+
+  --color-text: #e3e7ec;
+  --color-text-muted: #a3acb8;
+  --color-text-subtle: #7d8794;
+
+  --color-disabled: #353c45;
+  --color-disabled-surface: #22272e;
+  --color-disabled-text: #59626d;
+  --on-disabled: #7d8794;
+
+  --input-ring: rgba(255, 255, 255, 0.12);
+  --color-search-border: #3f7373;
+
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --shadow-tinted: rgba(0, 0, 0, 0.45);
+  --shadow-tinted-strong: rgba(0, 0, 0, 0.55);
+  --ring-color: rgba(255, 255, 255, 0.07);
+
+  --text-primary: #8cb4ff;
+  --active-color: #163a33;
+  --hover-tint: rgba(140, 180, 255, 0.08);
+
+  --accent: #5fd5ff;
+  --accent-hover: #86e0ff;
+  --accent-shadow: rgba(95, 213, 255, 0.15);
+  --accent-shadow-strong: rgba(95, 213, 255, 0.25);
+  --on-accent: #06232e;
+
+  --color-green-soft: #1b2a21;
+  --color-green-soft-hover: #22352a;
+
+  --color-teal: #5cc8c2;
+  --color-teal-soft: #142d2c;
+
+  --color-success: #5cc97b;
+  --color-error: #ff7b72;
+  --color-danger: #ff6b6b;
+  --color-error-surface: #3a1d1d;
+  --color-error-text: #ffb4ab;
+  --color-error-bubble: #4a2626;
+
+  --color-warning-surface: #2b2410;
+  --color-warning-border: #5c4a14;
+  --color-warning-text: #f3d27a;
+
+  --icon-filter: invert(1);
+
+  --display-if-light: none;
+  --display-if-dark: block;
+}
+
+/* Shown in one theme only, like the sun and the moon of the theme buttons */
+.if-light {
+  display: var(--display-if-light);
+}
+
+.if-dark {
+  display: var(--display-if-dark);
+}
+
+/* While the theme changes, nothing fades: the colors of every element change at once */
+:root.theme-switching *,
+:root.theme-switching *::before,
+:root.theme-switching *::after {
+  transition: none !important;
 }
 
 *,

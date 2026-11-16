@@ -36,7 +36,7 @@ defineProps({
 .switch-slider {
   width: 40px;
   height: 20px;
-  background: #e5e7eb;
+  background: var(--color-surface-strong);
   border-radius: 20px;
   position: relative;
   transition: background 0.2s;
@@ -54,14 +54,14 @@ defineProps({
   transition: transform 0.2s;
 }
 .switch-input:checked + .switch-slider {
-  background: #5fd5ff;
+  background: var(--accent);
 }
 .switch-input:checked + .switch-slider::before {
   transform: translateX(20px);
 }
 .switch-text {
   font-size: 14px;
-  color: #5f6368;
+  color: var(--color-text-muted);
   font-weight: 500;
 }
 </style>

@@ -21,17 +21,17 @@ defineProps({
 
 <style scoped>
 .btn-primary {
-  background-color: #ffffff;
+  background-color: var(--color-surface);
   padding: 10px 40px;
   border-radius: 25px;
   border: none;
   font-size: 16px;
-  box-shadow: 0 0 0 2px #5fd5ff;
+  box-shadow: 0 0 0 2px var(--accent);
   text-align: center;
   cursor: pointer;
 }
 
 .btn-primary:hover {
-  background-color: #f8f8f8;
+  background-color: var(--color-surface-soft);
 }
 </style>

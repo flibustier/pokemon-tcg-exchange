@@ -57,6 +57,19 @@
     />
     <meta property="twitter:image" content="https://pokemon-tcg.exchange/images/open-graph.png" />
     <script>
+      // The theme, set before the first paint: the one picked with the theme button, the system's
+      // otherwise (see services/theme.ts)
+      ;(function () {
+        var picked = null
+        try {
+          picked = localStorage.getItem('theme')
+        } catch (e) {}
+        var system = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        document.documentElement.dataset.theme =
+          picked === 'light' || picked === 'dark' ? picked : system
+      })()
+    </script>
+    <script>
       // GoatCounter counts the landing page without its parameters: a sign-in link carries the
       // email address and a token, which must not end up in the statistics. A conversation is
       // counted by its pattern, as on navigation, so no player id goes in either.

@@ -10,8 +10,12 @@ import ChartIcon from '../icons/ChartIcon.vue'
 import MessageIcon from '../icons/MessageIcon.vue'
 import ExchangeIcon from '../icons/ExchangeIcon.vue'
 import QuestionIcon from '../icons/QuestionIcon.vue'
+import UserIcon from '../icons/UserIcon.vue'
+import MoonIcon from '../icons/MoonIcon.vue'
+import SunIcon from '../icons/SunIcon.vue'
 
-import { hasUnreadMessages, isAccountIncomplete } from '@/services/store'
+import { hasUnreadMessages, isAccountIncomplete, isLogged } from '@/services/store'
+import { toggleTheme } from '@/services/theme'
 
 const isMenuOpen = ref(false)
 
@@ -21,7 +25,7 @@ const toggleMenu = () => {
 </script>
 
 <template>
-  <button class="burger-menu mobile-only" @click="toggleMenu">
+  <button class="burger-menu mobile-only" aria-label="Menu" @click="toggleMenu">
     <svg viewBox="0 0 100 80" width="24" height="24" fill="currentColor">
       <rect width="100" height="15" rx="8"></rect>
       <rect y="30" width="100" height="15" rx="8"></rect>
@@ -36,7 +40,30 @@ const toggleMenu = () => {
           <CrossIcon />
         </button>
       </div>
-      <nav class="mobile-nav">
+      <nav v-if="!isLogged()" class="mobile-nav">
+        <RouterLink class="menu-item" :to="{ name: 'login' }" @click="toggleMenu">
+          <span class="icon">
+            <UserIcon />
+          </span>
+          <span>Sign In</span>
+        </RouterLink>
+        <RouterLink class="menu-item" :to="{ name: 'help' }" @click="toggleMenu">
+          <span class="icon">
+            <QuestionIcon />
+          </span>
+          <span>Help & FAQ</span>
+        </RouterLink>
+        <!-- The menu stays open: the player sees the new theme at once -->
+        <button type="button" class="menu-item" @click="toggleTheme">
+          <span class="icon">
+            <MoonIcon class="if-light" />
+            <SunIcon class="if-dark" />
+          </span>
+          <span class="if-light">Dark theme</span>
+          <span class="if-dark">Light theme</span>
+        </button>
+      </nav>
+      <nav v-else class="mobile-nav">
         <RouterLink class="menu-item" :to="{ name: 'wishlist' }" @click="toggleMenu">
           <span class="icon">
             <HeartIcon />
@@ -91,6 +118,14 @@ const toggleMenu = () => {
           </span>
           <span>Help & FAQ</span>
         </RouterLink>
+        <button type="button" class="menu-item" @click="toggleTheme">
+          <span class="icon">
+            <MoonIcon class="if-light" />
+            <SunIcon class="if-dark" />
+          </span>
+          <span class="if-light">Dark theme</span>
+          <span class="if-dark">Light theme</span>
+        </button>
       </nav>
     </div>
   </Teleport>
@@ -101,7 +136,8 @@ const toggleMenu = () => {
   display: flex;
 }
 
-@media (min-width: 1111px) {
+/* Same width as the header and the account menu, which hide below it */
+@media (min-width: 1112px) {
   .mobile-only {
     display: none;
   }
@@ -110,6 +146,7 @@ const toggleMenu = () => {
 .burger-menu {
   background: none;
   border: none;
+  color: var(--color-text);
   cursor: pointer;
   padding: 0.5rem;
 }
@@ -120,7 +157,7 @@ const toggleMenu = () => {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: white;
+  background: var(--color-background);
   z-index: 10000;
   display: flex;
   flex-direction: column;
@@ -163,8 +200,16 @@ const toggleMenu = () => {
   text-decoration: none;
 }
 
+button.menu-item {
+  width: 100%;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
 .menu-item:hover {
-  background-color: #f9f9f9;
+  background-color: var(--color-surface-hover);
 }
 
 .menu-item.router-link-active {

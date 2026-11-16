@@ -37,15 +37,17 @@ const props = defineProps<{
   height: 4rem;
   padding: 1.5rem;
   gap: 1rem;
-  background: #f8fafc;
+  background: var(--color-surface-soft);
   border: none;
   border-radius: 22px;
-  box-shadow: 0 6px 16px 0 rgba(60, 60, 120, 0.13);
+  box-shadow:
+    0 6px 16px 0 var(--shadow-tinted),
+    0 0 0 1px var(--ring-color);
   cursor: pointer;
   transition: box-shadow 0.2s;
   font-family: sans-serif;
   text-decoration: none;
-  color: #6b7280;
+  color: var(--color-text-muted);
 }
 
 .label {
@@ -68,9 +70,9 @@ const props = defineProps<{
 .portfolio-btn.router-link-active,
 .portfolio-btn:active {
   box-shadow:
-    0 2px 8px 0 rgba(60, 60, 120, 0.18),
-    inset 0 2px 8px 0 rgba(60, 60, 120, 0.16);
-  background: #e6f9f2;
+    0 2px 8px 0 var(--shadow-tinted-strong),
+    inset 0 2px 8px 0 var(--shadow-tinted-strong);
+  background: var(--active-color);
 
   .icon {
     filter: drop-shadow(0 0 8px #32e37c88);

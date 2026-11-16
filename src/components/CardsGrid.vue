@@ -215,8 +215,12 @@ onUnmounted(() => {
   top: 0;
   z-index: 10;
   width: 100%;
-  background: #fffd;
-  background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+  background: var(--color-background-glass);
+  background-image: linear-gradient(
+    to top,
+    var(--color-background-transparent),
+    var(--color-background)
+  );
 }
 
 .set-logo {

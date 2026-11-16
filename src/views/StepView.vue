@@ -93,29 +93,29 @@ main {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #f1f9f1;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: var(--color-green-soft);
+  box-shadow: 0 1px 3px var(--shadow-color);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
-  color: #5f6368;
+  color: var(--color-text-muted);
   font-weight: 500;
 }
 
 .step-number.active {
-  background: #00e5ff;
-  color: white;
+  background: var(--primary-color);
+  color: var(--on-accent);
   box-shadow: 0 2px 4px rgba(0, 229, 255, 0.2);
 }
 
 .step-text {
   font-size: 18px;
-  color: #5f6368;
+  color: var(--color-text-muted);
 }
 
 .step-text.active {
-  color: #00e5ff;
+  color: var(--primary-color);
   font-weight: 500;
 }
 
@@ -159,7 +159,7 @@ main {
     padding: 1rem;
     width: 100%;
     min-width: 100%;
-    background-color: white;
+    background-color: var(--color-background);
 
     #prices {
       display: none;

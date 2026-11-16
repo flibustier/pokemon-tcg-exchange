@@ -40,7 +40,7 @@ const countWantedByPack = computed(() =>
 
 <style scoped>
 .prices {
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 1rem;
   display: flex;
@@ -62,7 +62,7 @@ const countWantedByPack = computed(() =>
   gap: 0.5rem;
   align-items: center;
   font-size: 16px;
-  color: #5f6368;
+  color: var(--color-text-muted);
 }
 
 .rarity {

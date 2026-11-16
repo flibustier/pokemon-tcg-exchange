@@ -74,7 +74,7 @@ watch(
 
 .friend-id {
   font-weight: 500;
-  color: #5f6368;
+  color: var(--color-text-muted);
 }
 
 ol {

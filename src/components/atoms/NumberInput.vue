@@ -45,21 +45,21 @@ button {
   height: 24px;
   border-radius: 50%;
   border: none;
-  background: #f1f9f1;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: var(--color-green-soft);
+  box-shadow: 0 1px 3px var(--shadow-color);
   position: relative;
   cursor: pointer;
 }
 
 button:hover {
-  background: #e8f3e8;
+  background: var(--color-green-soft-hover);
 }
 
 .plus-button::after,
 button::before {
   content: '';
   position: absolute;
-  background: #5f6368;
+  background: var(--color-text-muted);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -76,14 +76,14 @@ button::before {
 }
 
 button:disabled {
-  background: #f1f1f1;
+  background: var(--color-disabled-surface);
   cursor: not-allowed;
   box-shadow: none;
 }
 
 button:disabled::before,
 .plus-button:disabled::after {
-  background: #ccc;
+  background: var(--color-disabled-text);
 }
 
 input {
@@ -92,11 +92,11 @@ input {
   max-width: 100%;
   border: none;
   border-radius: 10px;
-  background: #fff;
+  background: var(--color-surface);
   text-align: center;
   font-size: 16px;
-  color: #5f6368;
-  box-shadow: 0 0 0 2px rgba(95, 99, 104, 0.1);
+  color: var(--color-text-muted);
+  box-shadow: 0 0 0 2px var(--input-ring);
 
   padding: 0;
   -moz-appearance: textfield;
@@ -117,8 +117,8 @@ input:focus {
 
 /* Style for disabled state */
 input:disabled {
-  background: #f1f1f1;
-  color: #ccc;
+  background: var(--color-disabled-surface);
+  color: var(--color-disabled-text);
   cursor: not-allowed;
 }
 

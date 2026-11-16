@@ -26,7 +26,7 @@
 
 .hr-or::after,
 .hr-or::before {
-  background-color: #ddd;
+  background-color: var(--color-border);
   content: '';
   display: inline-flex;
   height: 1px;

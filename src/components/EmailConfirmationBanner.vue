@@ -92,9 +92,9 @@ onUnmounted(() => document.removeEventListener('visibilitychange', refreshOnRetu
   max-width: 800px;
   padding: 0.75rem 1rem;
   border-radius: 12px;
-  background-color: #fff8e1;
-  box-shadow: 0 0 0 1px #ffe08a;
-  color: #5f4b00;
+  background-color: var(--color-warning-surface);
+  box-shadow: 0 0 0 1px var(--color-warning-border);
+  color: var(--color-warning-text);
   text-align: center;
 }
 
@@ -111,21 +111,24 @@ onUnmounted(() => document.removeEventListener('visibilitychange', refreshOnRetu
 .edit input {
   min-width: 240px;
   padding: 6px 12px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border);
   border-radius: 25px;
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 
 .edit button[type='submit'] {
   padding: 6px 16px;
   border: none;
   border-radius: 25px;
-  background: #5fd5ff;
-  color: white;
+  background: var(--accent);
+  color: var(--on-accent);
   cursor: pointer;
 }
 
 .edit button[type='submit']:disabled {
-  background: #e0e0e0;
+  background: var(--color-disabled);
+  color: var(--on-disabled);
   cursor: not-allowed;
 }
 

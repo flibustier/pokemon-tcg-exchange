@@ -286,10 +286,10 @@ h2,
   max-width: 400px;
   margin: 0 auto;
   padding: 24px;
-  background: #f8f9fa;
+  background: var(--color-surface-soft);
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 8px var(--shadow-color);
+  border: 1px solid var(--color-border);
   transition: all 0.3s ease;
 }
 
@@ -301,7 +301,7 @@ h2,
   display: block;
   margin-bottom: 0.25rem;
   font-size: 14px;
-  color: #5f6368;
+  color: var(--color-text-muted);
 }
 
 .friend-id,
@@ -310,12 +310,12 @@ h2,
 .language-input {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border);
   border-radius: 25px;
   font-size: 14px;
-  color: #5f6368;
-  background: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  box-shadow: 0 1px 3px var(--shadow-color);
   transition: all 0.2s ease;
 }
 
@@ -323,14 +323,14 @@ h2,
 .email-input:focus,
 .password-input:focus {
   outline: none;
-  border-color: #5fd5ff;
-  box-shadow: 0 0 0 2px rgba(95, 213, 255, 0.2);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-shadow);
 }
 
 .friend-id::placeholder,
 .email-input::placeholder,
 .password-input::placeholder {
-  color: #9e9e9e;
+  color: var(--color-text-subtle);
 }
 
 /* Invalid state styling */
@@ -338,7 +338,7 @@ h2,
 .email-input:invalid,
 .selected-icon.invalid,
 .language-input:invalid {
-  border-color: #ff5252;
+  border-color: var(--color-danger);
 }
 
 .selected-icon {
@@ -366,7 +366,7 @@ h2,
   position: absolute;
   width: 340px;
   z-index: 100;
-  background-color: #fffe;
+  background-color: var(--color-background-glass);
   padding: 1rem;
   border-radius: 25px;
   border: 1px solid var(--primary-color);
@@ -391,16 +391,16 @@ h2,
   gap: 0.75rem;
   margin-top: 0.5rem;
   padding-top: 1rem;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--color-border);
 }
 
 .danger-button {
   display: inline-block;
   padding: 8px 20px;
-  border: 1px solid #ff5252;
+  border: 1px solid var(--color-danger);
   border-radius: 25px;
-  background: white;
-  color: #ff5252;
+  background: var(--color-surface);
+  color: var(--color-danger);
   font-family: inherit;
   font-size: 14px;
   line-height: normal;
@@ -409,13 +409,13 @@ h2,
 }
 
 .danger-button:hover:not(:disabled) {
-  background: #ff5252;
-  color: white;
+  background: var(--color-danger);
+  color: var(--color-surface);
 }
 
 .danger-button:disabled {
-  border-color: #e0e0e0;
-  color: #9e9e9e;
+  border-color: var(--color-border);
+  color: var(--color-text-subtle);
   cursor: not-allowed;
 }
 
@@ -431,6 +431,6 @@ h2,
 }
 
 .deletion-error {
-  color: #ff5252;
+  color: var(--color-danger);
 }
 </style>

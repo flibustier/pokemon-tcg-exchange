@@ -6,6 +6,7 @@ import { fetchUser, saveFailed } from '@/services/api'
 import { isLogged } from '@/services/store'
 
 import PrimaryButton from '@/components/atoms/PrimaryButton.vue'
+import ThemeToggle from '@/components/atoms/ThemeToggle.vue'
 import MenuModal from './components/modals/MenuModal.vue'
 
 onMounted(async () => {
@@ -37,14 +38,13 @@ onMounted(async () => {
     </RouterLink>
 
     <div class="actions">
-      <template v-if="isLogged()">
-        <RouterLink to="/help" class="desktop-only"> Help & FAQ </RouterLink>
-        <MenuModal />
-      </template>
-      <template v-else>
+      <!-- On smaller screens, these are in the menu -->
+      <div class="desktop-only actions">
         <RouterLink to="/help"> Help & FAQ </RouterLink>
-        <PrimaryButton to="/login">Sign In</PrimaryButton>
-      </template>
+        <ThemeToggle />
+        <PrimaryButton v-if="!isLogged()" to="/login">Sign In</PrimaryButton>
+      </div>
+      <MenuModal />
     </div>
   </header>
   <div class="separator"></div>
@@ -71,8 +71,8 @@ onMounted(async () => {
   max-width: calc(100% - 2rem);
   padding: 0.5rem 1rem;
   border-radius: 10px;
-  color: #8a1c1c;
-  background-color: #fdecea;
+  color: var(--color-error-text);
+  background-color: var(--color-error-surface);
   box-shadow: 0 2px 8px rgb(0 0 0 / 20%);
 }
 
@@ -105,7 +105,7 @@ header {
 }
 
 .brand:hover {
-  background-color: #e9f2f782;
+  background-color: var(--hover-tint);
   border-radius: 10px;
 }
 
@@ -172,12 +172,6 @@ a {
       font-size: 1.2rem;
       line-height: 1.4rem;
     }
-    :deep(.btn-primary) {
-      padding: 5px 10px;
-    }
-  }
-  .actions {
-    gap: 0.5rem;
   }
 }
 

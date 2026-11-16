@@ -56,13 +56,13 @@ const selectSet = () => {
 }
 
 .set-item:hover {
-  background-color: #f0f0f0;
+  background-color: var(--color-surface-mute);
   transform: scale(1.05);
 }
 
 .set-item.active {
-  background-color: #e0e0e0;
-  border: 2px solid var(--primary-color, #007bff);
+  background-color: var(--color-surface-strong);
+  border: 2px solid var(--primary-color);
   transform: scale(1.05);
 }
 

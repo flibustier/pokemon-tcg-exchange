@@ -82,11 +82,11 @@ const copyToClipboard = (text: string) => {
 
 <style scoped>
 .user-badge {
-  background: white;
+  background: var(--color-surface);
   padding: 4px 10px;
   border-radius: 12px;
   font-size: 14px;
-  color: #5f6368;
+  color: var(--color-text-muted);
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -94,12 +94,14 @@ const copyToClipboard = (text: string) => {
 }
 
 .user-badge.with-border {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 1px 3px var(--shadow-color),
+    0 0 0 1px var(--ring-color);
 }
 
 .time {
   font-size: 11px;
-  color: #888;
+  color: var(--color-text-subtle);
 }
 
 .copy-button {
@@ -108,7 +110,7 @@ const copyToClipboard = (text: string) => {
   padding: 0;
   margin-left: 6px;
   cursor: pointer;
-  color: #5f6368;
+  color: var(--color-text-muted);
   display: inline-flex;
   align-items: center;
   justify-content: center;

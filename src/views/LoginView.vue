@@ -56,7 +56,7 @@ function handleError(error: string) {
 
   padding: 2rem;
   border-radius: 1rem;
-  box-shadow: 0 0 0 2px #5fd5ff;
+  box-shadow: 0 0 0 2px var(--accent);
 }
 
 h2 {

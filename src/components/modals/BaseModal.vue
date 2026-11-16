@@ -46,7 +46,7 @@ const closeModal = () => {
 
 .modal-content {
   align-self: center;
-  background-color: var(--color-background);
+  background-color: var(--color-surface);
   margin: auto;
   padding: 1.5rem;
   border: 1px solid var(--primary-color);

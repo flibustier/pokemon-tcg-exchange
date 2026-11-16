@@ -59,7 +59,7 @@ defineProps<{
   &::after {
     content: '';
     flex: 1;
-    border-top: 2px solid #e4e4e4;
+    border-top: 2px solid var(--color-border);
   }
 
   img {

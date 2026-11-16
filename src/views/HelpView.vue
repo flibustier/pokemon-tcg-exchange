@@ -289,7 +289,7 @@ useHead({
           Have questions, suggestions, or need assistance? Our team is here to help!
           <br />
           You can reach us anytime at:
-          <a href="mailto:help@pokemon-tcg.exchange" style="font-weight: bold; color: #2b7a78"
+          <a href="mailto:help@pokemon-tcg.exchange" class="contact-email"
             >help@pokemon-tcg.exchange</a
           >
         </p>
@@ -304,11 +304,13 @@ useHead({
   max-width: 900px;
   margin: 2em auto;
   padding: 2em;
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.07),
+    0 0 0 1px var(--ring-color);
   font-family: 'Segoe UI', Arial, sans-serif;
-  color: #233;
+  color: var(--color-text);
 }
 header h1 {
   font-size: 2.1em;
@@ -316,36 +318,36 @@ header h1 {
 }
 header p {
   font-size: 1.2em;
-  color: #556;
+  color: var(--color-text-muted);
 }
 h2 {
   margin-top: 2em;
-  color: #2b7a78;
+  color: var(--color-teal);
 }
 ul,
 ol {
   margin: 1em 0 1em 2em;
 }
 img {
-  border: 1px solid #eee;
+  border: 1px solid var(--color-border);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 details {
   margin: 1em 0;
-  background: #f7fafd;
+  background: var(--color-surface-soft);
   border-radius: 8px;
   padding: 0.7em 1em;
-  border: 1px solid #e3e8ee;
+  border: 1px solid var(--color-border);
 }
 details summary {
   cursor: pointer;
   font-weight: 600;
   font-size: 1.07em;
-  color: #1d3557;
+  color: var(--color-text);
   outline: none;
 }
 details[open] {
-  background: #e6fbfa;
+  background: var(--color-teal-soft);
 }
 .row {
   display: flex;
@@ -373,5 +375,9 @@ details[open] {
 a {
   color: var(--text-primary);
   text-decoration: none;
+}
+a.contact-email {
+  font-weight: bold;
+  color: var(--color-teal);
 }
 </style>
