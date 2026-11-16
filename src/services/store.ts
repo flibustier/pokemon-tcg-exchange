@@ -205,18 +205,18 @@ export const isAccountIncomplete = computed(() => {
 const getCardsAsArray = (cardsStore: Record<string, number>) => {
   return Object.entries(cardsStore)
     .map(([id, count]) => {
-      const [set, numberString] = id.split('-')
-      const number = parseInt(numberString)
-
-      const additionalInformations = cardsById.get(id)
+      const card = cardsById.get(id)
+      // A card missing from the catalogue: its set holds a dash (PROMO-A-12), the number follows
+      // the last one.
+      const separator = id.lastIndexOf('-')
 
       return {
         id,
-        set,
-        number,
+        set: card?.set ?? id.slice(0, separator),
+        number: card?.number ?? parseInt(id.slice(separator + 1)),
         count,
-        rarity: additionalInformations?.rarity,
-        packs: additionalInformations?.packs,
+        rarity: card?.rarity,
+        packs: card?.packs,
       }
     })
     .filter((card) => card.count > 0)

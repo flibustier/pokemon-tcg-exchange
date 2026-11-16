@@ -213,10 +213,13 @@ test.describe('saving cards', () => {
 
   test('sends the whole collection when many cards changed', async ({ page }) => {
     const saves: string[] = []
+    type SavedCard = { id: string; set: string; number: number; count: number }
+    let wanted: SavedCard[] = []
 
     await signIn(page)
     await mockApi(page, sessionOk, (route) => {
       saves.push(new URL(route.request().url()).pathname)
+      wanted = route.request().postDataJSON().wanted
       return reply(route, 200, 'updated')
     })
     const sessionCall = sessionImported(page)
@@ -230,6 +233,11 @@ test.describe('saving cards', () => {
 
     await expect.poll(() => saves.length).toBe(1)
     expect(saves[0]).toBe('/user/')
+    expect(wanted.length).toBeGreaterThanOrEqual(25)
+    for (const card of wanted) {
+      expect(card.id).toBe(`${card.set}-${card.number}`)
+      expect(card.set).toBe(card.set.toUpperCase())
+    }
   })
 
   test('sends the whole collection until the session is loaded', async ({ page }) => {
