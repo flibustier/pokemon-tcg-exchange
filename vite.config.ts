@@ -1,12 +1,27 @@
 import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
+import config from './config.json' with { type: 'json' }
+
+// Without a BUGSINK_DSN in config.json, errors.ts never loads errors-sdk.js and nothing refers to it
+// anymore, but Rolldown still writes it: leave it out.
+const errorsSdkOnlyWithDsn = (): Plugin => ({
+  name: 'errors-sdk-only-with-dsn',
+  apply: 'build',
+  generateBundle(_options, bundle) {
+    if (!config.BUGSINK_DSN) {
+      delete bundle['assets/errors-sdk.js']
+      delete bundle['assets/errors-sdk.js.map']
+    }
+  },
+})
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue(), vueDevTools()],
+  plugins: [vue(), vueDevTools(), errorsSdkOnlyWithDsn()],
   build: {
     // Source maps are sent to Bugsink when deploying (scripts/deploy.sh), never published
     sourcemap: 'hidden',
