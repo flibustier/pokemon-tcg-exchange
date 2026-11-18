@@ -9,13 +9,13 @@ import {
 } from '@sentry/browser'
 
 // Loaded by errors.ts after the first error only. This file keeps the same name from one deploy to
-// the next (vite.config.ts), so a tab opened before a deploy can still load it.
+// the next (vite.config.ts), so a tab opened before a deploy can still load it. It imports nothing
+// from the app (the DSN comes from errors.ts): otherwise, in an old tab, it would load the main
+// chunk of the new deploy.
 
-const DSN = 'https://a49599109e28425ebd5605760102adfa@bug.cracking.ovh/1'
-
-export const start = (currentPage: () => string) => {
+export const start = (dsn: string, currentPage: () => string) => {
   const client = new BrowserClient({
-    dsn: DSN,
+    dsn,
     environment: location.hostname === 'pokemon-tcg.exchange' ? 'production' : 'local',
     transport: makeFetchTransport,
     stackParser: defaultStackParser,
