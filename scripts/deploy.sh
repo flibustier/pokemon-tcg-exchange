@@ -24,6 +24,9 @@ cd dist
 # Remove images that are now hosted on the CDN to keep the gh-pages branch light
 rm -rf images/cards-by-set
 
+# The files of the previous builds stay a week, for the tabs opened before
+../scripts/keep-old-assets.sh assets
+
 git add -A
 git commit -m $cdate
 
