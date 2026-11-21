@@ -1,5 +1,6 @@
 {
   "BUGSINK_DSN": "https://a49599109e28425ebd5605760102adfa@bug.cracking.ovh/1",
   "UNAUTHORIZED_RARITIES": ["IM", "UR", "AN"],
-  "UNAUTHORIZED_SETS": ["PROMO-A", "PROMO-B"]
+  "UNAUTHORIZED_SETS": ["PROMO-A", "PROMO-B"],
+  "CLOSED_SETS": ["SP1"]
 }

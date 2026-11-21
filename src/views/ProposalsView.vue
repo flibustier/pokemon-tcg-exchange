@@ -2,6 +2,7 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import { CLOSED_SETS } from '@/../config.json' with { type: 'json' }
 import type { Proposal } from '@/types'
 
 import { formatDate, uniq } from '@/services/utils'
@@ -47,6 +48,7 @@ type ProposalGroup = {
   pseudo?: string
   language?: string
   rarity: string
+  closedSet: string
   friendID: string
   wantedCards: Card[]
   givenCards: Card[]
@@ -57,9 +59,14 @@ type ProposalGroup = {
 const cardContainsFilterTerms = (card: Card) =>
   card.name.toLowerCase().includes((filters.value.cardName || '').toLowerCase())
 
+// Cards of a closed set (SP1) are only traded for cards of the same set, as the server matches
+// them: they get their own group, so a tile never seems to trade one for a card of another set.
+const closedSetOf = (card: Card) => (CLOSED_SETS.includes(card.set) ? card.set : '')
+
 const proposalsByRarityAndFriendId = computed(() => {
   return data.value.reduce((acc: ProposalGroup[], proposal: Proposal): ProposalGroup[] => {
     const rarity = proposal.card1.rarity
+    const closedSet = closedSetOf(proposal.card1)
     const {
       friend_id: friendID,
       icon,
@@ -83,7 +90,8 @@ const proposalsByRarityAndFriendId = computed(() => {
     }
 
     const existingGroup = acc.find(
-      (group) => group.rarity === rarity && group.friendID === friendID,
+      (group) =>
+        group.rarity === rarity && group.closedSet === closedSet && group.friendID === friendID,
     )
     if (existingGroup) {
       if (existingGroup.wantedCards.every((card) => card.id !== proposal.card1.id)) {
@@ -95,6 +103,7 @@ const proposalsByRarityAndFriendId = computed(() => {
     } else {
       acc.push({
         rarity,
+        closedSet,
         friendID,
         icon,
         pseudo,
