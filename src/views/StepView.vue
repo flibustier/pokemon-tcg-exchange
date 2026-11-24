@@ -66,7 +66,9 @@ const activeStep = ref(1)
 
 <style scoped>
 main {
+  flex: 1;
   width: 100%;
+  padding: 1rem 0;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;

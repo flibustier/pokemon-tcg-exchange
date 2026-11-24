@@ -107,6 +107,22 @@ test.describe('session', () => {
   })
 })
 
+// Its place hung on the order in which the styles were loaded: on a build, it was centred in the
+// height of every card, far below the screen
+test('the account menu stays on screen over the cards', async ({ page }) => {
+  // the wish list draws every card
+  test.slow()
+  await signIn(page)
+  await mockApi(page, (route) => reply(route, 500, 'ko'))
+  await page.goto('/account/wishlist')
+  await expect(page.locator('#A1 .card').first()).toBeAttached({ timeout: 30000 })
+
+  const menu = page.locator('.aside nav')
+  await expect(menu).toBeInViewport()
+  await page.evaluate(() => window.scrollTo(0, 5000))
+  await expect(menu).toBeInViewport()
+})
+
 test.describe('login', () => {
   const submit = async (page: Page) => {
     await page.goto('/login')
