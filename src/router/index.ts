@@ -1,5 +1,4 @@
 // import { createRouter, createWebHistory } from 'vue-router'
-import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 import { isLogged } from '@/services/store'
 
 const AccountView = () => import('../views/AccountView.vue')
@@ -9,17 +8,8 @@ export const routes = [
     path: '/',
     name: 'home',
     component: () => import('../views/StepView.vue'),
-    beforeEnter: (
-      _to: RouteLocationNormalized,
-      _from: RouteLocationNormalized,
-      next: NavigationGuardNext,
-    ) => {
-      if (isLogged()) {
-        next('/account/proposals')
-      } else {
-        next()
-      }
-    },
+    // Guards return where to go instead of calling next(), deprecated by Vue Router
+    beforeEnter: () => (isLogged() ? '/account/proposals' : true),
   },
   {
     path: '/login',
@@ -50,17 +40,7 @@ export const routes = [
     path: '/account',
     name: 'account',
     component: AccountView,
-    beforeEnter: (
-      _to: RouteLocationNormalized,
-      _from: RouteLocationNormalized,
-      next: NavigationGuardNext,
-    ) => {
-      if (isLogged()) {
-        next()
-      } else {
-        next('/login')
-      }
-    },
+    beforeEnter: () => (isLogged() ? true : '/login'),
     children: [
       {
         path: 'wishlist',
