@@ -27,13 +27,13 @@ const loaders: Record<Locale, () => Promise<Texts>> = {
   fr: () => texts(import('@/locales/fr.json'), import('virtual:card-names/fr')),
 }
 
+// Together: when both fail, the second error must not stay without a handler
 const texts = async (
-  messages: Promise<{ default: Messages }>,
-  cardNames: Promise<{ default: Record<string, string> }>,
-): Promise<Texts> => ({
-  messages: (await messages).default,
-  cardNames: (await cardNames).default,
-})
+  ...files: [Promise<{ default: Messages }>, Promise<{ default: Record<string, string> }>]
+): Promise<Texts> => {
+  const [messages, cardNames] = await Promise.all(files)
+  return { messages: messages.default, cardNames: cardNames.default }
+}
 
 const STORAGE_KEY = 'locale'
 

@@ -141,11 +141,14 @@ test.describe('language', () => {
   test('is English when the texts cannot be loaded', async ({ page }) => {
     await prepare(page, ['es-ES'])
     // The file of the dev server, or of a build
-    await page.route(/\/locales\/es\.json|\/assets\/es-/, (route) => route.abort())
+    await page.route(/\/locales\/es\.json|card-names\/es|\/assets\/es-/, (route) => route.abort())
+    const errors: string[] = []
+    page.on('pageerror', (error) => errors.push(error.message))
     await page.goto('/login')
 
     await expect(signInHeading(page)).toHaveText('Sign in to your account')
     await expect(languageOfPage(page)).toHaveAttribute('lang', 'en')
+    expect(errors).toEqual([])
   })
 })
 
@@ -196,7 +199,9 @@ test.describe('in the language of the player', () => {
     await expect(page.getByRole('link', { name: '¿Has olvidado tu contraseña?' })).toBeVisible()
   })
 
-  test('the word to type to delete the account, the server still gets its own', async ({ page }) => {
+  test('the word to type to delete the account, the server still gets its own', async ({
+    page,
+  }) => {
     const bodies: unknown[] = []
     await prepare(page, ['es-ES'], {
       'DELETE /user/': (route) => {

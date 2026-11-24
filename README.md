@@ -40,6 +40,10 @@ Pokémon TCG Exchange is built for fans of the Pokémon Trading Card Game Pocket
 
 This project is built with **Vue 3** and **Vite**. The cards database is provided by [pokemon-tcg-pocket-database](https://github.com/flibustier/pokemon-tcg-pocket-database).
 
+### Translations
+
+The texts are in `src/locales`, one file per language, and the card names come from the cards database. To add a language, copy `en.json`, translate its texts, then add a line to `LOCALES` and to `loaders` in `src/services/i18n.ts`. The type check tells which texts are missing, and `e2e/i18n.spec.ts` checks the placeholders (`{name}`) and tags (`<link>…</link>`).
+
 ### Recommended IDE Setup
 
 - [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (disable Vetur).
