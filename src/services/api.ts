@@ -308,6 +308,21 @@ const saveCards = async () => {
 }
 const retrySaveCards = debounce(() => saveCards(), SAVE_RETRY_DELAY)
 
+// True while the server lacks changes the player made: a reload would lose them, since the
+// session brings back the server's copy. A visitor's cards stay in the browser (store.ts).
+export const hasUnsavedChanges = () => {
+  if (!isLogged()) return false
+  if (isSaving || saveRequested || !savedCards) return true
+  const changedCards =
+    cardChanges('wanted', savedCards.wanted, wantedCardsCountById.value).length +
+    cardChanges('giving', savedCards.giving, givingCardsCountById.value).length
+  const changedJokers = savedJokers
+    ? changedFlags(savedJokers.jokers, jokers.value).length +
+      changedFlags(savedJokers.exclusions, jokerExclusions.value).length
+    : 0
+  return changedCards + changedJokers > 0
+}
+
 export const debouncedUpdateUser = debounce(() => {
   saveRetries = 0
   saveCards()

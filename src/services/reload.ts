@@ -20,6 +20,15 @@ export const watchLoadErrors = () =>
 
 export const isLoadError = (error: unknown) => error instanceof Object && loadErrors.has(error)
 
+// Opens `url` on the build online. The page enters the history like a link, then reload() asks the
+// server again: assign() could take that page from the browser cache, with the files of the
+// previous build. Also used when a newer build is online (version.ts).
+export const loadFromServer = (url: string) => {
+  reloading = true
+  if (new URL(url, location.href).href !== location.href) history.pushState(null, '', url)
+  location.reload()
+}
+
 const reload = (url: string) => {
   if (!navigator.onLine) return false
   try {
@@ -30,11 +39,7 @@ const reload = (url: string) => {
     // without sessionStorage, nothing would stop a reload loop
     return false
   }
-  reloading = true
-  // The page it was going to enters the history like a link, then reload() asks the server again:
-  // assign() could take that page from the browser cache, with the files of the previous build
-  if (new URL(url, location.href).href !== location.href) history.pushState(null, '', url)
-  location.reload()
+  loadFromServer(url)
   return true
 }
 
