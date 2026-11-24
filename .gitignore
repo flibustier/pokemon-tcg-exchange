@@ -31,3 +31,9 @@ coverage
 
 test-results/
 playwright-report/
+
+# Astro
+.astro
+
+# The checkout of the gh-pages branch, see scripts/deploy.sh
+/gh-pages

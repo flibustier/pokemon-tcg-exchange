@@ -1,20 +1,16 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
-import { RouterView, RouterLink, useRoute } from 'vue-router'
-import { useHead } from '@unhead/vue'
+import { onMounted } from 'vue'
+import { RouterView, RouterLink } from 'vue-router'
 
 import { fetchUser, saveFailed } from '@/services/api'
-import { pageHead } from '@/services/head'
 import { t } from '@/services/i18n'
 import { isLogged } from '@/services/store'
 
+import SiteLink from '@/components/atoms/SiteLink.vue'
 import PrimaryButton from '@/components/atoms/PrimaryButton.vue'
 import ThemeToggle from '@/components/atoms/ThemeToggle.vue'
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import MenuModal from './components/modals/MenuModal.vue'
-
-const route = useRoute()
-useHead(computed(() => pageHead(route)))
 
 onMounted(async () => {
   if (isLogged()) {
@@ -29,9 +25,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <header class="container">
+  <header class="site-header">
     <RouterLink class="brand" :to="isLogged() ? '/account/proposals' : '/'">
-      <h1>
+      <h1 class="brand-name">
         <img
           alt="Pokemon Trading Card Game Pocket"
           class="logo"
@@ -47,7 +43,7 @@ onMounted(async () => {
     <div class="actions">
       <!-- On smaller screens, these are in the menu -->
       <div class="desktop-only actions">
-        <RouterLink to="/help">{{ t('app.help') }}</RouterLink>
+        <SiteLink to="/help">{{ t('app.help') }}</SiteLink>
         <LanguageSwitcher />
         <ThemeToggle />
         <PrimaryButton v-if="!isLogged()" to="/login">{{ t('app.signIn') }}</PrimaryButton>
@@ -55,7 +51,7 @@ onMounted(async () => {
       <MenuModal />
     </div>
   </header>
-  <div class="separator"></div>
+  <div class="site-separator"></div>
 
   <main class="container">
     <RouterView />
@@ -84,43 +80,6 @@ onMounted(async () => {
   box-shadow: 0 2px 8px rgb(0 0 0 / 20%);
 }
 
-header {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  h1,
-  button {
-    color: var(--text-primary);
-  }
-
-  h1 {
-    display: flex;
-    align-items: center;
-    line-height: 1.7rem;
-    font-size: 1.6rem;
-  }
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-
-  padding-right: 1rem;
-
-  cursor: pointer;
-}
-
-.brand:hover {
-  background-color: var(--hover-tint);
-  border-radius: 10px;
-}
-
-#exchange-logo {
-  margin: 0 0.5rem;
-}
-
 main {
   display: flex;
   place-items: center;
@@ -134,58 +93,8 @@ main {
   padding: 0 1rem;
 }
 
-.separator {
-  height: 5px;
-  width: 100%;
-  background: linear-gradient(to right, #ff69b4, #4169e1, #40e0d0);
-  background-size: 300% 100%;
-  animation: gradientAnimation 6s infinite;
-}
-
-@keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.actions {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  align-items: center;
-}
-
 a {
   color: var(--text-primary);
   text-decoration: none;
-}
-
-@media (max-width: 600px) {
-  #tcg-pocket-logo {
-    height: 75px;
-  }
-  #exchange-logo {
-    height: 40px;
-    margin-left: 0;
-    margin-right: 0.25rem;
-  }
-  header {
-    h1 {
-      font-size: 1.2rem;
-      line-height: 1.4rem;
-    }
-  }
-}
-
-@media (max-width: 1111px) {
-  .desktop-only {
-    display: none;
-  }
 }
 </style>

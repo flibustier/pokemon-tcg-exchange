@@ -41,21 +41,19 @@ const resend = async () => {
 }
 
 let token = ''
-if (!import.meta.env.SSR) {
-  onMounted(() => {
-    // The token comes after the # of the link, which no request carries. Remove it from the
-    // address bar too, so that it stays out of the history and of a copied link.
-    token = new URLSearchParams(window.location.hash.slice(1)).get('token') || ''
-    if (window.location.hash) {
-      history.replaceState(history.state, '', window.location.pathname)
-    }
-    if (token) {
-      confirm(token)
-    } else {
-      state.value = 'invalid'
-    }
-  })
-}
+onMounted(() => {
+  // The token comes after the # of the link, which no request carries. Remove it from the address
+  // bar too, so that it stays out of the history and of a copied link.
+  token = new URLSearchParams(window.location.hash.slice(1)).get('token') || ''
+  if (window.location.hash) {
+    history.replaceState(history.state, '', window.location.pathname)
+  }
+  if (token) {
+    confirm(token)
+  } else {
+    state.value = 'invalid'
+  }
+})
 </script>
 
 <template>

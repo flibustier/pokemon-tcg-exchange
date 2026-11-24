@@ -81,17 +81,28 @@ const leaveFor = async (page: Page, duration: number) => {
   await setVisibility('visible')
 }
 
-// Light pages: the home page draws every card, slow to open in WebKit under load
-const toLogin = (page: Page) => page.getByRole('link', { name: 'Sign In' }).first().click()
+// Another page of the app. Light ones: the home page draws every card, slow to open in WebKit under
+// load.
+const goTo = (page: Page, path: string) =>
+  page.evaluate((to) => {
+    const { __vue_app__: app } = document.querySelector('#app') as unknown as {
+      __vue_app__: { config: { globalProperties: { $router: { push: (to: string) => void } } } }
+    }
+    app.config.globalProperties.$router.push(to)
+  }, path)
+const toLogin = (page: Page) => goTo(page, '/login')
+
+// The app is there, no longer what the HTML shows in the meantime
+const appShown = (page: Page) => expect(page.locator('h1.brand-name')).toBeVisible()
 
 // Opens a page while the build running is the one online, then publishes a newer one
-const openHelp = async (
+const openApp = async (
   page: Page,
   { checks, online }: { checks: string[]; online: { build: string } },
   published = NEWER,
 ) => {
-  await page.goto('/help')
-  await expect(page.locator('a.brand')).toBeVisible()
+  await page.goto('/forgotten-password')
+  await appShown(page)
   await checked(page, checks, 1)
   online.build = published
   await mark(page)
@@ -101,7 +112,7 @@ test.describe('a tab running an older build', () => {
   test('loads the newer build at the next page change', async ({ page }) => {
     const server = await setUp(page)
     const { checks } = server
-    await openHelp(page, server)
+    await openApp(page, server)
 
     // Moving around asks for the build online, at most every 10 minutes
     await page.clock.fastForward(11 * MINUTE)
@@ -111,37 +122,37 @@ test.describe('a tab running an older build', () => {
     expect(await isSameDocument(page)).toBe(true)
 
     // The next page comes from the server
-    await page.getByRole('link', { name: 'Help & FAQ' }).first().click()
-    await expect(page).toHaveURL(/\/help$/)
+    await goTo(page, '/forgotten-password')
+    await expect(page).toHaveURL(/\/forgotten-password$/)
     await expect.poll(() => isSameDocument(page)).toBe(false)
 
     // Still an older build after the reload (here the dev server never changes): no loop
-    await expect(page.locator('a.brand')).toBeVisible()
+    await appShown(page)
     await mark(page)
     await page.clock.fastForward(11 * MINUTE)
     await toLogin(page)
     await checked(page, checks, 4)
-    await page.getByRole('link', { name: 'Help & FAQ' }).first().click()
-    await expect(page).toHaveURL(/\/help$/)
+    await goTo(page, '/forgotten-password')
+    await expect(page).toHaveURL(/\/forgotten-password$/)
     expect(await isSameDocument(page)).toBe(true)
   })
 
   test('reloads at once when back after an hour', async ({ page }) => {
     const server = await setUp(page)
     const { checks } = server
-    await openHelp(page, server)
+    await openApp(page, server)
 
     await leaveFor(page, 61 * MINUTE)
 
     await expect.poll(() => checks.length).toBeGreaterThanOrEqual(2)
     await expect.poll(() => isSameDocument(page)).toBe(false)
-    await expect(page).toHaveURL(/\/help$/)
+    await expect(page).toHaveURL(/\/forgotten-password$/)
   })
 
   test('waits for a page change when back sooner', async ({ page }) => {
     const server = await setUp(page)
     const { checks } = server
-    await openHelp(page, server)
+    await openApp(page, server)
 
     await leaveFor(page, 15 * MINUTE)
     await checked(page, checks, 2)
@@ -155,7 +166,7 @@ test.describe('a tab running an older build', () => {
   test('stays when the build online is older', async ({ page }) => {
     const server = await setUp(page)
     const { checks } = server
-    await openHelp(page, server, OLDER)
+    await openApp(page, server, OLDER)
 
     await leaveFor(page, 61 * MINUTE)
     await checked(page, checks, 2)
@@ -207,11 +218,11 @@ test.describe('a tab running an older build', () => {
     page.on('request', (request) => {
       if (request.resourceType() === 'document') documents++
     })
-    await page.goto('/help')
+    await page.goto('/forgotten-password')
 
     await expect.poll(() => documents).toBe(2)
     // Once only: the dev server still runs the older build
-    await expect(page.locator('a.brand')).toBeVisible()
+    await appShown(page)
     await checked(page, checks, 2)
     expect(documents).toBe(2)
   })
@@ -248,8 +259,8 @@ test.describe('a tab running an older build', () => {
         window.dispatchEvent(new Event('pointerdown')),
       ),
     )
-    await page.goto('/help')
-    await expect(page.locator('a.brand')).toBeVisible()
+    await page.goto('/forgotten-password')
+    await appShown(page)
     await mark(page)
     await checked(page, checks, 1)
     expect(await isSameDocument(page)).toBe(true)

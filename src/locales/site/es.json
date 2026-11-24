@@ -1,0 +1,130 @@
+{
+  "hint": "Esta página en español",
+  "help": {
+    "title": "Cómo intercambiar cartas en Pokémon TCG Pocket: guía y preguntas",
+    "description": "Cómo funcionan los intercambios en Pokémon TCG Pocket: qué cartas se pueden intercambiar, cuánto polvo iris cuestan, qué sustituye a las fichas de intercambio y cómo encontrar jugadores en línea.",
+    "heading": "Cómo intercambiar cartas en Pokémon TCG Pocket",
+    "intro": "¡Te damos la bienvenida a <site>pokemon-tcg.exchange</site>, el centro de intercambio de los jugadores de Pokémon TCG Pocket! Esta guía explica cómo funcionan los intercambios en el juego y cómo la web te encuentra jugadores con los que intercambiar.",
+    "rules": {
+      "heading": "Cómo funcionan los intercambios en el juego",
+      "items": [
+        "Solo puedes intercambiar con jugadores de tu <strong>lista de amigos</strong>.",
+        "Las dos cartas deben tener la <strong>misma rareza</strong>: una carta ◊◊ por otra carta ◊◊.",
+        "Algunas cartas <strong>no se pueden intercambiar</strong>: las cartas ☆☆☆, las cartas de corona y las promocionales.",
+        "A partir de ◊◊◊, un intercambio cuesta <strong>polvo iris</strong> a los dos jugadores.",
+        "Cada intercambio gasta <strong>energía de intercambio</strong>, que se recupera con el tiempo o con relojes de arena de intercambio.",
+        "Los dos jugadores tienen que aceptar el intercambio."
+      ],
+      "costs": "Cuánto cuesta un intercambio",
+      "rarity": "Rareza",
+      "cost": "Polvo iris",
+      "free": "Gratis",
+      "notTradeable": "No se puede intercambiar"
+    },
+    "site": {
+      "heading": "Cómo encontrar jugadores con los que intercambiar",
+      "intro": "El juego solo permite intercambiar con amigos, y no ayuda a encontrarlos. Para eso está <site>pokemon-tcg.exchange</site>:",
+      "items": [
+        "<strong>Tus deseos:</strong> elige las cartas que buscas.",
+        "<strong>Tus ofertas:</strong> elige las cartas que puedes dar.",
+        "<strong>Tu ID de amigo:</strong> con él te añaden como amigo los jugadores que coinciden contigo.",
+        "<strong>Tus coincidencias:</strong> la web encuentra a los jugadores que dan lo que buscas y buscan lo que das.",
+        "<strong>Tus intercambios:</strong> mira las propuestas, habla con los demás jugadores y cambia tus listas cuando quieras."
+      ],
+      "outro": "El intercambio se hace en el juego, entre amigos. La web es gratuita y nunca te pide tu cuenta del juego."
+    },
+    "steps": {
+      "heading": "Cómo usar la web, paso a paso",
+      "wants": {
+        "title": "Elige las cartas que buscas",
+        "text": "Recorre todas las cartas de Pokémon TCG Pocket y filtra por expansión, rareza o nombre para encontrar las que te faltan.",
+        "alt": "Las cartas que buscas"
+      },
+      "offers": {
+        "title": "Elige las cartas que puedes ofrecer",
+        "text": "Añade las cartas repetidas que puedes dar. Cuantas más ofreces, más coincidencias tienes. Con un <strong>comodín</strong>, das con un solo clic todas tus cartas de una rareza en una expansión, menos las que buscas.",
+        "alt": "Las cartas que puedes ofrecer"
+      },
+      "friendId": {
+        "title": "Introduce tu ID de amigo",
+        "text": "Tu ID de amigo es un número de 16 cifras de Pokémon TCG Pocket. Para encontrarlo:",
+        "items": [
+          "toca tu avatar o tu nombre en el juego,",
+          "tu ID de amigo está en la parte superior de tu perfil,",
+          "introdúcelo en la web, sin guiones."
+        ],
+        "alt": "El ID de amigo en la pantalla del perfil"
+      },
+      "matches": {
+        "title": "Recibe coincidencias y propuestas",
+        "text": "La web compara tus listas con las de los demás jugadores. En cada coincidencia ves:",
+        "items": [
+          "las cartas que podéis intercambiar y cuánto polvo iris cuestan,",
+          "el apodo y el ID de amigo del otro jugador, con un código QR para añadirlo,",
+          "cuándo vino por última vez, y cómo escribirle."
+        ],
+        "alt": "Tus coincidencias y propuestas"
+      },
+      "account": {
+        "title": "Mantén tu cuenta al día",
+        "text": "Elige el mismo apodo y el mismo icono que en el juego, indica qué rarezas aceptas intercambiar y cambia tus listas según crece tu colección.",
+        "alt": "Los ajustes de tu cuenta"
+      }
+    },
+    "packs": {
+      "heading": "Qué sobres abrir",
+      "text": "En el menú Estadísticas de tu cuenta, la web cuenta las cartas de tu lista de deseos en cada sobre:",
+      "items": [
+        "<strong>ve de un vistazo</strong> qué sobres tienen más cartas de las que te faltan,",
+        "<strong>abre primero los mejores</strong> e intercambia para conseguir las demás."
+      ],
+      "alt": "Los mejores sobres para tus deseos"
+    },
+    "faq": {
+      "heading": "Preguntas frecuentes",
+      "list": [
+        {
+          "question": "¿Cómo cambio las fichas de intercambio de Pokémon TCG Pocket?",
+          "answer": "Las fichas de intercambio ya no existen: el polvo iris las sustituyó en julio de 2025, y las que tenían los jugadores se convirtieron en polvo iris. Ahora los intercambios se pagan con polvo iris, mira la tabla de arriba."
+        },
+        {
+          "question": "¿Cómo consigo polvo iris?",
+          "answer": "Consigues polvo iris cuando obtienes una carta que ya tienes, y con misiones y eventos."
+        },
+        {
+          "question": "¿Qué cartas no se pueden intercambiar?",
+          "answer": "Las cartas de tres estrellas (inmersivas), las de corona y las promocionales no se pueden intercambiar. La web las muestra con 🚫 y no las incluye en las propuestas."
+        },
+        {
+          "question": "¿Puedo intercambiar con cualquier jugador en línea?",
+          "answer": "Solo con tus amigos del juego. Cuando la web te encuentra una coincidencia, añade al otro jugador con su ID de amigo o su código QR y empieza el intercambio en el juego."
+        },
+        {
+          "question": "¿Dónde está mi ID de amigo?",
+          "answer": "Toca tu avatar o tu nombre en el juego: tu ID de amigo está en la parte superior de tu perfil. Introduce sus 16 cifras en la web, sin guiones."
+        },
+        {
+          "question": "¿Por qué las cartas de First Partners (SP1) tienen sus propias propuestas?",
+          "answer": "Las cartas del sobre especial First Partners solo se intercambian por cartas del mismo sobre, por eso la web las empareja aparte."
+        },
+        {
+          "question": "¿Puedo cambiar puntos de sobre por cartas?",
+          "answer": "Sí, en el juego: abrir sobres de una expansión te da puntos, que gastas en una carta de esa expansión. Toca una carta en la web para ver cuántos puntos cuesta."
+        },
+        {
+          "question": "¿Puedo cambiar mis deseos o mis ofertas más adelante?",
+          "answer": "Sí, cuando quieras desde tu cuenta. Con listas al día tienes mejores coincidencias."
+        },
+        {
+          "question": "¿Cómo elimino mi cuenta?",
+          "answer": "Al final de la página Cuenta. Tus listas, tu correo, tu contraseña y tu ID de amigo se eliminan para siempre."
+        }
+      ]
+    },
+    "contact": {
+      "heading": "Contacto",
+      "text": "¿Una pregunta, una idea, un problema? Escríbenos a <mail>help@pokemon-tcg.exchange</mail>."
+    },
+    "cta": "Encontrar jugadores"
+  }
+}

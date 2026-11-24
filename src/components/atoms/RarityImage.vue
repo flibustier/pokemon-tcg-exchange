@@ -3,10 +3,10 @@ import { computed } from 'vue'
 import { rarities } from '@/services/cards'
 import { rarityName } from '@/services/i18n'
 
-import diamond from 'pokemon-tcg-pocket-database/dist/images/rarities/diamond.webp'
-import star from 'pokemon-tcg-pocket-database/dist/images/rarities/star.webp'
-import shiny from 'pokemon-tcg-pocket-database/dist/images/rarities/shiny-star.webp'
-import crown from 'pokemon-tcg-pocket-database/dist/images/rarities/crown.webp'
+import diamond from 'pokemon-tcg-pocket-database/dist/images/rarities/diamond.webp?url'
+import star from 'pokemon-tcg-pocket-database/dist/images/rarities/star.webp?url'
+import shiny from 'pokemon-tcg-pocket-database/dist/images/rarities/shiny-star.webp?url'
+import crown from 'pokemon-tcg-pocket-database/dist/images/rarities/crown.webp?url'
 
 const images = {
   diamond,

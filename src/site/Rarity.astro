@@ -1,0 +1,22 @@
+---
+import crown from 'pokemon-tcg-pocket-database/dist/images/rarities/crown.webp'
+import diamond from 'pokemon-tcg-pocket-database/dist/images/rarities/diamond.webp'
+import shiny from 'pokemon-tcg-pocket-database/dist/images/rarities/shiny-star.webp'
+import star from 'pokemon-tcg-pocket-database/dist/images/rarities/star.webp'
+
+import { rarities } from '@/services/cards'
+
+// The symbols of a rarity. Its name is written beside.
+interface Props {
+  rarity: keyof typeof rarities
+}
+
+const IMAGES = { Diamond: diamond, Star: star, Shiny: shiny, Crown: crown }
+const { group, ...rarity } = rarities[Astro.props.rarity]
+const image = IMAGES[group as keyof typeof IMAGES]
+const count = 'count' in rarity ? rarity.count : 0
+---
+
+{Array.from({ length: count }, () => (
+  <img src={image.src} alt="" height="18" width={Math.round((18 * image.width) / image.height)} />
+))}

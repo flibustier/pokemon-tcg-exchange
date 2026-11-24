@@ -3,19 +3,26 @@ import { ref, shallowRef } from 'vue'
 import en from '@/locales/en.json'
 
 import type { Card } from './cards'
+import {
+  DEFAULT_LOCALE,
+  formatText,
+  isLocale,
+  languageOf,
+  LOCALE_KEY,
+  localePath,
+  type Locale,
+  type Params,
+} from './texts'
 
-// The texts of the app (src/locales). English is in the main bundle: the pages are pre-rendered in
-// it, and the app falls back on it. Another language is downloaded before the first page shows, with
-// the card names in that language.
+// The texts of the app (src/locales). English is in the main bundle: the app falls back on it.
+// Another language is downloaded before the first page shows, with the card names in that language.
+// The public pages have their own texts, see src/site.
 //
-// To add a language: its file in src/locales, the type check tells which texts are missing, then a
-// line in LOCALES and in loaders below.
+// To add a language: its files in src/locales and src/locales/site, the type check tells which texts
+// are missing, then a line in LOCALES (texts.ts), in loaders below and in src/site/texts.ts.
 
 export type MessageKey = keyof typeof en
 type Messages = Record<MessageKey, string>
-
-export const LOCALES = { en: 'English', es: 'Español', fr: 'Français' } as const
-export type Locale = keyof typeof LOCALES
 
 type Texts = { messages: Messages; cardNames: Record<string, string> }
 
@@ -35,27 +42,21 @@ const texts = async (
   return { messages: messages.default, cardNames: cardNames.default }
 }
 
-const STORAGE_KEY = 'locale'
-
-export const locale = ref<Locale>('en')
+export const locale = ref<Locale>(DEFAULT_LOCALE)
 const current = shallowRef(english)
-
-const isLocale = (value: unknown): value is Locale => Object.keys(LOCALES).includes(value as string)
-
-const languageOf = (tag: string) => tag.split('-')[0].toLowerCase()
 
 // The language picked with the switcher, the browser's first one that the app has otherwise
 const preferredLocale = (): Locale => {
   try {
-    const picked = localStorage.getItem(STORAGE_KEY)
+    const picked = localStorage.getItem(LOCALE_KEY)
     if (isLocale(picked)) return picked
   } catch {
     // Storage blocked: the app follows the browser
   }
-  return navigator.languages.map(languageOf).find(isLocale) ?? 'en'
+  return navigator.languages.map(languageOf).find(isLocale) ?? DEFAULT_LOCALE
 }
 
-let requested: Locale = 'en'
+let requested: Locale = DEFAULT_LOCALE
 
 const load = async (to: Locale) => {
   requested = to
@@ -76,24 +77,18 @@ export const startLocale = () =>
 // starts in the language picked, kept first.
 export const setLocale = (to: Locale) => {
   try {
-    localStorage.setItem(STORAGE_KEY, to)
+    localStorage.setItem(LOCALE_KEY, to)
   } catch {
     // Storage blocked: the language changes for this page only
   }
   return load(to)
 }
 
-// A text may have two forms, "{n} card | {n} cards": `n` picks the one to use, as the language does
-const form = (text: string, n: string | number | undefined) => {
-  const forms = text.split(' | ')
-  if (forms.length === 1 || typeof n !== 'number') return forms[0]
-  return new Intl.PluralRules(locale.value).select(n) === 'one' ? forms[0] : forms[1]
-}
+export const t = (key: MessageKey, params?: Params) =>
+  formatText(locale.value, current.value.messages[key], params)
 
-export const t = (key: MessageKey, params: Record<string, string | number> = {}) =>
-  form(current.value.messages[key], params.n).replace(/\{(\w+)\}/g, (placeholder, name) =>
-    String(params[name] ?? placeholder),
-  )
+// The address of a public page, outside the app, in the language of the player
+export const sitePath = (path: string) => localePath(locale.value, path)
 
 const isMessageKey = (key: string): key is MessageKey => key in en
 

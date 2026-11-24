@@ -1,0 +1,91 @@
+---
+import Header from '@/site/Header.astro'
+import LanguageHint from '@/site/LanguageHint.astro'
+import { alternatesOf } from '@/site/texts'
+import type { Locale } from '@/services/texts'
+
+import BaseLayout from './BaseLayout.astro'
+
+// A public page, in every language. It works without the app.
+interface Props {
+  title: string
+  description: string
+  path: string
+  locale: Locale
+}
+
+const { path, locale } = Astro.props
+const alternates = alternatesOf(path)
+---
+
+<BaseLayout {...Astro.props} translated>
+  <LanguageHint slot="head" locale={locale} alternates={alternates} />
+  {alternates.map((alternate) => (
+    <a
+      class="language-hint"
+      data-locale={alternate.locale}
+      lang={alternate.locale}
+      href={alternate.href}
+    >
+      {alternate.hint} →
+    </a>
+  ))}
+  <Header locale={locale} alternates={alternates} />
+  <main>
+    <slot />
+  </main>
+  <footer>
+    <!-- The other languages, as links: the switcher is for the visitors, these for everyone -->
+    {alternates.map((alternate) => (
+      <a
+        lang={alternate.locale}
+        hreflang={alternate.locale}
+        href={alternate.href}
+        aria-current={alternate.locale === locale ? 'page' : undefined}
+      >
+        {alternate.name}
+      </a>
+    ))}
+  </footer>
+</BaseLayout>
+
+<style>
+  main {
+    width: 100%;
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 1rem;
+    flex: 1;
+  }
+
+  footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+
+    a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+    }
+
+    a[aria-current] {
+      font-weight: bold;
+    }
+  }
+
+  .language-hint {
+    padding: 0.5rem 1rem;
+    color: var(--text-primary);
+    background: var(--active-color);
+    text-align: center;
+    text-decoration: none;
+  }
+
+  :global(html[data-hint='en']) .language-hint[data-locale='en'],
+  :global(html[data-hint='es']) .language-hint[data-locale='es'],
+  :global(html[data-hint='fr']) .language-hint[data-locale='fr'] {
+    display: block;
+  }
+</style>

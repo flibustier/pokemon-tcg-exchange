@@ -171,7 +171,7 @@ onMounted(async () => {
   }
   refresh()
   // 10 seconds = 10 * 1000 ms
-  refreshInterval = setInterval(refresh, 10 * 1000)
+  refreshInterval = window.setInterval(refresh, 10 * 1000)
 
   composedMessage.value = localStorage.getItem('draft_message') || ''
   localStorage.removeItem('draft_message')

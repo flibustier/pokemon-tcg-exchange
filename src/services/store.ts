@@ -6,13 +6,7 @@ import { debouncedUpdateUser } from './api'
 import { cardsById } from './cards'
 import { isEqual } from './utils'
 
-const storage = import.meta.env.SSR
-  ? {
-      getItem: () => {},
-      setItem: () => {},
-      removeItem: () => {},
-    }
-  : localStorage
+const storage = localStorage
 
 enum ObjectName {
   ClientID = 'client_id',

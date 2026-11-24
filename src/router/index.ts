@@ -1,38 +1,32 @@
-// import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+
+import type { MessageKey } from '@/services/i18n'
 import { isLogged } from '@/services/store'
 
-// What search engines and link previews show of a page (services/head.ts). A page without them is
-// left out of search engines.
+// The pages of the app. Each one has a file in src/pages, which holds what search engines and link
+// previews read, except the conversations: GitHub Pages answers 404.html, the same app, for them.
+// The public pages (help…) are outside the app, see src/pages/[...locale].
+
 declare module 'vue-router' {
   interface RouteMeta {
-    title?: string
-    description?: string
+    title?: MessageKey
   }
 }
 
 const AccountView = () => import('../views/AccountView.vue')
 
-export const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
     component: () => import('../views/StepView.vue'),
     // Guards return where to go instead of calling next(), deprecated by Vue Router
     beforeEnter: () => (isLogged() ? '/account/proposals' : true),
-    meta: {
-      title: 'Pokemon TCG Pocket Exchange Center - Trade Your Cards with the World',
-      description:
-        'Select your wishlist, create offers, enter your Friend ID and match with other players. Our platform allows you to easily find and organize trades, complete your collection and make the most of your doublons.',
-    },
   },
   {
     path: '/login',
     name: 'login',
-    meta: {
-      title: 'Sign in - Pokemon TCG Pocket Exchange Center',
-      description:
-        'Sign in to see the players who give the Pokemon TCG Pocket cards you want, and want the ones you give.',
-    },
+    meta: { title: 'title.login' },
     component: () => import('../views/LoginView.vue'),
   },
   {
@@ -51,21 +45,10 @@ export const routes = [
     component: () => import('../views/LogoutView.vue'),
   },
   {
-    path: '/help',
-    name: 'help',
-    meta: {
-      title: 'How to trade and exchange your Pokemon TCG Pocket cards with our hub',
-      description: 'Trade and exchange safely your Pokemon TCG Pocket cards with our exchange hub',
-    },
-    component: () => import('../views/HelpView.vue'),
-  },
-  {
     path: '/account',
     name: 'account',
     component: AccountView,
-    // Not at build time, where nobody is signed in: the page would get the head and the modules of
-    // the sign-in page (vite.config.ts leaves its HTML empty)
-    beforeEnter: () => (import.meta.env.SSR || isLogged() ? true : '/login'),
+    beforeEnter: () => (isLogged() ? true : '/login'),
     children: [
       {
         path: 'wishlist',
@@ -112,22 +95,10 @@ export const routes = [
     ],
   },
   {
-    path: '/404',
-    name: '404',
-    component: () => import('../views/NotFoundView.vue'),
-  },
-  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('../views/NotFoundView.vue'),
   },
 ]
 
-/*
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
-})
-
-export default router
-*/
+export const createAppRouter = () => createRouter({ history: createWebHistory(), routes })

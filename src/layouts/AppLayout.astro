@@ -1,0 +1,26 @@
+---
+import Header from '@/site/Header.astro'
+
+import BaseLayout from './BaseLayout.astro'
+
+// A page of the app: what it shows until the app is there, the app does the rest. Only /login and /
+// are for search engines, the other pages belong to a signed-in player.
+interface Props {
+  title?: string
+  description?: string
+  path?: string
+}
+
+const { title = 'Pokemon TCG Pocket Exchange Center - Trade Your Cards with the World', ...page } =
+  Astro.props
+---
+
+<BaseLayout title={title} {...page}>
+  <div id="app">
+    <Header />
+    <slot />
+  </div>
+  <script>
+    import '@/main'
+  </script>
+</BaseLayout>

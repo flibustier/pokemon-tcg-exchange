@@ -74,7 +74,7 @@ const isLoggedInAfterLoading = async (page: Page) => {
   const sessionCall = page.waitForEvent('requestfinished', (request) =>
     request.url().endsWith('/user/session'),
   )
-  await page.goto('/help')
+  await page.goto('/account/settings')
   await sessionCall
   await page.waitForTimeout(300)
 
@@ -93,7 +93,7 @@ test.describe('session', () => {
   test('stays logged in when the network fails', async ({ page }) => {
     await signIn(page)
     await mockApi(page, (route) => route.abort())
-    await page.goto('/help')
+    await page.goto('/account/settings')
 
     await page.waitForTimeout(500)
     expect(await page.evaluate(() => localStorage.getItem('token'))).not.toBeNull()

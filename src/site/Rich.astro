@@ -1,0 +1,18 @@
+---
+import { HTML_TAGS, parseTags } from '@/services/texts'
+
+// A text with tags: those that are not HTML are links, whose addresses are given by tag
+interface Props {
+  text: string
+  links?: Record<string, string>
+}
+
+const { text, links = {} } = Astro.props
+---
+
+{parseTags(text).map((part) => {
+  if (typeof part === 'string') return part
+  const Tag = part.tag as 'strong'
+  if (HTML_TAGS.includes(part.tag)) return <Tag>{part.text}</Tag>
+  return <a href={links[part.tag]}>{part.text}</a>
+})}

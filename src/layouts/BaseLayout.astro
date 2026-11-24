@@ -1,0 +1,119 @@
+---
+import '@/assets/base.css'
+import '@/assets/header.css'
+
+import { DEFAULT_LOCALE, locales, localePath, type Locale } from '@/services/texts'
+
+interface Props {
+  title: string
+  // A page without a description is not for search engines
+  description?: string
+  locale?: Locale
+  // The address of the page in English, and whether the other languages have it too
+  path?: string
+  translated?: boolean
+}
+
+const { title, description, locale = DEFAULT_LOCALE, path, translated = false } = Astro.props
+
+const absolute = (address: string) => new URL(address, Astro.site).href
+const indexed = description !== undefined && path !== undefined
+const url = indexed ? absolute(localePath(locale, path)) : undefined
+const image = absolute('/images/open-graph.png')
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{title}</title>
+
+    <!-- Preload critical fonts -->
+    <link
+      rel="preload"
+      href="/fonts/Brandon_Grotesque_regular.otf"
+      as="font"
+      type="font/otf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/Brandon_Grotesque_medium.otf"
+      as="font"
+      type="font/otf"
+      crossorigin
+    />
+
+    <!-- Preconnect to CDN -->
+    <link rel="preconnect" href="https://cdn.pokemon-tcg.exchange" />
+
+    <meta name="robots" content={indexed ? 'all' : 'noindex'} />
+    {indexed && (
+      <>
+        <link rel="canonical" href={url} />
+        <meta name="description" content={description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={url} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={image} />
+        <meta property="og:locale" content={locale} />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={url} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+        <meta property="twitter:image" content={image} />
+      </>
+    )}
+    {indexed && translated && (
+      <>
+        {locales.map((other) => (
+          <link rel="alternate" hreflang={other} href={absolute(localePath(other, path))} />
+        ))}
+        <link rel="alternate" hreflang="x-default" href={absolute(path)} />
+      </>
+    )}
+    <script is:inline>
+      // The theme, set before the first paint: the one picked with the theme button, the system's
+      // otherwise (see services/theme.ts). A signed-in player has no sign-in button.
+      ;(function () {
+        var root = document.documentElement
+        var picked = null
+        try {
+          picked = localStorage.getItem('theme')
+          if (localStorage.getItem('token') !== null) root.dataset.signedIn = ''
+        } catch (e) {}
+        var system = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        root.dataset.theme = picked === 'light' || picked === 'dark' ? picked : system
+      })()
+    </script>
+    <script is:inline>
+      // GoatCounter counts the landing page without its parameters: a sign-in link carries the
+      // email address and a token, which must not end up in the statistics. A conversation is
+      // counted by its pattern, as on navigation, so no player id goes in either. The path comes from
+      // the address, not from the canonical link GoatCounter prefers: a visitor of an account page is
+      // sent to the sign-in page, with the links of the first one still there.
+      window.goatcounter = {
+        path: () =>
+          location.pathname.replace(/^\/account\/messages\/[^/]+$/, '/account/messages/:id'),
+      }
+    </script>
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+    <script is:inline async defer src="https://scripts.withcabin.com/hello.js"></script>
+    <script
+      is:inline
+      data-goatcounter="https://analytics.pokemon-tcg.exchange/count"
+      async
+      src="https://analytics.pokemon-tcg.exchange/count.js"
+    ></script>
+  </body>
+</html>

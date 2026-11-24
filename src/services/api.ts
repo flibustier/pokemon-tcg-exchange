@@ -323,6 +323,19 @@ export const hasUnsavedChanges = () => {
   return changedCards + changedJokers > 0
 }
 
+// Saves at once the changes that wait for the player to stop, before the browser leaves the app. The
+// player does not wait long: what is not saved by then comes back with the next visit's retry, or is
+// lost, as when the tab is closed.
+export const savePending = async (patience = 3000) => {
+  // Nothing to compare with until the session is loaded: the player changed nothing
+  if (!savedCards || !hasUnsavedChanges()) return
+  const giveUpAt = Date.now() + patience
+  saveCards()
+  while (hasUnsavedChanges() && !saveFailed.value && Date.now() < giveUpAt) {
+    await new Promise((resolve) => setTimeout(resolve, 50))
+  }
+}
+
 export const debouncedUpdateUser = debounce(() => {
   saveRetries = 0
   saveCards()

@@ -1,0 +1,45 @@
+---
+// The page in the language of the visitor. One who picked a language with the switcher is sent to it,
+// before the first paint; another one, whose browser is in a language the page has, gets a link.
+import type { Locale } from '@/services/texts'
+
+interface Props {
+  locale: Locale
+  alternates: { locale: Locale; href: string; hint: string }[]
+}
+
+const { locale, alternates } = Astro.props
+const others = alternates.filter((alternate) => alternate.locale !== locale)
+---
+
+<script is:inline define:vars={{ locale, others }}>
+  ;(function () {
+    var find = function (language) {
+      return others.find(function (other) {
+        return other.locale === language
+      })
+    }
+    var picked = null
+    try {
+      picked = localStorage.getItem('locale')
+    } catch (e) {}
+    if (picked) {
+      var page = find(picked)
+      if (page) location.replace(page.href + location.hash)
+      return
+    }
+    var languages = (navigator.languages || []).map(function (tag) {
+      return tag.split('-')[0].toLowerCase()
+    })
+    var known = languages.find(function (language) {
+      return language === locale || find(language)
+    })
+    if (known && known !== locale) document.documentElement.dataset.hint = known
+  })()
+</script>
+
+<style is:inline>
+  .language-hint {
+    display: none;
+  }
+</style>

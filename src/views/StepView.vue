@@ -53,16 +53,14 @@ const activeStep = ref(1)
         :showGiving="activeStep === 2"
       />
     </div>
-    <client-only>
-      <CardsGrid v-if="activeStep < 3" v-model="stepCompleted" :step="activeStep" id="cards-grid" />
-      <div v-else class="content">
-        <h2 class="hidden-xl">{{ t('home.step3') }}</h2>
-        <LoginForm />
-        <div class="buttons" style="max-width: 335px">
-          <PrimaryButton @click="activeStep--">{{ t('home.previous') }}</PrimaryButton>
-        </div>
+    <CardsGrid v-if="activeStep < 3" v-model="stepCompleted" :step="activeStep" id="cards-grid" />
+    <div v-else class="content">
+      <h2 class="hidden-xl">{{ t('home.step3') }}</h2>
+      <LoginForm />
+      <div class="buttons" style="max-width: 335px">
+        <PrimaryButton @click="activeStep--">{{ t('home.previous') }}</PrimaryButton>
       </div>
-    </client-only>
+    </div>
   </main>
 </template>
 

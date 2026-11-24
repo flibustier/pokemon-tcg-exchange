@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 
+import SiteLink from '../atoms/SiteLink.vue'
+
 import CardIcon from '../icons/CardIcon.vue'
 import GearIcon from '../icons/GearIcon.vue'
 import HeartIcon from '../icons/HeartIcon.vue'
@@ -50,12 +52,12 @@ const toggleMenu = () => {
           </span>
           <span>{{ t('app.signIn') }}</span>
         </RouterLink>
-        <RouterLink class="menu-item" :to="{ name: 'help' }" @click="toggleMenu">
+        <SiteLink class="menu-item" to="/help">
           <span class="icon">
             <QuestionIcon />
           </span>
           <span>{{ t('app.help') }}</span>
-        </RouterLink>
+        </SiteLink>
         <!-- The menu stays open: the player sees the new theme at once -->
         <button type="button" class="menu-item" @click="toggleTheme">
           <span class="icon">
@@ -121,12 +123,12 @@ const toggleMenu = () => {
           </span>
           <span>{{ t('menu.insights') }}</span>
         </RouterLink>
-        <RouterLink class="menu-item" :to="{ name: 'help' }" @click="toggleMenu">
+        <SiteLink class="menu-item" to="/help">
           <span class="icon">
             <QuestionIcon />
           </span>
           <span>{{ t('app.help') }}</span>
-        </RouterLink>
+        </SiteLink>
         <button type="button" class="menu-item" @click="toggleTheme">
           <span class="icon">
             <MoonIcon class="if-light" />
