@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang=""><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -46,18 +46,20 @@
     <script>
       // GoatCounter counts the landing page without its parameters: a sign-in link carries the
       // email address and a token, which must not end up in the statistics. A conversation is
-      // counted by its pattern, as on navigation, so no player id goes in either.
+      // counted by its pattern, as on navigation, so no player id goes in either. The path comes from
+      // the address, not from the canonical link GoatCounter prefers: a player who opens / is sent
+      // to their proposals, with the canonical link of / still there.
       window.goatcounter = {
-        path: (path) => path.split('?')[0].replace(/^\/account\/messages\/[^/]+$/, '/account/messages/:id'),
+        path: () => location.pathname.replace(/^\/account\/messages\/[^/]+$/, '/account/messages/:id'),
       }
     </script>
-    <script type="module" crossorigin="" src="/assets/app-DMOKAv1l.js"></script>
+    <script type="module" crossorigin="" src="/assets/app-C2aBxQCo.js"></script>
     <link rel="modulepreload" crossorigin="" href="/assets/_plugin-vue_export-helper-oU5ONlvc.js">
     <link rel="modulepreload" crossorigin="" href="/assets/useApi-CUWMwLLw-BAabVRA1.js">
-    <link rel="stylesheet" crossorigin="" href="/assets/app-Z9lgv6Rg.css">
-  <link rel="modulepreload" crossorigin="" href="/assets/LogoutView-Bt6VOPKt.js"><link rel="modulepreload" crossorigin="" href="/assets/CenteredLayout-D03Q2rEs.js"><link rel="stylesheet" href="/assets/CenteredLayout-BlWfp-P-.css"></head>
+    <link rel="stylesheet" crossorigin="" href="/assets/app-CiWXJQ0U.css">
+  <link rel="modulepreload" crossorigin="" href="/assets/LogoutView-C6YpY74n.js"><link rel="modulepreload" crossorigin="" href="/assets/CenteredLayout-D03Q2rEs.js"><link rel="stylesheet" href="/assets/CenteredLayout-BlWfp-P-.css"><meta name="robots" content="noindex"></head>
   <body>
-    <div id="app" data-server-rendered="true"><!--[--><header class="container" data-v-80afb51d=""><a href="/" class="brand" data-v-80afb51d=""><h1 data-v-80afb51d=""><img alt="Pokemon Trading Card Game Pocket" class="logo" src="/images/tcgpocketlogo_en.png" height="100" id="tcg-pocket-logo" data-v-80afb51d=""><img alt="" class="logo" src="/images/exchange.png" id="exchange-logo" height="60" data-v-80afb51d=""> Pocket Exchange Center </h1></a><div class="actions" data-v-80afb51d=""><div class="desktop-only actions" data-v-80afb51d=""><a href="/help" class="" data-v-80afb51d=""> Help &amp; FAQ </a><button type="button" class="theme-toggle" data-v-80afb51d="" data-v-3107935b=""><span class="if-light" title="Switch to the dark theme" data-v-3107935b=""><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-v-3107935b=""><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg><span class="visually-hidden" data-v-3107935b="">Switch to the dark theme</span></span><span class="if-dark" title="Switch to the light theme" data-v-3107935b=""><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-v-3107935b=""><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg><span class="visually-hidden" data-v-3107935b="">Switch to the light theme</span></span></button><a href="/login" class="btn-primary" data-v-80afb51d="" data-v-0beb67c9=""><!--[-->Sign In<!--]--></a></div><!--[--><button class="burger-menu mobile-only" aria-label="Menu" data-v-e186f698=""><svg viewBox="0 0 100 80" width="24" height="24" fill="currentColor" data-v-e186f698=""><rect width="100" height="15" rx="8" data-v-e186f698=""></rect><rect y="30" width="100" height="15" rx="8" data-v-e186f698=""></rect><rect y="60" width="100" height="15" rx="8" data-v-e186f698=""></rect></svg></button><!--teleport start--><!--teleport end--><!--]--></div></header><div class="separator" data-v-80afb51d=""></div><main class="container" data-v-80afb51d=""><div class="centered-layout" data-v-80afb51d="" data-v-2d6fe895=""><!--[--><h1>Logging out...</h1><!--]--></div></main><!----><footer class="container" data-v-80afb51d=""></footer><!--]--></div>
+    <div id="app" data-server-rendered="true"></div>
     <script async="" defer="" src="https://scripts.withcabin.com/hello.js"></script>
     <script data-goatcounter="https://analytics.pokemon-tcg.exchange/count" async="" src="https://analytics.pokemon-tcg.exchange/count.js"></script>
   
