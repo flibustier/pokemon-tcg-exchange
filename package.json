@@ -27,7 +27,7 @@
     "@sentry/cli": "3.8.2",
     "@tsconfig/node22": "^22.0.6",
     "@types/node": "^26.6.6",
-    "@unhead/vue": "3.4.2",
+    "@unhead/vue": "2.1.17",
     "@vitejs/plugin-vue": "6.0.10",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.9.0",

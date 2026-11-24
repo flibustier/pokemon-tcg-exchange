@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -72,9 +72,11 @@
     <script>
       // GoatCounter counts the landing page without its parameters: a sign-in link carries the
       // email address and a token, which must not end up in the statistics. A conversation is
-      // counted by its pattern, as on navigation, so no player id goes in either.
+      // counted by its pattern, as on navigation, so no player id goes in either. The path comes from
+      // the address, not from the canonical link GoatCounter prefers: a player who opens / is sent
+      // to their proposals, with the canonical link of / still there.
       window.goatcounter = {
-        path: (path) => path.split('?')[0].replace(/^\/account\/messages\/[^/]+$/, '/account/messages/:id'),
+        path: () => location.pathname.replace(/^\/account\/messages\/[^/]+$/, '/account/messages/:id'),
       }
     </script>
   </head>

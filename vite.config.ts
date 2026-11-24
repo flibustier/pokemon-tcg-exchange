@@ -3,6 +3,7 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, type Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import type { ViteSSGOptions } from 'vite-ssg'
 
 import config from './config.json' with { type: 'json' }
 
@@ -36,9 +37,30 @@ const publishBuildId = (): Plugin => ({
   },
 })
 
+// The pages of a signed-in player, and one-off links. Nobody is signed in at build time, so their
+// HTML held the sign-in form, or "Page not found" for a conversation (404.html): the player saw it
+// until the app was there. Their HTML is left empty instead, the app draws them in the browser.
+const PRIVATE_PAGES = /^\/(account|logout|confirm-email|404)(\/|$)/
+
+const ssgOptions: Partial<ViteSSGOptions> = {
+  onPageRendered(route, html, { router }) {
+    if (PRIVATE_PAGES.test(route)) {
+      return html.replace(/(<div id="app"[^>]*>)[\s\S]*(<\/div>\s*<script)/, '$1$2')
+    }
+    // From April to November 2026, useHead came from another major version of @unhead/vue than
+    // vite-ssg's, and the HTML lost the titles without a word
+    const { title } = router.resolve(route).meta
+    if (title && !html.includes(`<title>${title}</title>`)) {
+      throw new Error(`${route}: the title is not in the HTML. Same @unhead/vue as vite-ssg?`)
+    }
+    return html
+  },
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue(), vueDevTools(), errorsSdkOnlyWithDsn(), publishBuildId()],
+  ssgOptions,
   define: {
     __BUILD_ID__: JSON.stringify(BUILD_ID),
   },

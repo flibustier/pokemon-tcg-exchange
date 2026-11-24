@@ -34,14 +34,26 @@ test('counts the landing page without its parameters or player id', async ({ pag
   await page.goto('/help?email=someone%40example.com&token=secret')
   await page.waitForFunction(() => window.goatcounter?.count)
 
-  // count.js calls this with the landing path and counts what it returns
+  // count.js calls this with the landing path, the canonical link's when there is one, and counts
+  // what it returns
   const counted = await page.evaluate(() => {
     const settings = window.goatcounter as unknown as { path: (path: string) => string }
+    const countAt = (address: string, path = address) => {
+      history.replaceState(null, '', address)
+      return settings.path(path)
+    }
     return [
       settings.path(location.pathname + location.search),
-      settings.path('/account/messages/1234567890123456?i=1&p=2'),
-      settings.path('/account/messages'),
+      countAt('/account/messages/1234567890123456?i=1&p=2'),
+      countAt('/account/messages'),
+      // A player sent from / to their proposals, with the canonical link of / still there
+      countAt('/account/proposals', '/'),
     ]
   })
-  expect(counted).toEqual(['/help', '/account/messages/:id', '/account/messages'])
+  expect(counted).toEqual([
+    '/help',
+    '/account/messages/:id',
+    '/account/messages',
+    '/account/proposals',
+  ])
 })

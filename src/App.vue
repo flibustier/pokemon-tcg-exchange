@@ -1,13 +1,18 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { RouterView, RouterLink } from 'vue-router'
+import { computed, onMounted } from 'vue'
+import { RouterView, RouterLink, useRoute } from 'vue-router'
+import { useHead } from '@unhead/vue'
 
 import { fetchUser, saveFailed } from '@/services/api'
+import { pageHead } from '@/services/head'
 import { isLogged } from '@/services/store'
 
 import PrimaryButton from '@/components/atoms/PrimaryButton.vue'
 import ThemeToggle from '@/components/atoms/ThemeToggle.vue'
 import MenuModal from './components/modals/MenuModal.vue'
+
+const route = useRoute()
+useHead(computed(() => pageHead(route)))
 
 onMounted(async () => {
   if (isLogged()) {

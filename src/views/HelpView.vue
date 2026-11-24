@@ -1,23 +1,5 @@
 <script setup lang="ts">
-import { useHead } from '@unhead/vue'
-
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
-
-useHead({
-  title: 'How to trade and exchange your Pokemon TCG Pocket cards with our hub',
-  meta: [
-    {
-      name: 'description',
-      content: 'Trade and exchange safely your Pokemon TCG Pocket cards with our exchange hub',
-    },
-  ],
-  link: [
-    {
-      rel: 'canonical',
-      href: 'https://pokemon-tcg.exchange/help',
-    },
-  ],
-})
 </script>
 
 <template>
@@ -100,7 +82,9 @@ useHead({
               set, rarity, or Pokemon to find what you’re missing.
             </p>
             <img
-              src="/images/screenshots/home-step-1.png"
+              src="/images/screenshots/home-step-1.webp"
+              loading="lazy"
+              decoding="async"
               width="770"
               height="606"
               alt="Select cards you are looking for"
@@ -114,7 +98,9 @@ useHead({
               more offers you list, the more potential matches you’ll get.
             </p>
             <img
-              src="/images/screenshots/home-step-2.png"
+              src="/images/screenshots/home-step-2.webp"
+              loading="lazy"
+              decoding="async"
               width="770"
               height="595"
               alt="Select cards you can offer"
@@ -135,7 +121,9 @@ useHead({
 
             <div style="display: flex; justify-content: center">
               <img
-                src="/images/screenshots/friend-id.png"
+                src="/images/screenshots/friend-id.webp"
+                loading="lazy"
+                decoding="async"
                 alt="Enter your Friend ID"
                 height="400"
                 width="280"
@@ -156,7 +144,11 @@ useHead({
             </ul>
 
             <img
-              src="/images/screenshots/proposals-1.png"
+              src="/images/screenshots/proposals-1.webp"
+              loading="lazy"
+              decoding="async"
+              width="770"
+              height="660"
               alt="See your matches and proposals"
               style="max-width: 100%; border-radius: 8px; margin: 1em 0"
             />
@@ -168,7 +160,11 @@ useHead({
               wishlist and offers as your collection evolves.
             </p>
             <img
-              src="/images/screenshots/settings-1.png"
+              src="/images/screenshots/settings-1.webp"
+              loading="lazy"
+              decoding="async"
+              width="770"
+              height="553"
               alt="Update your pseudonym and icon to reflect your in-game appearance"
               style="max-width: 100%; border-radius: 8px; margin: 1em 0"
             />
@@ -202,7 +198,9 @@ useHead({
             </ul>
           </div>
           <img
-            src="/images/screenshots/packs.png"
+            src="/images/screenshots/packs.webp"
+            loading="lazy"
+            decoding="async"
             alt="Best packs matching your wishes"
             width="314"
             height="517"
