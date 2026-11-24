@@ -41,9 +41,18 @@ const top = (key: 'wanted' | 'offered') =>
     .filter((row) => row[key] > 0)
     .slice(0, 12)
 
+const players = (count: number) => `${number.format(count)} ${count === 1 ? 'player' : 'players'}`
+
+// The only cards whose totals are shown
 const lists = [
-  { heading: `Most wanted ${name} cards`, rows: top('wanted') },
-  { heading: `${name} cards players offer the most`, rows: top('offered') },
+  {
+    heading: `Most wanted ${name} cards`,
+    cards: top('wanted').map((row) => ({ ...row, total: `Wanted by ${players(row.wanted)}` })),
+  },
+  {
+    heading: `${name} cards players offer the most`,
+    cards: top('offered').map((row) => ({ ...row, total: `Offered by ${players(row.offered)}` })),
+  },
 ]
 
 // The rarities of the set, the most common first
@@ -54,7 +63,6 @@ const groups = (Object.keys(rarities) as RarityCode[])
 const packs = [...new Set(set.cards.flatMap((card) => card.packs ?? []))]
 
 const padded = (card: Card) => String(card.number).padStart(3, '0')
-const players = (count: number) => `${number.format(count)} ${count === 1 ? 'player' : 'players'}`
 ---
 
 <SiteLayout
@@ -94,35 +102,41 @@ const players = (count: number) => `${number.format(count)} ${count === 1 ? 'pla
     </div>
   </div>
 
-  {hasTotals &&
-    lists.map(
-      (list) =>
-        list.rows.length > 0 && (
-          <section>
-            <h2>{list.heading}</h2>
-            <ul class="cards">
-              {list.rows.map(({ card, rarity, wanted, offered }) => (
-                <li>
-                  <img
-                    src={card.imagePaths.thumbnail}
-                    alt={card.name}
-                    width="200"
-                    height="280"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <strong>{card.name}</strong>
-                  <span class="symbols">
-                    <Rarity rarity={rarity} />
-                  </span>
-                  <span>Wanted by {players(wanted)}</span>
-                  <span>Offered by {players(offered)}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ),
-    )}
+  {hasTotals && (
+    <>
+      {lists.map(
+        (list) =>
+          list.cards.length > 0 && (
+            <section>
+              <h2>{list.heading}</h2>
+              <ul class="cards">
+                {list.cards.map(({ card, rarity, total }) => (
+                  <li>
+                    <img
+                      src={card.imagePaths.thumbnail}
+                      alt={card.name}
+                      width="200"
+                      height="280"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <strong>{card.name}</strong>
+                    <span class="symbols">
+                      <Rarity rarity={rarity} />
+                    </span>
+                    <span>{total}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ),
+      )}
+      <p class="note">
+        Players active in the last 45 days, on {date.format(totalsDate)}. A card may be offered with
+        a joker: all the cards of its rarity in the set.
+      </p>
+    </>
+  )}
 
   {packs.length > 0 && (
     <section>
@@ -154,19 +168,14 @@ const players = (count: number) => `${number.format(count)} ${count === 1 ? 'pla
         <tr>
           <th scope="col">Card</th>
           <th scope="col">Name</th>
-          {hasTotals && (
-            <>
-              <th scope="col">Wanted</th>
-              <th scope="col">Offered</th>
-            </>
-          )}
           <th scope="col">Shinedust</th>
+          <th scope="col">Pack points</th>
         </tr>
       </thead>
       {groups.map((group) => (
         <tbody>
           <tr>
-            <th colspan={hasTotals ? 5 : 3} scope="rowgroup" class="symbols">
+            <th colspan={4} scope="rowgroup" class="symbols">
               <Rarity rarity={group.rarity} /> {app(`rarity.${group.rarity}`)}
             </th>
           </tr>
@@ -174,12 +183,6 @@ const players = (count: number) => `${number.format(count)} ${count === 1 ? 'pla
             <tr>
               <td>{padded(row.card)}</td>
               <td>{row.card.name}</td>
-              {hasTotals && (
-                <>
-                  <td>{row.tradeable ? number.format(row.wanted) : '–'}</td>
-                  <td>{row.tradeable ? number.format(row.offered) : '–'}</td>
-                </>
-              )}
               <td>
                 {row.tradeable
                   ? row.tradePrice
@@ -187,17 +190,12 @@ const players = (count: number) => `${number.format(count)} ${count === 1 ? 'pla
                     : 'Free'
                   : 'Not tradable'}
               </td>
+              <td>{'points' in row ? number.format(row.points) : '–'}</td>
             </tr>
           ))}
         </tbody>
       ))}
     </table>
-    {hasTotals && (
-      <p class="note">
-        Players active in the last 45 days, on {date.format(totalsDate)}. A card may be offered with
-        a joker: all the cards of its rarity in the set.
-      </p>
-    )}
   </section>
 
   <nav class="siblings">

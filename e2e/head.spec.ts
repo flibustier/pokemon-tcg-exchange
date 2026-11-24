@@ -95,7 +95,7 @@ test('the page of a set lists its cards, without the totals of the server', asyn
   await page.getByRole('link', { name: 'Dual Fusion' }).click()
   await expect(page).toHaveURL(/\/sets\/dual-fusion$/)
   await expect(page.locator('h1')).toHaveText('Trade Dual Fusion cards')
-  await expect(page.getByRole('row', { name: '015 Ribombee 1,200' })).toBeVisible()
+  await expect(page.getByRole('row', { name: '015 Ribombee 1,200 150' })).toBeVisible()
   // The dev server does not read them
   await expect(page.getByText('Wanted by')).toHaveCount(0)
 
