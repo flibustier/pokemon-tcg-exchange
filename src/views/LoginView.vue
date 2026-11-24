@@ -2,6 +2,9 @@
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
+import { t } from '@/services/i18n'
+
+import RichText from '@/components/atoms/RichText'
 import LoginForm from '@/components/forms/LoginForm.vue'
 
 const route = useRoute()
@@ -22,18 +25,28 @@ function handleError(error: string) {
 <template>
   <div class="about">
     <div class="form">
-      <h2 v-if="passwordRequest">Forgot your password?</h2>
-      <h2 v-else-if="hasAccount">Sign in to your account</h2>
-      <h2 v-else>Create your account</h2>
+      <h2 v-if="passwordRequest">{{ t('login.forgotten') }}</h2>
+      <h2 v-else-if="hasAccount">{{ t('login.signIn') }}</h2>
+      <h2 v-else>{{ t('login.create') }}</h2>
       <LoginForm
         :without-id="hasAccount"
         :without-password="passwordRequest"
         @error="handleError"
       />
       <p v-if="hasAccount">
-        Don't have an account yet? <a href="#" @click="hasAccount = false">Create an account</a>
+        <RichText text="login.noAccount">
+          <template #link="{ text }">
+            <a href="#" @click="hasAccount = false">{{ text }}</a>
+          </template>
+        </RichText>
       </p>
-      <p v-else>Already have an account? <a href="#" @click="hasAccount = true">Sign in →</a></p>
+      <p v-else>
+        <RichText text="login.hasAccount">
+          <template #link="{ text }">
+            <a href="#" @click="hasAccount = true">{{ text }}</a>
+          </template>
+        </RichText>
+      </p>
     </div>
   </div>
 </template>

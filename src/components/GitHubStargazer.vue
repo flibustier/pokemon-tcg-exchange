@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref, reactive, onUnmounted, computed } from 'vue'
 
+import { t } from '@/services/i18n'
+
 import PlainButton from '@/components/atoms/PlainButton.vue'
+import RichText from '@/components/atoms/RichText'
 import HorizontalSeparator from '@/components/atoms/HorizontalSeparator.vue'
 
 const CHECK_INTERVAL_MS = 5_000
@@ -93,15 +96,14 @@ onUnmounted(() => {
   <div v-if="submitted" class="column-center">
     <img src="/images/icons/grid.svg" alt="" height="40" />
 
-    <p>Checking GitHub Stargazers, please wait… (this could take up to one minute)</p>
+    <p>{{ t('beta.checking') }}</p>
 
-    <PlainButton type="button" role="button" @click="cancel"> Cancel </PlainButton>
+    <PlainButton type="button" role="button" @click="cancel">
+      {{ t('beta.cancel') }}
+    </PlainButton>
   </div>
   <template v-else>
-    <p>
-      In order to access to the messaging feature and others beta features, you need to star the
-      repository on GitHub :
-    </p>
+    <p>{{ t('beta.intro') }}</p>
 
     <span class="github-btn-large" @click="autoFetch">
       <a
@@ -109,35 +111,33 @@ onUnmounted(() => {
         href="https://github.com/flibustier/pokemon-tcg-exchange"
         rel="noopener noreferrer"
         target="_blank"
-        aria-label="Star pokemon-tcg-exchange on GitHub"
+        :aria-label="t('beta.starLabel')"
       >
         <span class="gh-ico" aria-hidden="true" />
-        <span class="gh-text">Star</span>
+        <span class="gh-text">{{ t('beta.star') }}</span>
       </a>
     </span>
 
     <div class="form-group">
-      <label for="username" class="form-label">Enter your GitHub username :</label>
+      <label for="username" class="form-label">{{ t('beta.username') }}</label>
       <input v-model="ghUsername" type="text" id="username" class="form-input" />
       <p v-if="errors.ghUsername && ghUsername.length > 0" class="form-error">
-        This username doesn’t seems to be a new stargazer, please retry in a few seconds or contact
-        us at
-        <a href="mailto:help@pokemon-tcg.exchange?subject=Beta%20Access"
-          >help@pokemon-tcg.exchange</a
-        >
+        <RichText text="beta.usernameError">
+          <template #mail>
+            <a href="mailto:help@pokemon-tcg.exchange?subject=Beta%20Access"
+              >help@pokemon-tcg.exchange</a
+            >
+          </template>
+        </RichText>
       </p>
     </div>
 
-    <HorizontalSeparator />
+    <HorizontalSeparator>{{ t('beta.or') }}</HorizontalSeparator>
 
-    <p>
-      If you got a code given by our team, you can enter it here (<b
-        >you don’t need it if you have a GitHub account</b
-      >) :
-    </p>
+    <p><RichText text="beta.codeIntro" /></p>
 
     <div class="form-group">
-      <label for="accessCode" class="form-label">Beta Access code</label>
+      <label for="accessCode" class="form-label">{{ t('beta.code') }}</label>
       <input
         v-model="accessCode"
         type="text"
@@ -146,7 +146,7 @@ onUnmounted(() => {
         autocapitalize="characters"
       />
       <p v-if="errors.accessCode" class="form-error">
-        This code is not recognized. Please try again.
+        {{ t('beta.codeError') }}
       </p>
     </div>
 
@@ -156,7 +156,7 @@ onUnmounted(() => {
       :disabled="ghUsername.length < 1 && accessCode.length < 3"
       @click="submit"
     >
-      Submit
+      {{ t('beta.submit') }}
     </PlainButton>
   </template>
 </template>

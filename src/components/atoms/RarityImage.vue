@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { rarities } from '@/services/cards'
+import { rarityName } from '@/services/i18n'
 
 import diamond from 'pokemon-tcg-pocket-database/dist/images/rarities/diamond.webp'
 import star from 'pokemon-tcg-pocket-database/dist/images/rarities/star.webp'
@@ -40,7 +41,7 @@ const imgProps = computed(() => {
 
   return {
     src: images[rarity.value.group.toLowerCase() as keyof typeof images],
-    alt: rarity.value.label || '',
+    alt: rarityName(props.rarity),
     width,
     height,
   }

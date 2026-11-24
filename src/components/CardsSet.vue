@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { rarities } from '@/services/cards'
 import type { Card } from '@/services/cards'
+import { rarityName, setName, t, type SetNames } from '@/services/i18n'
 import { JOKER_RARITIES, jokerKey, jokers } from '@/services/store'
 
 import CardTile from './CardTile.vue'
@@ -11,7 +11,7 @@ import JokerToggles from './molecules/JokerToggles.vue'
 // One set: its divider and its cards. Cards the filters exclude stay mounted, hidden:
 // mounting thousands of cards again on each keystroke is what made typing slow.
 const props = defineProps<{
-  set: { code: string; imagePath: string; name: { en: string } }
+  set: { code: string; imagePath: string; name: SetNames }
   cards: Card[]
   visibleIds: Set<string>
   restricted: Record<string, boolean>
@@ -20,8 +20,6 @@ const props = defineProps<{
   // On the offers of a signed-in player: the divider holds the set's jokers
   withJokers: boolean
 }>()
-
-const label = (rarity: string) => rarities[rarity as keyof typeof rarities].label
 
 // The rarities a joker can cover that this set has, among the cards that can be traded
 const jokerRarities = computed(() =>
@@ -35,12 +33,11 @@ const jokerRarities = computed(() =>
 const jokerToggles = computed(() =>
   jokerRarities.value.map((rarity) => {
     const on = jokers.value[jokerKey(props.set.code, rarity)] === true
+    const params = { rarity: rarityName(rarity), set: setName(props.set) }
     return {
       rarity,
       state: on ? ('on' as const) : ('off' as const),
-      title: on
-        ? `You give all your ${label(rarity)} cards of ${props.set.name.en}. Click to stop`
-        : `Give all your ${label(rarity)} cards of ${props.set.name.en}, except the ones you want`,
+      title: on ? t('jokers.setOn', params) : t('jokers.setOff', params),
     }
   }),
 )
@@ -57,8 +54,8 @@ const toggleJoker = (rarity: string) => {
     <div class="set-divider">
       <img
         :src="set.imagePath"
-        :alt="set.name.en"
-        :title="set.name.en"
+        :alt="setName(set)"
+        :title="setName(set)"
         width="192"
         height="85"
         loading="lazy"
@@ -67,8 +64,8 @@ const toggleJoker = (rarity: string) => {
     <JokerToggles
       v-if="jokerToggles.length > 0"
       class="set-jokers"
-      label="I give all my"
-      hint="except the ones I want"
+      :label="t('jokers.set')"
+      :hint="t('jokers.setHint')"
       :toggles="jokerToggles"
       @toggle="toggleJoker"
     />

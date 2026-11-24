@@ -2,6 +2,7 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 import { createUser, fetchUser, sendMagicLink } from '@/services/api'
+import { serverText, t } from '@/services/i18n'
 import { isCardsIncomplete, setLogin } from '@/services/store'
 
 const props = defineProps({
@@ -31,11 +32,11 @@ const submitting = ref(false)
 const passwordSuccess = ref(false)
 
 const CTA = computed(() => {
-  if (submitting.value) return 'Loading…'
-  if (props.withoutPassword) return 'Send Magic Link'
-  if (props.withoutId) return 'Sign In'
+  if (submitting.value) return t('login.loading')
+  if (props.withoutPassword) return t('login.sendLink')
+  if (props.withoutId) return t('login.submitSignIn')
 
-  return 'Create Account'
+  return t('login.submitCreate')
 })
 
 const formIncomplete = computed(() => {
@@ -82,7 +83,7 @@ const submit = async () => {
     }
   } catch (error) {
     if (error !== 'insufficient credentials') {
-      submitError.value = error === 'ko' ? 'the server is busy, please try again' : error
+      submitError.value = error
     }
     emit('error', error)
   } finally {
@@ -110,7 +111,7 @@ if (!import.meta.env.SSR) {
 <template>
   <form class="friend-form" @submit.prevent="submit">
     <div class="form-group" v-if="!props.withoutId || props.withoutPassword">
-      <label for="friendId" class="form-label">Friend ID (16 digits without "-")</label>
+      <label for="friendId" class="form-label">{{ t('login.friendId') }}</label>
       <input
         v-model="form.friendId"
         required
@@ -124,23 +125,24 @@ if (!import.meta.env.SSR) {
     </div>
     <div class="form-group">
       <label for="email" class="form-label"
-        >Email address
-        <span v-if="!props.withoutId && !props.withoutPassword"
-          >(for notifications about exchange proposals)</span
-        ></label
+        >{{ t('login.email') }}
+        <span v-if="!props.withoutId && !props.withoutPassword">{{
+          t('login.emailHint')
+        }}</span></label
       >
       <input
         type="email"
         id="email"
         class="email-input"
-        placeholder="Enter your email"
+        :placeholder="t('login.emailPlaceholder')"
         v-model.trim="form.email"
         required
       />
     </div>
     <div class="form-group" v-if="!props.withoutPassword">
       <label for="password" class="form-label"
-        >Password <span v-if="!props.withoutId">(for retrieving your data later)</span></label
+        >{{ t('login.password') }}
+        <span v-if="!props.withoutId">{{ t('login.passwordHint') }}</span></label
       >
       <input
         v-model="form.password"
@@ -148,7 +150,7 @@ if (!import.meta.env.SSR) {
         type="password"
         id="password"
         class="password-input"
-        placeholder="Enter your password"
+        :placeholder="t('login.passwordPlaceholder')"
       />
     </div>
     <button type="submit" class="submit-button" :disabled="formIncomplete || submitting">
@@ -156,14 +158,16 @@ if (!import.meta.env.SSR) {
     </button>
     <div class="text-center">
       <p v-if="passwordSuccess" class="success-message">
-        An email will be sent with a link to signin !
+        {{ t('login.linkSent') }}
       </p>
-      <span v-if="submitError" class="error-message">Error: {{ submitError }}</span>
+      <span v-if="submitError" class="error-message">{{
+        t('login.error', { error: serverText(submitError) })
+      }}</span>
       <router-link
         v-if="submitError === 'invalid password'"
         :to="'/forgotten-password?email=' + email"
       >
-        Forgotten password?
+        {{ t('login.forgottenLink') }}
       </router-link>
     </div>
   </form>

@@ -1,3 +1,5 @@
+import { dateLocale, t } from './i18n'
+
 export const uniq = <T>(array: Array<T | undefined | null>): T[] =>
   Array.from(new Set(array.filter((x): x is T => x !== undefined && x !== null && x !== '')))
 
@@ -43,15 +45,15 @@ export const formatDate = (date: string) => {
   const diff = now.getTime() - messageDate.getTime()
   const diffDays = Math.floor(diff / (1000 * 3600 * 24))
   if (diffDays === 0) {
-    return messageDate.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+    return messageDate.toLocaleTimeString(dateLocale(), { hour: '2-digit', minute: '2-digit' })
   } else if (diffDays === 1) {
-    return 'Yesterday'
+    return t('date.yesterday')
   } else if (diffDays < 7) {
-    return messageDate.toLocaleDateString(undefined, { weekday: 'long' })
+    return messageDate.toLocaleDateString(dateLocale(), { weekday: 'long' })
   } else if (now.getFullYear() === messageDate.getFullYear()) {
-    return messageDate.toLocaleDateString(undefined, { day: '2-digit', month: 'long' })
+    return messageDate.toLocaleDateString(dateLocale(), { day: '2-digit', month: 'long' })
   } else {
-    return messageDate.toLocaleDateString(undefined, {
+    return messageDate.toLocaleDateString(dateLocale(), {
       day: '2-digit',
       month: 'long',
       year: 'numeric',

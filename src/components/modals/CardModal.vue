@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import BaseModal from '@/components/modals/BaseModal.vue'
 import { rarities, type Card } from '@/services/cards'
+import { cardName, t } from '@/services/i18n'
 
 defineProps<{
   card: Card
@@ -17,14 +18,14 @@ defineExpose({ showModal })
 </script>
 
 <template>
-  <BaseModal v-model="isVisible" :title="card.name + ` (${card.id})`">
+  <BaseModal v-model="isVisible" :title="`${cardName(card)} (${card.id})`">
     <div class="flex">
       <img
         :src="card.imagePaths.full"
         class="responsive-image"
         width="367"
         height="512"
-        :alt="card.name"
+        :alt="cardName(card)"
         loading="lazy"
       />
       <div class="column">
@@ -49,12 +50,12 @@ defineExpose({ showModal })
         </div>
 
         <div class="row">
-          <img src="/images/shinedust.webp" width="28" height="28" alt="Shine dust cost" />
+          <img src="/images/shinedust.webp" width="28" height="28" :alt="t('app.shinedust')" />
 
           <span>{{ rarities[card.rarity as keyof typeof rarities].tradePrice }}</span>
         </div>
         <div class="row">
-          <img src="/images/BoosterPoints.png" height="32" alt="Booster points cost" />
+          <img src="/images/BoosterPoints.png" height="32" :alt="t('app.boosterPoints')" />
 
           <span>{{ (rarities[card.rarity as keyof typeof rarities] as { points?: number }).points ?? '–' }}</span>
         </div>

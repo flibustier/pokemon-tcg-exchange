@@ -3,12 +3,14 @@ import { ref, reactive, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import PlainButton from '@/components/atoms/PlainButton.vue'
+import RichText from '@/components/atoms/RichText'
 import RarityImage from '@/components/atoms/RarityImage.vue'
 import ToggleSwitch from '@/components/atoms/ToggleSwitch.vue'
 import BaseModal from '@/components/modals/BaseModal.vue'
 
 import { getUserInfo, setLogOut, setUserInfo, userInfo, type RarityRule } from '@/services/store'
 import { deleteAccount, updateUser } from '@/services/api'
+import { serverText, t } from '@/services/i18n'
 
 const MAX_AVATAR_NUMBER = 123
 const languages = ['ENG', 'SPA', 'FRA', 'GER', 'ITA', 'POR', 'JPN', 'KOR', 'CHT']
@@ -20,8 +22,8 @@ const router = useRouter()
 const { rarity_rules, email, email_status, ...info } = getUserInfo()
 
 const emailStatusLabel = computed(() => {
-  if (userInfo.value.email_status === 'pending') return 'not confirmed yet'
-  if (userInfo.value.email_status === 'verified') return 'confirmed'
+  if (userInfo.value.email_status === 'pending') return t('settings.emailPending')
+  if (userInfo.value.email_status === 'verified') return t('settings.emailVerified')
   return ''
 })
 
@@ -92,7 +94,8 @@ const save = async () => {
   success.value = (await updateUser()) || false
 }
 
-const CONFIRMATION_WORD = 'DELETE'
+// The word to type is in the player's language, the server always gets DELETE (api.ts)
+const confirmationWord = computed(() => t('deletion.word'))
 const showDeletion = ref(false)
 const typedConfirmation = ref('')
 const isDeleting = ref(false)
@@ -105,7 +108,7 @@ const openDeletion = () => {
 }
 
 const confirmDeletion = async () => {
-  if (typedConfirmation.value !== CONFIRMATION_WORD || isDeleting.value) return
+  if (typedConfirmation.value !== confirmationWord.value || isDeleting.value) return
 
   isDeleting.value = true
   deletionError.value = ''
@@ -116,9 +119,9 @@ const confirmDeletion = async () => {
       window.location.replace('/')
       return
     }
-    deletionError.value = result === 'ko' ? 'the server is busy, please try again' : result
+    deletionError.value = serverText(result)
   } catch {
-    deletionError.value = 'the server could not be reached, please try again'
+    deletionError.value = t('server.unreachable')
   }
   isDeleting.value = false
 }
@@ -126,26 +129,29 @@ const confirmDeletion = async () => {
 
 <template>
   <form class="friend-form" @submit.prevent="save">
-    <h2>Settings</h2>
+    <h2>{{ t('settings.title') }}</h2>
 
     <div class="form-group">
-      <label for="icon" class="form-label label-center">Profile Icon</label>
+      <label for="icon" class="form-label label-center">{{ t('settings.icon') }}</label>
       <div
         class="selected-icon"
         :class="{ invalid: !user.icon }"
         @click="showIconList = !showIconList"
       >
-        <img :src="selectedIconUrl" alt="Selected Icon" id="icon" />
+        <img :src="selectedIconUrl" :alt="t('settings.selectedIcon')" id="icon" />
       </div>
       <div v-if="showIconList" class="icon-list">
         <div v-for="n in MAX_AVATAR_NUMBER" :key="n" class="icon-item" @click="selectIcon(n)">
-          <img :src="`/images/avatars/${String(n).padStart(3, '0')}.png`" alt="Icon" />
+          <img
+            :src="`/images/avatars/${String(n).padStart(3, '0')}.png`"
+            :alt="t('settings.icon')"
+          />
         </div>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="friendId" class="form-label">Friend ID</label>
+      <label for="friendId" class="form-label">{{ t('settings.friendId') }}</label>
       <input
         v-model="user.friend_id"
         required
@@ -160,12 +166,13 @@ const confirmDeletion = async () => {
     </div>
     <div class="form-group" v-if="userInfo.email">
       <label for="email" class="form-label"
-        >Email <span v-if="emailStatusLabel">({{ emailStatusLabel }})</span></label
+        >{{ t('settings.email') }}
+        <span v-if="emailStatusLabel">({{ emailStatusLabel }})</span></label
       >
       <input :value="userInfo.email" type="email" id="email" class="friend-id" :disabled="true" />
     </div>
     <div class="form-group">
-      <label for="pseudo" class="form-label">Pseudonym (14 characters max)</label>
+      <label for="pseudo" class="form-label">{{ t('settings.pseudo') }}</label>
       <input
         v-model="user.pseudo"
         type="text"
@@ -177,9 +184,9 @@ const confirmDeletion = async () => {
     </div>
 
     <div class="form-group">
-      <label for="language-input" class="form-label">Your card’s language</label>
+      <label for="language-input" class="form-label">{{ t('settings.cardLanguage') }}</label>
       <select id="language-input" v-model="user.language" class="language-input" required>
-        <option value="" disabled>Please select</option>
+        <option value="" disabled>{{ t('settings.select') }}</option>
         <option v-for="language in languages" :key="language" :value="language">
           {{ language }}
         </option>
@@ -187,7 +194,7 @@ const confirmDeletion = async () => {
     </div>
 
     <div class="form-group">
-      <label class="form-label">Accept exchange of rarity:</label>
+      <label class="form-label">{{ t('settings.rarities') }}</label>
 
       <ToggleSwitch v-model="rarities.C">
         <RarityImage rarity="C" />
@@ -219,41 +226,46 @@ const confirmDeletion = async () => {
     </div>
 
     <div class="form-group">
-      <ToggleSwitch v-model="user.accept_notifications"> Email notifications </ToggleSwitch>
+      <ToggleSwitch v-model="user.accept_notifications">
+        {{ t('settings.notifications') }}
+      </ToggleSwitch>
 
       <ToggleSwitch
         :model-value="user.has_beta_access"
         :disabled="user.has_beta_access"
         @update:model-value="configureBeta"
       >
-        Access beta features (messages, …)
+        {{ t('settings.beta') }}
       </ToggleSwitch>
     </div>
 
     <PlainButton type="submit" role="button" :disabled="success">{{
-      success ? 'Saved!' : 'Save'
+      success ? t('settings.saved') : t('settings.save')
     }}</PlainButton>
 
     <div class="danger-zone">
-      <RouterLink to="/logout" class="danger-button">Logout</RouterLink>
-      <button type="button" class="danger-button" @click="openDeletion">Delete my account</button>
+      <RouterLink to="/logout" class="danger-button">{{ t('settings.logout') }}</RouterLink>
+      <button type="button" class="danger-button" @click="openDeletion">
+        {{ t('settings.delete') }}
+      </button>
     </div>
   </form>
 
-  <BaseModal v-model="showDeletion" title="Delete your account">
+  <BaseModal v-model="showDeletion" :title="t('deletion.title')">
     <form class="deletion" @submit.prevent="confirmDeletion">
-      <p>This deletes for good, and cannot be undone:</p>
+      <p>{{ t('deletion.intro') }}</p>
       <ul>
-        <li>your wishlist, your offers and your settings,</li>
-        <li>your email, your password and your friend ID.</li>
+        <li>{{ t('deletion.cards') }}</li>
+        <li>{{ t('deletion.identity') }}</li>
       </ul>
-      <p>
-        The players you talked with keep your messages, from a “Deleted player” they can no longer
-        answer.
-      </p>
-      <label for="delete-confirmation"
-        >Type <strong>{{ CONFIRMATION_WORD }}</strong> to confirm</label
-      >
+      <p>{{ t('deletion.messages') }}</p>
+      <label for="delete-confirmation">
+        <RichText text="deletion.type">
+          <template #word>
+            <strong>{{ confirmationWord }}</strong>
+          </template>
+        </RichText>
+      </label>
       <input
         v-model.trim="typedConfirmation"
         id="delete-confirmation"
@@ -264,11 +276,13 @@ const confirmDeletion = async () => {
       <button
         type="submit"
         class="danger-button"
-        :disabled="typedConfirmation !== CONFIRMATION_WORD || isDeleting"
+        :disabled="typedConfirmation !== confirmationWord || isDeleting"
       >
-        {{ isDeleting ? 'Deleting…' : 'Delete my account for good' }}
+        {{ isDeleting ? t('deletion.deleting') : t('deletion.submit') }}
       </button>
-      <p v-if="deletionError" class="deletion-error" role="alert">Error: {{ deletionError }}</p>
+      <p v-if="deletionError" class="deletion-error" role="alert">
+        {{ t('login.error', { error: deletionError }) }}
+      </p>
     </form>
   </BaseModal>
 </template>

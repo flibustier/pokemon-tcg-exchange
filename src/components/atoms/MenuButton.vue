@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { capitalize } from 'vue'
+import { t } from '@/services/i18n'
 
 const props = defineProps<{
-  route: string
-  label?: string
+  route: 'wishlist' | 'offers' | 'proposals' | 'messages' | 'settings' | 'insights'
   withNotificationDot?: boolean
 }>()
 </script>
@@ -19,7 +18,7 @@ const props = defineProps<{
         'notification-dot': withNotificationDot,
       }"
     >
-      {{ label || capitalize(route) }}
+      {{ t(`menu.${route}`) }}
     </span>
   </RouterLink>
 </template>

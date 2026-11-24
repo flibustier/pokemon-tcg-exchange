@@ -2,7 +2,10 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 
 import { changeEmail, refreshEmailStatus, resendConfirmationEmail } from '@/services/api'
+import { serverText, t } from '@/services/i18n'
 import { userInfo } from '@/services/store'
+
+import RichText from '@/components/atoms/RichText'
 
 const RESENT = 'sent'
 
@@ -11,16 +14,13 @@ const isEditing = ref(false)
 const newEmail = ref('')
 const isBusy = ref(false)
 
-const errorText = (error: unknown) =>
-  error === 'ko' || typeof error !== 'string' ? 'the server is busy, please try again' : error
-
 const resend = async () => {
   isBusy.value = true
   try {
     const result = await resendConfirmationEmail()
-    feedback.value = result === RESENT ? 'A new email is on its way!' : errorText(result)
+    feedback.value = result === RESENT ? t('confirm.sent') : serverText(result)
   } catch (error) {
-    feedback.value = errorText(error)
+    feedback.value = serverText(error)
   } finally {
     isBusy.value = false
   }
@@ -38,12 +38,12 @@ const saveEmail = async () => {
     const result = await changeEmail(newEmail.value)
     if (result === 'updated') {
       isEditing.value = false
-      feedback.value = 'Email updated, a new confirmation email is on its way!'
+      feedback.value = t('banner.updated')
     } else {
-      feedback.value = errorText(result)
+      feedback.value = serverText(result)
     }
   } catch (error) {
-    feedback.value = errorText(error)
+    feedback.value = serverText(error)
   } finally {
     isBusy.value = false
   }
@@ -61,26 +61,31 @@ onUnmounted(() => document.removeEventListener('visibilitychange', refreshOnRetu
 <template>
   <div class="email-banner" role="status">
     <p>
-      📧 Please confirm your email: we sent a link to <strong>{{ userInfo.email }}</strong
-      >. Until then, you won't receive notifications and can't send messages.
+      <RichText text="banner.text">
+        <template #email>
+          <strong>{{ userInfo.email }}</strong>
+        </template>
+      </RichText>
     </p>
     <form v-if="isEditing" class="edit" @submit.prevent="saveEmail">
       <input
         v-model.trim="newEmail"
         type="email"
         required
-        aria-label="New email address"
-        placeholder="Enter your email"
+        :aria-label="t('banner.newEmail')"
+        :placeholder="t('login.emailPlaceholder')"
       />
-      <button type="submit" :disabled="isBusy || !newEmail">Save</button>
-      <button type="button" class="link" @click="isEditing = false">Cancel</button>
+      <button type="submit" :disabled="isBusy || !newEmail">{{ t('banner.save') }}</button>
+      <button type="button" class="link" @click="isEditing = false">
+        {{ t('banner.cancel') }}
+      </button>
     </form>
     <div v-else class="actions">
       <button type="button" class="link" :disabled="isBusy" @click="resend">
-        Resend the email
+        {{ t('banner.resend') }}
       </button>
       ·
-      <button type="button" class="link" @click="editEmail">Wrong address? Change it</button>
+      <button type="button" class="link" @click="editEmail">{{ t('banner.change') }}</button>
     </div>
     <p v-if="feedback" class="feedback">{{ feedback }}</p>
   </div>

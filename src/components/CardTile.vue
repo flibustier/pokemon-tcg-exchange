@@ -9,6 +9,7 @@ import {
   jokerKey,
   jokers,
 } from '@/services/store'
+import { cardName, t } from '@/services/i18n'
 import type { Card } from '@/services/cards'
 
 import NumberInput from './atoms/NumberInput.vue'
@@ -46,17 +47,19 @@ const isLeftOut = computed(
     !(givingCardsCountById.value[props.card.id] > 0),
 )
 
+const name = computed(() => cardName(props.card))
+
 const title = computed(() => {
   if (props.restricted) {
-    return 'Cannot be exchange due to Pokemon TCG Pocket rules'
+    return t('card.restricted')
   } else if (isWanted.value) {
-    return 'Already in your want list'
+    return t('card.wanted')
   } else if (isCovered.value) {
-    return `${props.card.name}: given by your joker. Click to leave it out`
+    return t('card.givenByJoker', { name: name.value })
   } else if (isLeftOut.value) {
-    return `${props.card.name}: left out of your joker. Click to give it again`
+    return t('card.leftOutOfJoker', { name: name.value })
   }
-  return props.card.name
+  return name.value
 })
 
 const increase = () => {
@@ -78,13 +81,13 @@ const select = () => {
 
 <template>
   <div class="card">
-    <h3 :title="card.name">
-      <span class="card-label hidden-sm">{{ card.name }}</span>
+    <h3 :title="name">
+      <span class="card-label hidden-sm">{{ name }}</span>
       <span class="card-number">{{ card.number.toString().padStart(3, '0') }}</span>
     </h3>
     <img
       :src="card.imagePaths.thumbnail"
-      :alt="card.name"
+      :alt="name"
       class="card-image"
       width="200"
       height="280"
@@ -102,7 +105,7 @@ const select = () => {
       :title="title"
       @click="select"
     >
-      {{ isCovered ? '🃏 Joker' : 'Left out' }}
+      {{ isCovered ? t('card.joker') : t('card.leftOut') }}
     </button>
     <NumberInput v-else-if="!isWanted" v-model="counts[card.id]" />
   </div>

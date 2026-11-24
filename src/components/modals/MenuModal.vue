@@ -13,8 +13,11 @@ import QuestionIcon from '../icons/QuestionIcon.vue'
 import UserIcon from '../icons/UserIcon.vue'
 import MoonIcon from '../icons/MoonIcon.vue'
 import SunIcon from '../icons/SunIcon.vue'
+import GlobeIcon from '../icons/GlobeIcon.vue'
+import LanguageSwitcher from '../LanguageSwitcher.vue'
 
 import { hasUnreadMessages, isAccountIncomplete, isLogged } from '@/services/store'
+import { t } from '@/services/i18n'
 import { toggleTheme } from '@/services/theme'
 
 const isMenuOpen = ref(false)
@@ -25,7 +28,7 @@ const toggleMenu = () => {
 </script>
 
 <template>
-  <button class="burger-menu mobile-only" aria-label="Menu" @click="toggleMenu">
+  <button class="burger-menu mobile-only" :aria-label="t('app.menu')" @click="toggleMenu">
     <svg viewBox="0 0 100 80" width="24" height="24" fill="currentColor">
       <rect width="100" height="15" rx="8"></rect>
       <rect y="30" width="100" height="15" rx="8"></rect>
@@ -45,13 +48,13 @@ const toggleMenu = () => {
           <span class="icon">
             <UserIcon />
           </span>
-          <span>Sign In</span>
+          <span>{{ t('app.signIn') }}</span>
         </RouterLink>
         <RouterLink class="menu-item" :to="{ name: 'help' }" @click="toggleMenu">
           <span class="icon">
             <QuestionIcon />
           </span>
-          <span>Help & FAQ</span>
+          <span>{{ t('app.help') }}</span>
         </RouterLink>
         <!-- The menu stays open: the player sees the new theme at once -->
         <button type="button" class="menu-item" @click="toggleTheme">
@@ -59,28 +62,34 @@ const toggleMenu = () => {
             <MoonIcon class="if-light" />
             <SunIcon class="if-dark" />
           </span>
-          <span class="if-light">Dark theme</span>
-          <span class="if-dark">Light theme</span>
+          <span class="if-light">{{ t('theme.dark') }}</span>
+          <span class="if-dark">{{ t('theme.light') }}</span>
         </button>
+        <div class="menu-item">
+          <span class="icon">
+            <GlobeIcon />
+          </span>
+          <LanguageSwitcher />
+        </div>
       </nav>
       <nav v-else class="mobile-nav">
         <RouterLink class="menu-item" :to="{ name: 'wishlist' }" @click="toggleMenu">
           <span class="icon">
             <HeartIcon />
           </span>
-          <span>Wishlist</span>
+          <span>{{ t('menu.wishlist') }}</span>
         </RouterLink>
         <RouterLink class="menu-item" :to="{ name: 'offers' }" @click="toggleMenu">
           <span class="icon">
             <CardIcon />
           </span>
-          <span>Offers</span>
+          <span>{{ t('menu.offers') }}</span>
         </RouterLink>
         <RouterLink class="menu-item" :to="{ name: 'proposals' }" @click="toggleMenu">
           <span class="icon">
             <ExchangeIcon />
           </span>
-          <span>Proposals</span>
+          <span>{{ t('menu.proposals') }}</span>
         </RouterLink>
         <RouterLink class="menu-item" :to="{ name: 'messages' }" @click="toggleMenu">
           <span class="icon">
@@ -91,7 +100,7 @@ const toggleMenu = () => {
               'notification-dot': hasUnreadMessages,
             }"
           >
-            Messages
+            {{ t('menu.messages') }}
           </span>
         </RouterLink>
         <RouterLink class="menu-item" :to="{ name: 'settings' }" @click="toggleMenu">
@@ -103,29 +112,35 @@ const toggleMenu = () => {
               'notification-dot': isAccountIncomplete,
             }"
           >
-            Account
+            {{ t('menu.settings') }}
           </span>
         </RouterLink>
         <RouterLink class="menu-item" :to="{ name: 'insights' }" @click="toggleMenu">
           <span class="icon">
             <ChartIcon />
           </span>
-          <span>Insights</span>
+          <span>{{ t('menu.insights') }}</span>
         </RouterLink>
         <RouterLink class="menu-item" :to="{ name: 'help' }" @click="toggleMenu">
           <span class="icon">
             <QuestionIcon />
           </span>
-          <span>Help & FAQ</span>
+          <span>{{ t('app.help') }}</span>
         </RouterLink>
         <button type="button" class="menu-item" @click="toggleTheme">
           <span class="icon">
             <MoonIcon class="if-light" />
             <SunIcon class="if-dark" />
           </span>
-          <span class="if-light">Dark theme</span>
-          <span class="if-dark">Light theme</span>
+          <span class="if-light">{{ t('theme.dark') }}</span>
+          <span class="if-dark">{{ t('theme.light') }}</span>
         </button>
+        <div class="menu-item">
+          <span class="icon">
+            <GlobeIcon />
+          </span>
+          <LanguageSwitcher />
+        </div>
       </nav>
     </div>
   </Teleport>
@@ -206,6 +221,10 @@ button.menu-item {
   background: none;
   text-align: left;
   cursor: pointer;
+}
+
+.menu-item .language {
+  margin-left: -0.5rem;
 }
 
 .menu-item:hover {

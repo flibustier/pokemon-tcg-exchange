@@ -3,6 +3,7 @@ import { computed } from 'vue'
 
 import { getGivingCardsAsArray, getWantedCardsAsArray } from '@/services/store'
 
+import { t } from '@/services/i18n'
 import RarityImage from '@/components/atoms/RarityImage.vue'
 import { rarities } from '@/services/cards'
 
@@ -36,12 +37,12 @@ const totalCost = computed(() => {
 
 <template>
   <div class="prices">
-    <h3>To match all your wishes, you <span v-if="!props.showGiving">will</span> need :</h3>
+    <h3>{{ props.showGiving ? t('prices.need') : t('prices.willNeed') }}</h3>
     <div class="price">
       <span>{{ totalCost }}</span>
       <span>x</span>
       <div class="rarity">
-        <img src="/images/shinedust.webp" alt="Trade Item Token" width="50px" />
+        <img src="/images/shinedust.webp" :alt="t('app.shinedust')" width="50px" />
       </div>
     </div>
     <div class="price" v-for="(index, rarity) in countWantedByRarity" :key="index">
@@ -50,9 +51,9 @@ const totalCost = computed(() => {
         class="centered"
         :class="countGivingByRarity[rarity] >= countWantedByRarity[rarity] ? 'success' : 'warning'"
       >
-        <span title="Number of cards you’re giving">{{ countGivingByRarity[rarity] || 0 }}</span>
+        <span :title="t('prices.giving')">{{ countGivingByRarity[rarity] || 0 }}</span>
         /
-        <span title="Number of cards you want">{{ countWantedByRarity[rarity] }}</span>
+        <span :title="t('prices.wanted')">{{ countWantedByRarity[rarity] }}</span>
       </span>
       <span v-else>{{ countWantedByRarity[rarity] }}</span>
       <span>x</span>

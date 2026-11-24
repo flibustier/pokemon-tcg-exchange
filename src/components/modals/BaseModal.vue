@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { t } from '@/services/i18n'
+
 defineProps({
   title: {
     type: String,
@@ -18,7 +20,7 @@ const closeModal = () => {
     <div class="modal-content" @click.stop="">
       <div class="modal-header">
         <h2>{{ title }}</h2>
-        <button class="close" @click="closeModal" title="Close this dialog" />
+        <button class="close" @click="closeModal" :title="t('modal.close')" />
       </div>
       <div class="column modal-body">
         <slot></slot>

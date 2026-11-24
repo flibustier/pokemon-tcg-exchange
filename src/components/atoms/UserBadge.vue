@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 
 import FriendQRModal from '@/components/modals/FriendQRModal.vue'
+import { t } from '@/services/i18n'
 import { formatFriendID } from '@/services/utils'
 
 const { friendID, pseudo } = defineProps<{
@@ -32,7 +33,7 @@ const copyToClipboard = (text: string) => {
       </div>
       <div style="display: flex">
         ID {{ formattedFriendID }}
-        <button @click="copyToClipboard(friendID)" class="copy-button" title="Copy ID">
+        <button @click="copyToClipboard(friendID)" class="copy-button" :title="t('player.copyId')">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="12"
@@ -48,7 +49,7 @@ const copyToClipboard = (text: string) => {
             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
           </svg>
         </button>
-        <button @click="isQRVisible = true" class="copy-button" title="Show QR code">
+        <button @click="isQRVisible = true" class="copy-button" :title="t('player.showQR')">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="12"
@@ -68,11 +69,11 @@ const copyToClipboard = (text: string) => {
         </button>
       </div>
       <div v-if="lastUpdate" class="time">
-        <span :title="`This player last updated their cards: ${lastUpdate}`">
-          Updated {{ lastUpdate }}
+        <span :title="t('player.updatedTitle', { date: lastUpdate })">
+          {{ t('player.updated', { date: lastUpdate }) }}
         </span>
-        <span v-if="lastSeen" :title="`This player last opened the site: ${lastSeen}`">
-          · Seen {{ lastSeen }}
+        <span v-if="lastSeen" :title="t('player.seenTitle', { date: lastSeen })">
+          · {{ t('player.seen', { date: lastSeen }) }}
         </span>
       </div>
     </div>

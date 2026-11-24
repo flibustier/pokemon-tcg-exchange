@@ -31,7 +31,7 @@ test.describe('head', () => {
       await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', SITE + path)
       await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', title)
       await expect(page.locator('meta[name="description"]')).toHaveCount(1)
-      await expect(robots(page)).toHaveCount(0)
+      await expect(robots(page)).toHaveAttribute('content', 'all')
     })
   }
 
@@ -52,5 +52,6 @@ test.describe('head', () => {
     await page.goto('/account/proposals')
     await expect(page).toHaveURL(/\/login$/)
     await expect(canonical(page)).toHaveAttribute('href', SITE + '/login')
+    await expect(robots(page)).toHaveAttribute('content', 'all')
   })
 })

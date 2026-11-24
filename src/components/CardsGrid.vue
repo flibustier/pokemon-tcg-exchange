@@ -13,8 +13,10 @@ import {
 import { areJokersLoaded } from '@/services/api'
 import { cards, allSets, rarities } from '@/services/cards'
 import type { Card } from '@/services/cards'
+import { rarityName, searchable, searchableName, setName, t } from '@/services/i18n'
 import { debounce } from '@/services/utils'
 
+import RichText from './atoms/RichText'
 import CardsFilters from './CardsFilters.vue'
 import CardsSet from './CardsSet.vue'
 import JokerToggles from './molecules/JokerToggles.vue'
@@ -44,17 +46,20 @@ const sets = allSets
   .filter(({ code }) => !code.startsWith('PROMO'))
   .sort((a, b) => (a.code < b.code ? 1 : -1))
 
-// Computed once: the cards of each set, whether they can be traded, their name for the search
+// Computed once: the cards of each set, whether they can be traded
 const cardsBySet: Record<string, Card[]> = Object.fromEntries(sets.map(({ code }) => [code, []]))
 const restricted: Record<string, boolean> = {}
-const searchName: Record<string, string> = {}
 for (const card of cards) {
   cardsBySet[card.set]?.push(card)
   restricted[card.id] =
     !rarities[card.rarity as keyof typeof rarities].tradeable ||
     UNAUTHORIZED_SETS.includes(card.set)
-  searchName[card.id] = card.name.toLowerCase()
 }
+
+// The name of each card for the search, once per language
+const searchName = computed<Record<string, string>>(() =>
+  Object.fromEntries(cards.map((card) => [card.id, searchableName(card)])),
+)
 
 const cardCountById = computed(() =>
   isWishlist.value ? wantedCardsCountById.value : givingCardsCountById.value,
@@ -65,7 +70,7 @@ const cardCountById = computed(() =>
 const searchedName = ref<string>()
 watch(
   () => filters.value.cardName,
-  debounce(() => (searchedName.value = filters.value.cardName?.toLowerCase()), 150),
+  debounce(() => (searchedName.value = searchable(filters.value.cardName ?? '')), 150),
 )
 
 const isSameSet = (a: Set<string>, b: Set<string>) =>
@@ -77,13 +82,15 @@ const isSameSet = (a: Set<string>, b: Set<string>) =>
 const visibleIds = computed<Record<string, Set<string>>>((previous) => {
   const { hideEmpty, hideUnavailable, raritySelection } = filters.value
   const name = searchedName.value
+  // Read only when searching, so that the grid costs nothing more otherwise
+  const names = name ? searchName.value : {}
   const result: Record<string, Set<string>> = {}
   for (const { code } of sets) {
     const ids = new Set(
       cardsBySet[code]
         .filter(
           (card) =>
-            (!name || searchName[card.id].includes(name)) &&
+            (!name || names[card.id].includes(name)) &&
             (!hideEmpty ||
               cardCountById.value[card.id] > 0 ||
               (withJokers.value && !restricted[card.id] && isCoveredByJoker(card))) &&
@@ -114,7 +121,7 @@ const setsWithRarity = Object.fromEntries(
 
 const allSetsToggles = computed(() =>
   JOKER_RARITIES.filter((rarity) => setsWithRarity[rarity].length > 0).map((rarity) => {
-    const label = rarities[rarity as keyof typeof rarities].label
+    const params = { rarity: rarityName(rarity) }
     const on = setsWithRarity[rarity].filter((code) => jokers.value[jokerKey(code, rarity)])
     const state =
       on.length === setsWithRarity[rarity].length
@@ -125,11 +132,7 @@ const allSetsToggles = computed(() =>
     return {
       rarity,
       state,
-      title:
-        state === 'on'
-          ? `You give all your ${label} cards in every set. Click to stop in every set`
-          : `Give all your ${label} cards in every set, except the ones you want. ` +
-            'Sets to come start without it',
+      title: state === 'on' ? t('jokers.allSetsOn', params) : t('jokers.allSetsOff', params),
     }
   }),
 )
@@ -206,7 +209,7 @@ onUnmounted(() => {
     <JokerToggles
       v-if="withJokers"
       class="all-sets-jokers"
-      label="In every set, I give all my"
+      :label="t('jokers.allSets')"
       :toggles="allSetsToggles"
       @toggle="toggleAllSets"
     />
@@ -215,7 +218,7 @@ onUnmounted(() => {
         <a v-if="previousSet" :href="'#' + previousSet.code">
           <img
             :src="previousSet.imagePath"
-            :alt="previousSet.name.en"
+            :alt="setName(previousSet)"
             width="136"
             height="60"
             class="hidden-sm"
@@ -226,20 +229,20 @@ onUnmounted(() => {
 
         <img
           :src="currentSet.imagePath"
-          :alt="currentSet.name.en"
+          :alt="setName(currentSet)"
           class="set-current-logo"
           width="192"
           height="85"
           fetchpriority="high"
           @click="isSetSelectorModalVisible = true"
-          title="Click to select another set"
+          :title="t('sets.selectTitle')"
         />
 
         <a v-if="nextSet" :href="'#' + nextSet.code">
           <img src="/images/double-arrow-right.png" alt="»" width="47" height="50" />
           <img
             :src="nextSet.imagePath"
-            :alt="nextSet.name.en"
+            :alt="setName(nextSet)"
             width="136"
             height="60"
             class="hidden-sm"
@@ -263,7 +266,7 @@ onUnmounted(() => {
       :with-jokers="withJokers"
       :eager-count="index === 0 ? 5 : 0"
     />
-    <p v-if="hasNoResults" class="no-results">No results :/<br />Please adjust your filters</p>
+    <p v-if="hasNoResults" class="no-results"><RichText text="sets.noResults" /></p>
   </div>
 </template>
 

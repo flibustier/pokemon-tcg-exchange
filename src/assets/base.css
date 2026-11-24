@@ -199,6 +199,27 @@
   font-display: swap;
 }
 
+/* The fonts above have no accented letter. Those of Spanish, French, German, Italian and Portuguese
+   come from Jost (https://github.com/indestructible-type/Jost, OFL), the closest free font, scaled
+   to the same height. It is downloaded only when a page shows one of these letters. */
+@font-face {
+  font-family: 'Grotesque';
+  font-weight: normal;
+  src: url('/fonts/Jost_medium.woff2') format('woff2');
+  unicode-range: U+A1, U+AB, U+BB, U+BF-FF, U+152-153;
+  size-adjust: 95%;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Grotesque';
+  font-weight: bold;
+  src: url('/fonts/Jost_bold.woff2') format('woff2');
+  unicode-range: U+A1, U+AB, U+BB, U+BF-FF, U+152-153;
+  size-adjust: 95%;
+  font-display: swap;
+}
+
 body {
   min-height: 100vh;
   display: flex;

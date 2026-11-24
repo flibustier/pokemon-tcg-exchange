@@ -6,9 +6,11 @@ import type { Message } from '@/types'
 
 import { formatDate } from '@/services/utils'
 import { cards, type Card } from '@/services/cards'
+import { cardName, searchable, serverText, t } from '@/services/i18n'
 import { discussions, isEmailPending } from '@/services/store'
 import { getMessages, getProposals, postMessage, refreshDiscussions } from '@/services/api'
 
+import RichText from '@/components/atoms/RichText'
 import UserBadge from '@/components/atoms/UserBadge.vue'
 import CardImageAndModal from '@/components/molecules/CardImageAndModal.vue'
 import ExchangeIcon from '@/components/icons/ExchangeIcon.vue'
@@ -32,7 +34,6 @@ const currentDiscussion = computed(() => {
 
 // A player who deleted their account is `deleted-<id>`: their messages stay readable, nobody can
 // answer them any more.
-const DELETED_PLAYER = 'Deleted player'
 const isDeletedID = (friendID?: string) => !!friendID?.startsWith('deleted-')
 const isCounterpartDeleted = computed(() => isDeletedID(discussionID.value))
 
@@ -54,7 +55,7 @@ const sendMessage = async () => {
       messages.value.push({
         from: 'error',
         to: discussionID.value as string,
-        message: response,
+        message: serverText(response),
         sent: new Date().toISOString(),
         read: null,
       })
@@ -133,8 +134,8 @@ const findCardsInMessage = (message: string) => {
 
   // search by name
   message.split(' ').forEach((word) => {
-    const found = proposalsCards.value.filter(
-      (card) => card.name.toLowerCase() === word.toLowerCase(),
+    const found = proposalsCards.value.filter((card) =>
+      [cardName(card), card.name].some((name) => searchable(name) === searchable(word)),
     )
     if (found.length > 0) {
       cardRefs.push(...found)
@@ -186,10 +187,11 @@ onUnmounted(() => {
 <template>
   <CenteredLayout v-if="!discussionID && discussions.length === 0">
     <h2>
-      You don’t have any conversation yet.
-      <br />
-      Please use the <router-link to="/account/proposals">proposals</router-link> menu to start a
-      new one.
+      <RichText text="messages.none">
+        <template #link="{ text }">
+          <router-link to="/account/proposals">{{ text }}</router-link>
+        </template>
+      </RichText>
     </h2>
   </CenteredLayout>
   <div v-else class="messenger">
@@ -222,7 +224,9 @@ onUnmounted(() => {
           <div v-else-if="discussion.deleted" class="avatar">?</div>
           <div v-else class="avatar">{{ discussion.friend_id.slice(-4) }}</div>
           <div class="content">
-            <div v-if="discussion.deleted" class="name deleted">{{ DELETED_PLAYER }}</div>
+            <div v-if="discussion.deleted" class="name deleted">
+              {{ t('messages.deletedPlayer') }}
+            </div>
             <div v-else-if="discussion.pseudo && discussion.pseudo !== ''" class="name">
               {{ discussion.pseudo }}
               <span class="language" v-if="discussion.language !== ''"
@@ -244,7 +248,7 @@ onUnmounted(() => {
     <div class="chat" :class="{ 'hidden-mobile': showMobileDiscussions }">
       <div class="chat-header">
         <div v-if="discussions.length > 0" class="actions show-mobile">
-          <button title="List of discussions" @click="showMobileDiscussions = true">
+          <button :title="t('messages.list')" @click="showMobileDiscussions = true">
             <svg
               viewBox="6 6 24 24"
               fill="currentColor"
@@ -260,7 +264,9 @@ onUnmounted(() => {
             </svg>
           </button>
         </div>
-        <div v-if="isCounterpartDeleted" class="name deleted">{{ DELETED_PLAYER }}</div>
+        <div v-if="isCounterpartDeleted" class="name deleted">
+          {{ t('messages.deletedPlayer') }}
+        </div>
         <UserBadge
           v-else
           :icon="currentDiscussion?.avatar || (route.query.i as string)"
@@ -271,7 +277,7 @@ onUnmounted(() => {
         <div v-if="!isCounterpartDeleted" class="actions">
           <RouterLink
             :to="{ name: 'proposals', query: { id: discussionID } }"
-            title="Check common proposals"
+            :title="t('messages.commonProposals')"
           >
             <ExchangeIcon class="exchange-icon" aria-hidden="true" />
           </RouterLink>
@@ -292,10 +298,12 @@ onUnmounted(() => {
             'message-error': message.from === 'error',
           }"
           :title="
-            'Message sent ' +
-            message.formattedSentDate +
-            ' and ' +
-            (message.read ? 'read ' + formatDate(message.read) : 'not read yet')
+            message.read
+              ? t('messages.titleRead', {
+                  sent: message.formattedSentDate,
+                  read: formatDate(message.read),
+                })
+              : t('messages.titleUnread', { sent: message.formattedSentDate })
           "
         >
           <div class="message-image-container" v-if="message.images.length > 0">
@@ -303,22 +311,27 @@ onUnmounted(() => {
           </div>
           <p>{{ message.message }}</p>
           <div class="time">
-            <span v-if="message.formattedReadDate">sent </span>
-            {{ message.formattedSentDate }}
-            <span v-if="message.formattedReadDate">- seen {{ message.formattedReadDate }}</span>
+            {{
+              message.formattedReadDate
+                ? t('messages.sentSeen', {
+                    sent: message.formattedSentDate,
+                    seen: message.formattedReadDate,
+                  })
+                : message.formattedSentDate
+            }}
           </div>
         </div>
       </div>
       <p v-if="isCounterpartDeleted" class="chat-closed">
-        This player deleted their account, you can no longer answer them.
+        {{ t('messages.closed') }}
       </p>
       <p v-else-if="isEmailPending" class="chat-closed">
-        Please confirm your email to send messages: the link is in the email we sent you.
+        {{ t('messages.confirmEmail') }}
       </p>
       <div v-else class="chat-input">
         <input
           type="text"
-          placeholder="Write a message..."
+          :placeholder="t('messages.placeholder')"
           v-model="composedMessage"
           @keypress.enter="sendMessage"
         />
@@ -328,7 +341,7 @@ onUnmounted(() => {
           :disabled="composedMessage.length < 1 || isSending"
         >
           <svg height="20px" viewBox="0 0 24 24" width="20px">
-            <title>Press enter to send</title>
+            <title>{{ t('messages.send') }}</title>
             <path
               d="M16.6915026,12.4744748 L3.50612381,13.2599618 C3.19218622,13.2599618 3.03521743,13.4170592 3.03521743,13.5741566 L1.15159189,20.0151496 C0.8376543,20.8006365 0.99,21.89 1.77946707,22.52 C2.41,22.99 3.50612381,23.1 4.13399899,22.8429026 L21.714504,14.0454487 C22.6563168,13.5741566 23.1272231,12.6315722 22.9702544,11.6889879 C22.8132856,11.0605983 22.3423792,10.4322088 21.714504,10.118014 L4.13399899,1.16346272 C3.34915502,0.9 2.40734225,1.00636533 1.77946707,1.4776575 C0.994623095,2.10604706 0.8376543,3.0486314 1.15159189,3.99121575 L3.03521743,10.4322088 C3.03521743,10.5893061 3.34915502,10.7464035 3.50612381,10.7464035 L16.6915026,11.5318905 C16.6915026,11.5318905 17.1624089,11.5318905 17.1624089,12.0031827 C17.1624089,12.4744748 16.6915026,12.4744748 16.6915026,12.4744748 Z"
               fill="var(--active-color)"

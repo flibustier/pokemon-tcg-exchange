@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import BaseModal from '@/components/modals/BaseModal.vue'
+import { setName, t, type SetNames } from '@/services/i18n'
 
 defineProps<{
-  sets: { code: string; name: { en: string }; imagePath: string }[]
+  sets: { code: string; name: SetNames; imagePath: string }[]
 }>()
 
 const isVisible = defineModel<boolean>()
@@ -15,7 +16,7 @@ const selectSet = () => {
 </script>
 
 <template>
-  <BaseModal v-model="isVisible" title="Select a Set">
+  <BaseModal v-model="isVisible" :title="t('sets.select')">
     <div class="set-grid">
       <a
         v-for="set in sets"
@@ -24,9 +25,9 @@ const selectSet = () => {
         class="set-item"
         :class="{ active: route.hash === '#' + set.code }"
         @click="selectSet"
-        :title="set.name?.en"
+        :title="setName(set)"
       >
-        <img :src="set.imagePath" :alt="set.name?.en" class="set-image" loading="lazy" />
+        <img :src="set.imagePath" :alt="setName(set)" class="set-image" loading="lazy" />
       </a>
     </div>
   </BaseModal>

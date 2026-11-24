@@ -8,9 +8,11 @@ import type { Proposal } from '@/types'
 import { formatDate, uniq } from '@/services/utils'
 import { cards, rarities, type Card } from '@/services/cards'
 import { getProposals } from '@/services/api'
+import { searchable, searchableName, t } from '@/services/i18n'
 import { givingCardsCountById, isCoveredByJoker } from '@/services/store'
 
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
+import RichText from '@/components/atoms/RichText'
 import PlainButton from '@/components/atoms/PlainButton.vue'
 import CardsFilters from '@/components/CardsFilters.vue'
 import UserBadge from '@/components/atoms/UserBadge.vue'
@@ -57,7 +59,7 @@ type ProposalGroup = {
 }
 
 const cardContainsFilterTerms = (card: Card) =>
-  card.name.toLowerCase().includes((filters.value.cardName || '').toLowerCase())
+  searchableName(card).includes(searchable(filters.value.cardName || ''))
 
 // Cards of a closed set (SP1) are only traded for cards of the same set, as the server matches
 // them: they get their own group, so a tile never seems to trade one for a card of another set.
@@ -166,13 +168,13 @@ onMounted(fetchProposals)
 
 <template>
   <CenteredLayout>
-    <h2 v-if="loading">Loading your proposals…</h2>
+    <h2 v-if="loading">{{ t('proposals.loading') }}</h2>
     <template v-else-if="error">
       <h2 style="margin-bottom: 2rem">{{ error }}</h2>
-      <PlainButton @click="reload">Refresh</PlainButton>
+      <PlainButton @click="reload">{{ t('proposals.refresh') }}</PlainButton>
     </template>
     <template v-else-if="data.length > 0">
-      <h2>You’ve got a match!</h2>
+      <h2>{{ t('proposals.match') }}</h2>
       <CardsFilters
         v-model="filters"
         :cards="cardsForFilters"
@@ -203,21 +205,22 @@ onMounted(fetchProposals)
           <div class="tile-footer">
             <div v-if="group.language">{{ group.language }}</div>
             <div>
-              <img src="/images/shinedust.webp" alt="Trade Token" class="trade-token" height="32" />
+              <img
+                src="/images/shinedust.webp"
+                :alt="t('app.shinedust')"
+                class="trade-token"
+                height="32"
+              />
               <span class="token-count">{{ exchangeCost(group.rarity) }}</span>
             </div>
             <div class="clickable" @click="sendMessage(group)">
-              <MessageIcon class="message-icon" role="img" aria-label="Message" />
+              <MessageIcon class="message-icon" role="img" :aria-label="t('proposals.message')" />
             </div>
           </div>
         </div>
       </div>
     </template>
-    <h2 v-else>
-      No matching proposals for now :(
-      <br />
-      Please come back later!
-    </h2>
+    <h2 v-else><RichText text="proposals.none" /></h2>
   </CenteredLayout>
 </template>
 

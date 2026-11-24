@@ -3,8 +3,10 @@ import { onMounted, ref } from 'vue'
 
 import CenteredLayout from '@/layouts/CenteredLayout.vue'
 import PlainButton from '@/components/atoms/PlainButton.vue'
+import RichText from '@/components/atoms/RichText'
 
 import { confirmEmail, refreshEmailStatus, resendConfirmationEmail } from '@/services/api'
+import { serverText, t } from '@/services/i18n'
 import { getUserInfo, isEmailPending, isLogged, setUserInfo } from '@/services/store'
 
 const state = ref<'confirming' | 'confirmed' | 'invalid' | 'error'>('confirming')
@@ -32,9 +34,9 @@ const confirm = async (token: string) => {
 const resend = async () => {
   try {
     const result = await resendConfirmationEmail()
-    resent.value = result === 'sent' ? 'A new email is on its way!' : result
+    resent.value = result === 'sent' ? t('confirm.sent') : serverText(result)
   } catch {
-    resent.value = 'the server is busy, please try again'
+    resent.value = serverText('ko')
   }
 }
 
@@ -60,39 +62,45 @@ if (!import.meta.env.SSR) {
   <CenteredLayout>
     <div class="confirm">
       <template v-if="state === 'confirming'">
-        <h2>Confirming your email…</h2>
+        <h2>{{ t('confirm.confirming') }}</h2>
       </template>
 
       <template v-else-if="state === 'confirmed'">
-        <h2>Your email is confirmed! 🎉</h2>
-        <p>You will now receive notifications and can send messages to other players.</p>
+        <h2>{{ t('confirm.confirmed') }}</h2>
+        <p>{{ t('confirm.confirmedText') }}</p>
         <PlainButton v-if="isLogged()" @click="$router.push('/account/proposals')">
-          See my proposals
+          {{ t('confirm.seeProposals') }}
         </PlainButton>
-        <PlainButton v-else @click="$router.push('/login')">Sign in</PlainButton>
+        <PlainButton v-else @click="$router.push('/login')">{{ t('confirm.signIn') }}</PlainButton>
       </template>
 
       <template v-else-if="state === 'invalid'">
-        <h2>This link is invalid or expired</h2>
+        <h2>{{ t('confirm.invalid') }}</h2>
         <template v-if="isLogged() && isEmailPending">
-          <p>Links work for 48 hours. You can ask for a new one:</p>
-          <PlainButton @click="resend">Send a new email</PlainButton>
+          <p>{{ t('confirm.askNew') }}</p>
+          <PlainButton @click="resend">{{ t('confirm.sendNew') }}</PlainButton>
           <p v-if="resent" class="feedback">{{ resent }}</p>
         </template>
         <p v-else-if="isLogged()">
-          Your email may already be confirmed:
-          <router-link to="/account/settings">check your account</router-link>.
+          <RichText text="confirm.maybeConfirmed">
+            <template #link="{ text }">
+              <router-link to="/account/settings">{{ text }}</router-link>
+            </template>
+          </RichText>
         </p>
         <p v-else>
-          Links work for 48 hours. <router-link to="/login">Sign in</router-link> to ask for a new
-          one.
+          <RichText text="confirm.signInToAsk">
+            <template #link="{ text }">
+              <router-link to="/login">{{ text }}</router-link>
+            </template>
+          </RichText>
         </p>
       </template>
 
       <template v-else>
-        <h2>The server is busy</h2>
-        <p>Your email is not confirmed yet, please try again in a moment.</p>
-        <PlainButton @click="confirm(token)">Try again</PlainButton>
+        <h2>{{ t('confirm.busy') }}</h2>
+        <p>{{ t('confirm.busyText') }}</p>
+        <PlainButton @click="confirm(token)">{{ t('confirm.retry') }}</PlainButton>
       </template>
     </div>
   </CenteredLayout>
