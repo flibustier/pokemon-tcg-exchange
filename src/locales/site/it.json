@@ -1,0 +1,200 @@
+{
+  "hint": "Questa pagina in italiano",
+  "home": {
+    "title": "Pokémon TCG Pocket Exchange Center: scambia carte online",
+    "description": "Scambia gratis le tue carte di Pokémon TCG Pocket online. Di’ quali carte cerchi e quali puoi dare: il sito trova i giocatori con cui scambiare, in tutto il mondo.",
+    "heading": "Scambia online le tue carte di Pokémon TCG Pocket",
+    "intro": "Di’ quali carte cerchi e quali puoi dare: il sito trova i giocatori che hanno quello che ti manca e cercano quello che hai. Gratis, in tutto il mondo.",
+    "cta": "Scegli le mie carte",
+    "signIn": "Ho già un account",
+    "facts": {
+      "cards": "{count} carte",
+      "sets": "{count} espansioni",
+      "free": "Gratis"
+    },
+    "steps": {
+      "heading": "Come funziona",
+      "list": [
+        {
+          "title": "Scegli le carte che cerchi",
+          "text": "Ci sono tutte le carte di Pokémon TCG Pocket, espansione per espansione."
+        },
+        {
+          "title": "Aggiungi quelle che puoi dare",
+          "text": "I tuoi doppioni, uno alla volta o un’intera rarità in una volta."
+        },
+        {
+          "title": "Trova altri giocatori",
+          "text": "Guarda con chi scambiare, aggiungilo come amico e scambiate nel gioco."
+        }
+      ]
+    },
+    "features": {
+      "heading": "Più di una lista di scambi",
+      "list": [
+        {
+          "title": "Abbinamento automatico",
+          "text": "Niente più annunci da scrivere o scorrere: solo scambi possibili, tra carte della stessa rarità."
+        },
+        {
+          "title": "Messaggi",
+          "text": "Mettiti d’accordo con l’altro giocatore senza uscire dal sito."
+        },
+        {
+          "title": "Codici QR amico",
+          "text": "Scansiona il codice di un giocatore nel gioco, invece di scrivere 16 cifre."
+        },
+        {
+          "title": "Buste da aprire",
+          "text": "Guarda quali buste hanno più carte della tua lista dei desideri."
+        },
+        {
+          "title": "Sabbialuce",
+          "text": "Scopri quanto costano i tuoi desideri prima di scambiare."
+        },
+        {
+          "title": "Notifiche via e-mail",
+          "text": "Ricevi le nuove proposte per e-mail e disattivale quando vuoi."
+        }
+      ]
+    },
+    "sets": {
+      "heading": "Tutte le espansioni di Pokémon TCG Pocket",
+      "text": "Desideri e offerte per ogni espansione, da Geni Supremi all’ultima."
+    },
+    "faq": {
+      "heading": "Domande sugli scambi",
+      "more": "Tutte le domande, e come usare il sito"
+    },
+    "final": {
+      "heading": "Trova le carte che ti mancano"
+    }
+  },
+  "help": {
+    "title": "Come scambiare carte in Pokémon TCG Pocket: guida e FAQ",
+    "description": "Come funzionano gli scambi in Pokémon TCG Pocket: quali carte si possono scambiare, quanta Sabbialuce costano, cosa sostituisce i gettoni scambio e come trovare giocatori online.",
+    "heading": "Come scambiare carte in Pokémon TCG Pocket",
+    "intro": "Ti diamo il benvenuto su <site>pokemon-tcg.exchange</site>, il centro scambi dei giocatori di Pokémon TCG Pocket! Questa guida spiega come funzionano gli scambi nel gioco e come il sito ti trova giocatori con cui scambiare online.",
+    "rules": {
+      "heading": "Come funzionano gli scambi nel gioco",
+      "items": [
+        "Puoi scambiare solo con i giocatori della tua <strong>lista amici</strong>.",
+        "Le due carte devono avere la <strong>stessa rarità</strong>: una carta ◊◊ con un’altra carta ◊◊.",
+        "Alcune carte <strong>non si possono scambiare</strong>: le carte ☆☆☆, le carte corona e le carte promo.",
+        "Da ◊◊◊ in su, uno scambio costa <strong>Sabbialuce</strong> a entrambi i giocatori.",
+        "Ogni scambio consuma <strong>energia di scambio</strong>, che torna col tempo o con le clessidre scambio.",
+        "Entrambi i giocatori devono accettare lo scambio."
+      ],
+      "costs": "Quanto costa uno scambio",
+      "rarity": "Rarità",
+      "cost": "Sabbialuce",
+      "free": "Gratis",
+      "notTradeable": "Non si può scambiare"
+    },
+    "site": {
+      "heading": "Come trovare giocatori con cui scambiare",
+      "intro": "Il gioco permette di scambiare solo tra amici, e non aiuta a trovarli. A questo serve <site>pokemon-tcg.exchange</site>:",
+      "items": [
+        "<strong>I tuoi desideri:</strong> scegli le carte che cerchi.",
+        "<strong>Le tue offerte:</strong> scegli le carte che puoi dare.",
+        "<strong>Il tuo ID amico:</strong> i giocatori abbinati a te ti aggiungono come amico grazie a lui.",
+        "<strong>I tuoi abbinamenti:</strong> il sito trova i giocatori che danno quello che cerchi e cercano quello che dai.",
+        "<strong>I tuoi scambi:</strong> guarda le proposte, parla con gli altri giocatori e cambia le tue liste quando vuoi."
+      ],
+      "outro": "Lo scambio si fa nel gioco, tra amici. Il sito è gratuito e non chiede mai il tuo account di gioco."
+    },
+    "steps": {
+      "heading": "Come usare il sito, passo dopo passo",
+      "wants": {
+        "title": "Scegli le carte che cerchi",
+        "text": "Scorri tutte le carte di Pokémon TCG Pocket e filtra per espansione, rarità o nome per trovare quelle che ti mancano.",
+        "alt": "Le carte che cerchi"
+      },
+      "offers": {
+        "title": "Scegli le carte che puoi offrire",
+        "text": "Aggiungi i doppioni che puoi dare. Più ne offri, più abbinamenti hai. Con un <strong>jolly</strong> dai con un solo clic tutte le tue carte di una rarità in un’espansione, tranne quelle che cerchi.",
+        "alt": "Le carte che puoi offrire"
+      },
+      "friendId": {
+        "title": "Inserisci il tuo ID amico",
+        "text": "Il tuo ID amico è un numero di 16 cifre di Pokémon TCG Pocket. Per trovarlo:",
+        "items": [
+          "tocca il tuo avatar o il tuo nome nel gioco,",
+          "il tuo ID amico è in alto nel tuo profilo,",
+          "inseriscilo sul sito, senza trattini."
+        ],
+        "alt": "L’ID amico nella schermata del profilo"
+      },
+      "matches": {
+        "title": "Ricevi abbinamenti e proposte",
+        "text": "Il sito confronta le tue liste con quelle degli altri giocatori. Per ogni abbinamento vedi:",
+        "items": [
+          "le carte che potete scambiare e quanta Sabbialuce costano,",
+          "lo pseudonimo e l’ID amico dell’altro giocatore, con un codice QR per aggiungerlo,",
+          "la sua ultima visita, e come scrivergli."
+        ],
+        "alt": "I tuoi abbinamenti e le tue proposte"
+      },
+      "account": {
+        "title": "Tieni aggiornato il tuo account",
+        "text": "Scegli lo stesso pseudonimo e la stessa icona del gioco, indica quali rarità accetti di scambiare e cambia le tue liste quando la tua collezione cresce.",
+        "alt": "Le impostazioni del tuo account"
+      }
+    },
+    "packs": {
+      "heading": "Quali buste aprire",
+      "text": "Nel menu Statistiche del tuo account, il sito conta le carte dei tuoi desideri in ogni busta:",
+      "items": [
+        "<strong>vedi a colpo d’occhio</strong> quali buste hanno più carte che ti mancano,",
+        "<strong>apri prima le migliori</strong> e scambia per avere le altre."
+      ],
+      "alt": "Le migliori buste per i tuoi desideri"
+    },
+    "faq": {
+      "heading": "Domande frequenti",
+      "list": [
+        {
+          "question": "Come si scambiano i gettoni scambio di Pokémon TCG Pocket?",
+          "answer": "I gettoni scambio non esistono più: la Sabbialuce li ha sostituiti a luglio 2025, e quelli dei giocatori sono stati convertiti in Sabbialuce. Ora gli scambi si pagano in Sabbialuce."
+        },
+        {
+          "question": "Come si ottiene la Sabbialuce?",
+          "answer": "La ottieni quando trovi una carta che hai già, e con missioni ed eventi."
+        },
+        {
+          "question": "Quali carte non si possono scambiare?",
+          "answer": "Le carte a tre stelle (immersive), le carte corona e le carte promo non si possono scambiare. Il sito le mostra con 🚫 e non le mette nelle proposte."
+        },
+        {
+          "question": "Posso scambiare con qualsiasi giocatore online?",
+          "answer": "Solo con i tuoi amici nel gioco. Quando il sito ti trova un abbinamento, aggiungi l’altro giocatore con il suo ID amico o il suo codice QR, poi avvia lo scambio nel gioco."
+        },
+        {
+          "question": "Dove trovo il mio ID amico?",
+          "answer": "Tocca il tuo avatar o il tuo nome nel gioco: il tuo ID amico è in alto nel tuo profilo. Inserisci le sue 16 cifre sul sito, senza trattini."
+        },
+        {
+          "question": "Perché le carte First Partners (SP1) hanno proposte a parte?",
+          "answer": "Le carte della busta speciale First Partners si scambiano solo con carte della stessa busta, quindi il sito le abbina a parte."
+        },
+        {
+          "question": "Posso scambiare i punti busta con delle carte?",
+          "answer": "Sì, nel gioco: aprire buste di un’espansione dà punti, da spendere per una carta di quell’espansione. Tocca una carta sul sito per vedere quanti punti costa."
+        },
+        {
+          "question": "Posso cambiare i miei desideri o le mie offerte più avanti?",
+          "answer": "Sì, quando vuoi dal tuo account. Con liste aggiornate hai abbinamenti migliori."
+        },
+        {
+          "question": "Come elimino il mio account?",
+          "answer": "In fondo alla pagina Account. Le tue liste, la tua e-mail, la tua password e il tuo ID amico vengono eliminati per sempre."
+        }
+      ]
+    },
+    "contact": {
+      "heading": "Contatti",
+      "text": "Una domanda, un’idea, un problema? Scrivici a <mail>help@pokemon-tcg.exchange</mail>."
+    },
+    "cta": "Trova giocatori"
+  }
+}

@@ -33,6 +33,7 @@ const loaders: Record<Locale, () => Promise<Texts>> = {
   en: async () => english,
   es: () => texts(import('@/locales/es.json'), import('virtual:card-names/es')),
   fr: () => texts(import('@/locales/fr.json'), import('virtual:card-names/fr')),
+  it: () => texts(import('@/locales/it.json'), import('virtual:card-names/it')),
 }
 
 // Together: when both fail, the second error must not stay without a handler

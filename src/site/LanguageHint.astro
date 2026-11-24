@@ -38,8 +38,14 @@ const others = alternates.filter((alternate) => alternate.locale !== locale)
   })()
 </script>
 
-<style is:inline>
-  .language-hint {
-    display: none;
-  }
-</style>
+{/* Every language of the page, so that a new one needs nothing here */}
+<style
+  is:inline
+  set:html={[
+    '.language-hint{display:none}',
+    ...others.map(
+      (other) =>
+        `html[data-hint="${other.locale}"] .language-hint[data-locale="${other.locale}"]{display:block}`,
+    ),
+  ].join('')}
+></style>

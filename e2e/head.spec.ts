@@ -44,13 +44,14 @@ test.describe('head', () => {
     })
   }
 
-  for (const path of ['/help', '/es/help', '/fr/help']) {
+  for (const path of ['/help', '/es/help', '/fr/help', '/it/help']) {
     test(`${path} names the page in the other languages`, async ({ page }) => {
       await page.goto(path)
       for (const [language, address] of [
         ['en', '/help'],
         ['es', '/es/help'],
         ['fr', '/fr/help'],
+        ['it', '/it/help'],
         ['x-default', '/help'],
       ]) {
         await expect(page.locator(`link[rel="alternate"][hreflang="${language}"]`)).toHaveAttribute(

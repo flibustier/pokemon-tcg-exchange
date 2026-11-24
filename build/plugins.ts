@@ -26,8 +26,11 @@ const CARD_NAMES = 'virtual:card-names/'
 
 export const cardNames = (): Plugin => {
   const require = createRequire(import.meta.url)
-  const read = (file: string): { set: string; number: number; name: string }[] =>
-    JSON.parse(readFileSync(require.resolve(`pokemon-tcg-pocket-database/dist/${file}`), 'utf8'))
+  const database = require.resolve('pokemon-tcg-pocket-database/dist/cards.no-image.min.json')
+  const read = (locale?: string): { set: string; number: number; name: string }[] =>
+    JSON.parse(
+      readFileSync(locale ? database.replace('cards.', `cards.${locale}.`) : database, 'utf8'),
+    )
 
   return {
     name: 'card-names',
@@ -35,12 +38,14 @@ export const cardNames = (): Plugin => {
     load(id) {
       if (!id.startsWith('\0' + CARD_NAMES)) return
       const locale = id.slice(CARD_NAMES.length + 1)
-      const translated = new Map(
-        read(`cards.${locale}.no-image.min.json`).map((card) => [cardId(card), card.name]),
-      )
+      if (!existsSync(database.replace('cards.', `cards.${locale}.`))) {
+        this.warn(`no card names in ${locale} in the card database: they stay in English`)
+        return 'export default {}'
+      }
+      const translated = new Map(read(locale).map((card) => [cardId(card), card.name]))
       const names: Record<string, string> = {}
       const seen: Record<string, string> = {}
-      for (const card of read('cards.no-image.min.json')) {
+      for (const card of read()) {
         const name = translated.get(cardId(card)) ?? card.name
         seen[card.name] ??= name
         if (name !== seen[card.name]) names[cardId(card)] = name

@@ -2,6 +2,7 @@ import type { MessageKey } from '@/services/i18n'
 import appEn from '@/locales/en.json'
 import appEs from '@/locales/es.json'
 import appFr from '@/locales/fr.json'
+import appIt from '@/locales/it.json'
 import {
   DEFAULT_LOCALE,
   formatText,
@@ -14,14 +15,20 @@ import {
 import en from '@/locales/site/en.json'
 import es from '@/locales/site/es.json'
 import fr from '@/locales/site/fr.json'
+import it from '@/locales/site/it.json'
 
 // The texts of the public pages, written in the HTML by Astro. They share those of the app for what
 // both show (the header, the rarities…).
 
 export type SiteTexts = typeof en
 
-const SITE: Record<Locale, SiteTexts> = { en, es, fr }
-const APP: Record<Locale, Record<MessageKey, string>> = { en: appEn, es: appEs, fr: appFr }
+const SITE: Record<Locale, SiteTexts> = { en, es, fr, it }
+const APP: Record<Locale, Record<MessageKey, string>> = {
+  en: appEn,
+  es: appEs,
+  fr: appFr,
+  it: appIt,
+}
 
 export const useTexts = (locale: Locale) => ({
   site: SITE[locale],
