@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import BaseModal from '@/components/modals/BaseModal.vue'
-import { setName, t, type SetNames } from '@/services/i18n'
+import { setLogo, setName, t, type SetNames } from '@/services/i18n'
 
 defineProps<{
   sets: { code: string; name: SetNames; imagePath: string }[]
@@ -27,7 +27,7 @@ const selectSet = () => {
         @click="selectSet"
         :title="setName(set)"
       >
-        <img :src="set.imagePath" :alt="setName(set)" class="set-image" loading="lazy" />
+        <img :src="setLogo(set)" :alt="setName(set)" class="set-image" loading="lazy" />
       </a>
     </div>
   </BaseModal>

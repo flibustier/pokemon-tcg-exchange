@@ -295,6 +295,15 @@ test.describe('public pages', () => {
     expect(saves).toEqual([expect.objectContaining({ id: 'C1-1', count: 1 })])
   })
 
+  test('show the logo of a set in their language, or the English one', async ({ page }) => {
+    await prepare(page, ['fr'])
+    await page.goto('/fr/')
+    const logo = (name: string) => page.getByRole('link', { name }).locator('img')
+    await expect(logo('Puissance Génétique')).toHaveAttribute('src', /_A1_fr_FR\.webp$/)
+    // No French logo for the latest sets
+    await expect(logo('Fusion Double')).toHaveAttribute('src', /_C1_en_US\.webp$/)
+  })
+
   test('lead to the cards to choose, and a player to their proposals', async ({ page }) => {
     // /start draws every card
     test.slow()

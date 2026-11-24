@@ -3,6 +3,7 @@ import { ref, shallowRef } from 'vue'
 import en from '@/locales/en.json'
 
 import type { Card } from './cards'
+import { logoOf, logoOfCard } from './logos'
 import {
   DEFAULT_LOCALE,
   formatText,
@@ -122,6 +123,10 @@ export const searchableName = (card: Pick<Card, 'id' | 'name'>) =>
 export type SetNames = { en: string; [language: string]: string | undefined }
 
 export const setName = ({ name }: { name: SetNames }) => name[locale.value] ?? name.en
+
+export const setLogo = (set: { code: string; imagePath: string }) => logoOf(set, locale.value)
+
+export const cardSetLogo = (card: Card) => logoOfCard(card, locale.value)
 
 // Dates in the language of the texts, written as in the player's country when the browser tells it
 export const dateLocale = () =>

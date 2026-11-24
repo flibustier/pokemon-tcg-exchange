@@ -8,3 +8,9 @@ declare module 'virtual:card-names/*' {
   const names: Record<string, string>
   export default names
 }
+
+// The logos of the sets in other languages than English, by language and set code
+declare module 'virtual:set-logos' {
+  const logos: Record<string, Record<string, string> | undefined>
+  export default logos
+}

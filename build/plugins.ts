@@ -1,9 +1,10 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 
 import type { Plugin } from 'vite'
 
 import config from '../config.json' with { type: 'json' }
+import { DEFAULT_LOCALE, LOCALES } from '../src/services/texts'
 
 // Without a BUGSINK_DSN in config.json, errors.ts never loads errors-sdk.js and nothing refers to it
 // anymore, but Rolldown still writes it: leave it out.
@@ -53,3 +54,25 @@ export const cardNames = (): Plugin => {
 // As in src/services/cards.ts
 const cardId = ({ set, number }: { set: string; number: number }) =>
   `${set.toUpperCase()}-${number}`
+
+// `virtual:set-logos`: the logos of the sets that exist in another language than English, by language
+// and set code. The latest sets only have an English one.
+const SET_LOGOS = 'virtual:set-logos'
+const LOGO = /^LOGO_expansion_(.+)_([a-z]{2})_[A-Z]{2}\.webp$/
+
+export const setLogos = (): Plugin => ({
+  name: 'set-logos',
+  resolveId: (id) => (id === SET_LOGOS ? '\0' + id : undefined),
+  load(id) {
+    if (id !== '\0' + SET_LOGOS) return
+    const folder = new URL('../public/images/sets/', import.meta.url)
+    const logos: Record<string, Record<string, string>> = {}
+    for (const file of existsSync(folder) ? readdirSync(folder) : []) {
+      const [, code, language] = LOGO.exec(file) ?? []
+      if (language in LOCALES && language !== DEFAULT_LOCALE) {
+        ;(logos[language] ??= {})[code.toUpperCase()] = `/images/sets/${file}`
+      }
+    }
+    return `export default ${JSON.stringify(logos)}`
+  },
+})
