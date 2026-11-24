@@ -1,9 +1,10 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 import type { Discussion, Message, Proposal } from '@/types'
 
 import { debounce } from './utils'
 import { cardsById } from './cards'
+import { locale } from './i18n'
 import {
   getClientID,
   getGivingCardsAsArray,
@@ -107,6 +108,22 @@ const useAPI = async (
   }
 }
 
+// The server writes its mails in the language the player reads the site in. Unknown until the session
+// is loaded, and with a server older than this.
+let mailLocale: string | null | undefined
+
+const syncMailLocale = async () => {
+  const wanted = locale.value
+  if (!isLogged() || mailLocale === undefined || mailLocale === wanted) return
+  try {
+    const result = await useAPI('/user/locale', 'PUT', { locale: wanted }, false)
+    if (result === 'updated') mailLocale = wanted
+  } catch {
+    // The next session tries again
+  }
+}
+watch(locale, syncMailLocale)
+
 export const fetchUser = async () => {
   try {
     const response = await useAPI('/user/session')
@@ -118,6 +135,7 @@ export const fetchUser = async () => {
         rarity_rules,
         jokers: playerJokers,
         joker_exclusions,
+        locale: knownLocale,
         ...info
       } = response
 
@@ -134,6 +152,8 @@ export const fetchUser = async () => {
       })
 
       refreshDiscussions()
+      mailLocale = knownLocale
+      syncMailLocale()
 
       return true
     } else {
@@ -162,6 +182,7 @@ export const createUser = async (user: { email: string; password: string; friend
         email: user.email,
         password: user.password,
         friend_id: user.friendId,
+        locale: locale.value,
         wanted: getWantedCardsAsArray.value,
         giving: getGivingCardsAsArray.value,
       }),
@@ -179,6 +200,7 @@ export const createUser = async (user: { email: string; password: string; friend
       // A new account has no joker: they can be set right away
       importJokers([], [])
       rememberSavedJokers()
+      mailLocale = locale.value
 
       return true
     } else {
