@@ -1,7 +1,9 @@
 import { DEFAULT_LOCALE, localePath, locales, type Locale } from '@/services/texts'
 
+import { setPath, sets } from './sets'
+
 // The public pages, for the sitemap: those in one language, and those in every language
-const SINGLE = ['/login']
+const SINGLE = ['/login', '/sets/', ...sets.map(setPath)]
 const TRANSLATED = ['/', '/help']
 
 type PublicPage = { address: string; alternates: { locale: Locale; address: string }[] }

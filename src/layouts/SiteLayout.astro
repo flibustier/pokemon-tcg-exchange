@@ -6,19 +6,21 @@ import type { Locale } from '@/services/texts'
 
 import BaseLayout from './BaseLayout.astro'
 
-// A public page, in every language. It works without the app.
+// A public page. It works without the app.
 interface Props {
   title: string
   description: string
   path: string
   locale: Locale
+  // In every language
+  translated?: boolean
 }
 
-const { path, locale } = Astro.props
-const alternates = alternatesOf(path)
+const { path, locale, translated = true } = Astro.props
+const alternates = translated ? alternatesOf(path) : []
 ---
 
-<BaseLayout {...Astro.props} translated>
+<BaseLayout {...Astro.props} translated={translated}>
   <Fragment slot="head">
     <slot name="head" />
     <LanguageHint locale={locale} alternates={alternates} />

@@ -73,9 +73,11 @@ test.describe('head', () => {
   test('the sitemap lists the public pages, with their languages', async ({ request }) => {
     const sitemap = await (await request.get('/sitemap.xml')).text()
     const listed = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(([, address]) => address)
-    expect(listed).toEqual(
-      ['/login', '/', '/es/', '/fr/', '/help', '/es/help', '/fr/help'].map((path) => SITE + path),
-    )
+    for (const path of ['/login', '/', '/es/', '/fr/', '/help', '/es/help', '/fr/help', '/sets/']) {
+      expect(listed).toContain(SITE + path)
+    }
+    expect(listed).toContain(`${SITE}/sets/dual-fusion`)
+    expect(new Set(listed).size).toBe(listed.length)
     expect(sitemap).toContain(`hreflang="fr" href="${SITE}/fr/help"`)
   })
 })
@@ -85,4 +87,18 @@ test('sends a visitor of an account page to the sign-in page', async ({ page }) 
   await page.goto('/account/proposals')
   await expect(page).toHaveURL(/\/login$/)
   await expect(page).toHaveTitle('Sign in - Pokemon TCG Pocket Exchange Center')
+})
+
+test('the page of a set lists its cards, without the totals of the server', async ({ page }) => {
+  await blockOtherHosts(page)
+  await page.goto('/sets/')
+  await page.getByRole('link', { name: 'Dual Fusion' }).click()
+  await expect(page).toHaveURL(/\/sets\/dual-fusion$/)
+  await expect(page.locator('h1')).toHaveText('Trade Dual Fusion cards')
+  await expect(page.getByRole('row', { name: '015 Ribombee 1,200' })).toBeVisible()
+  // The dev server does not read them
+  await expect(page.getByText('Wanted by')).toHaveCount(0)
+
+  await page.getByRole('link', { name: 'Choose the cards I want' }).click()
+  await expect(page).toHaveURL(/\/start#C1$/)
 })
