@@ -26,6 +26,11 @@ export const isEqual = <T>(obj1: Record<string, T>, obj2: Record<string, T>): bo
   return true
 }
 
+// The server's dates are in UTC, like "2026-11-20 10:00:00". Safari reads no other format than ISO
+// with certainty: "2026-11-20 10:00:00 UTC" is an invalid date there.
+const parseDate = (date: string) =>
+  new Date(date.includes('T') ? date : date.replace(' ', 'T') + 'Z')
+
 export const formatDate = (date: string) => {
   // if it's today, return the time
   // if it's yesterday, return "Yesterday"
@@ -34,7 +39,7 @@ export const formatDate = (date: string) => {
   // else return the full date
 
   const now = new Date()
-  const messageDate = new Date(date + ' UTC')
+  const messageDate = parseDate(date)
   const diff = now.getTime() - messageDate.getTime()
   const diffDays = Math.floor(diff / (1000 * 3600 * 24))
   if (diffDays === 0) {

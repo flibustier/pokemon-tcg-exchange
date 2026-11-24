@@ -88,4 +88,13 @@ test.describe('proposals', () => {
     await expect(page.locator('.exchange-tile')).toHaveCount(1)
     await expect(cardsOf(page.locator('.exchange-tile'), 0)).toHaveCount(2)
   })
+
+  test('tell when the other player came', async ({ page }) => {
+    await openProposals(page, [
+      { ...proposal('A2-156', 'A2-157'), other_last_seen: '2025-03-05 12:00:00' },
+    ])
+
+    await expect(page.locator('.exchange-tile')).toContainText('Seen March 05, 2025')
+    await expect(page.locator('.exchange-tile')).not.toContainText('Invalid Date')
+  })
 })
