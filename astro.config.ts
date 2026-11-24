@@ -35,6 +35,8 @@ export default defineConfig({
   // For the app, and for its icons in the public pages
   integrations: [vue({ devtools: true }), keepOldCheckout()],
   vite: {
+    // VITE_API_URL points the front at another server (src/services/api.ts)
+    envPrefix: ['PUBLIC_', 'VITE_'],
     plugins: [errorsSdkOnlyWithDsn(), cardNames()],
     define: {
       __BUILD_ID__: JSON.stringify(BUILD_ID),
