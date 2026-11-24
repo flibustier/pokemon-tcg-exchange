@@ -26,7 +26,11 @@ onMounted(async () => {
 
 <template>
   <header class="site-header">
-    <RouterLink class="brand" :to="isLogged() ? '/account/proposals' : '/'">
+    <component
+      :is="isLogged() ? RouterLink : SiteLink"
+      class="brand"
+      :to="isLogged() ? '/account/proposals' : '/'"
+    >
       <h1 class="brand-name">
         <img
           alt="Pokemon Trading Card Game Pocket"
@@ -38,7 +42,7 @@ onMounted(async () => {
         <img alt="" class="logo" src="/images/exchange.png" id="exchange-logo" height="60" />
         Pocket Exchange Center
       </h1>
-    </RouterLink>
+    </component>
 
     <div class="actions">
       <!-- On smaller screens, these are in the menu -->

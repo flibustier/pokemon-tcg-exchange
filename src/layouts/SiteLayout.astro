@@ -19,7 +19,10 @@ const alternates = alternatesOf(path)
 ---
 
 <BaseLayout {...Astro.props} translated>
-  <LanguageHint slot="head" locale={locale} alternates={alternates} />
+  <Fragment slot="head">
+    <slot name="head" />
+    <LanguageHint locale={locale} alternates={alternates} />
+  </Fragment>
   {alternates.map((alternate) => (
     <a
       class="language-hint"

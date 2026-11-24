@@ -294,4 +294,20 @@ test.describe('public pages', () => {
     await expect(page).toHaveURL(/\/help$/, { timeout: 15000 })
     expect(saves).toEqual([expect.objectContaining({ id: 'C1-1', count: 1 })])
   })
+
+  test('lead to the cards to choose, and a player to their proposals', async ({ page }) => {
+    // /start draws every card
+    test.slow()
+    await prepare(page, ['en'])
+    await page.goto('/')
+    await page.getByRole('link', { name: 'Choose my cards' }).first().click()
+    await expect(page).toHaveURL(/\/start$/)
+    await expect(page.getByText('Select the cards you are looking for')).toBeVisible({
+      timeout: 30000,
+    })
+
+    await signIn(page)
+    await page.goto('/es/')
+    await expect(page).toHaveURL(/\/account\/proposals$/)
+  })
 })

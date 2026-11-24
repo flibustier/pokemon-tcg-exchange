@@ -1,5 +1,75 @@
 {
   "hint": "This page in English",
+  "home": {
+    "title": "Pokemon TCG Pocket Exchange Center: Trade Cards Online",
+    "description": "Trade your Pokemon TCG Pocket cards online, for free. Say which cards you want and which ones you can give: the site finds the players to trade with, all over the world.",
+    "heading": "Trade your Pokemon TCG Pocket cards online",
+    "intro": "Say which cards you want and which ones you can give: the site finds the players who have what you miss, and want what you have. Free, and all over the world.",
+    "cta": "Choose my cards",
+    "signIn": "I already have an account",
+    "facts": {
+      "cards": "{count} cards",
+      "sets": "{count} sets",
+      "free": "Free"
+    },
+    "steps": {
+      "heading": "How it works",
+      "list": [
+        {
+          "title": "Choose the cards you want",
+          "text": "Every card of Pokemon TCG Pocket is there, set by set."
+        },
+        {
+          "title": "Add the ones you can give",
+          "text": "Your duplicates, one by one or a whole rarity at once."
+        },
+        {
+          "title": "Match with other players",
+          "text": "See who to trade with, add them as a friend and trade in the game."
+        }
+      ]
+    },
+    "features": {
+      "heading": "More than a trade list",
+      "list": [
+        {
+          "title": "Automatic matching",
+          "text": "No more posts to write or scroll through: only trades that are possible, between cards of the same rarity."
+        },
+        {
+          "title": "Messages",
+          "text": "Agree on a trade with the other player, without leaving the site."
+        },
+        {
+          "title": "Friend QR codes",
+          "text": "Scan the code of a player in the game, instead of typing 16 digits."
+        },
+        {
+          "title": "Booster packs to open",
+          "text": "See which packs hold the most cards of your wishlist."
+        },
+        {
+          "title": "Shinedust",
+          "text": "Know what your wishes cost before you trade."
+        },
+        {
+          "title": "Email notifications",
+          "text": "Hear about new proposals by email, and turn it off at any time."
+        }
+      ]
+    },
+    "sets": {
+      "heading": "Every Pokemon TCG Pocket set",
+      "text": "Wishes and offers for every set, from Genetic Apex to the latest one."
+    },
+    "faq": {
+      "heading": "Questions about trading",
+      "more": "All the questions, and how to use the site"
+    },
+    "final": {
+      "heading": "Find your missing cards"
+    }
+  },
   "help": {
     "title": "How to Trade Cards in Pokemon TCG Pocket: Guide & FAQ",
     "description": "How trading works in Pokemon TCG Pocket: which cards can be traded, what they cost in Shinedust, what replaced Trade Tokens, and how to find players to trade with online.",
@@ -85,7 +155,7 @@
       "list": [
         {
           "question": "How do I exchange Trade Tokens in Pokemon TCG Pocket?",
-          "answer": "Trade Tokens no longer exist: Shinedust replaced them in July 2025, and the tokens the players had were turned into Shinedust. Trades are now paid in Shinedust, see the table above."
+          "answer": "Trade Tokens no longer exist: Shinedust replaced them in July 2025, and the tokens the players had were turned into Shinedust. Trades are now paid in Shinedust."
         },
         {
           "question": "How do I get Shinedust?",

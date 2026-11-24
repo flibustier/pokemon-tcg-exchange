@@ -1,5 +1,75 @@
 {
   "hint": "Cette page en français",
+  "home": {
+    "title": "Pokémon TCG Pocket Exchange Center : échange de cartes en ligne",
+    "description": "Échange gratuitement tes cartes Pokémon TCG Pocket en ligne. Dis quelles cartes tu cherches et lesquelles tu peux donner : le site trouve les joueurs avec qui échanger, dans le monde entier.",
+    "heading": "Échange tes cartes Pokémon TCG Pocket en ligne",
+    "intro": "Dis quelles cartes tu cherches et lesquelles tu peux donner : le site trouve les joueurs qui ont ce qui te manque, et cherchent ce que tu as. Gratuit, et dans le monde entier.",
+    "cta": "Choisir mes cartes",
+    "signIn": "J’ai déjà un compte",
+    "facts": {
+      "cards": "{count} cartes",
+      "sets": "{count} extensions",
+      "free": "Gratuit"
+    },
+    "steps": {
+      "heading": "Comment ça marche",
+      "list": [
+        {
+          "title": "Choisis les cartes que tu cherches",
+          "text": "Toutes les cartes de Pokémon TCG Pocket sont là, extension par extension."
+        },
+        {
+          "title": "Ajoute celles que tu peux donner",
+          "text": "Tes doubles, un par un ou toute une rareté d’un coup."
+        },
+        {
+          "title": "Trouve d’autres joueurs",
+          "text": "Vois avec qui échanger, ajoute le joueur en ami et échangez dans le jeu."
+        }
+      ]
+    },
+    "features": {
+      "heading": "Plus qu’une liste d’échanges",
+      "list": [
+        {
+          "title": "Mise en relation automatique",
+          "text": "Plus d’annonces à écrire ou à parcourir : seulement les échanges possibles, entre cartes de même rareté."
+        },
+        {
+          "title": "Messages",
+          "text": "Mets-toi d’accord avec l’autre joueur sans quitter le site."
+        },
+        {
+          "title": "QR codes ami",
+          "text": "Scanne le code d’un joueur dans le jeu, au lieu de taper 16 chiffres."
+        },
+        {
+          "title": "Boosters à ouvrir",
+          "text": "Vois quels boosters contiennent le plus de cartes de tes souhaits."
+        },
+        {
+          "title": "Poudre éclat",
+          "text": "Sache ce que coûtent tes souhaits avant d’échanger."
+        },
+        {
+          "title": "Notifications par e-mail",
+          "text": "Reçois les nouvelles propositions par e-mail, et désactive-le quand tu veux."
+        }
+      ]
+    },
+    "sets": {
+      "heading": "Toutes les extensions de Pokémon TCG Pocket",
+      "text": "Des souhaits et des offres pour chaque extension, de Puissance Génétique à la dernière."
+    },
+    "faq": {
+      "heading": "Questions sur les échanges",
+      "more": "Toutes les questions, et comment utiliser le site"
+    },
+    "final": {
+      "heading": "Trouve les cartes qui te manquent"
+    }
+  },
   "help": {
     "title": "Comment échanger des cartes dans Pokémon TCG Pocket : guide et FAQ",
     "description": "Comment marchent les échanges dans Pokémon TCG Pocket : quelles cartes s’échangent, combien de poudre éclat elles coûtent, ce qui remplace les jetons échange, et comment trouver des joueurs en ligne.",
@@ -85,7 +155,7 @@
       "list": [
         {
           "question": "Comment échanger les jetons échange de Pokémon TCG Pocket ?",
-          "answer": "Les jetons échange n’existent plus : la poudre éclat les a remplacés en juillet 2025, et ceux des joueurs ont été convertis en poudre éclat. Les échanges se paient maintenant en poudre éclat, voir le tableau ci-dessus."
+          "answer": "Les jetons échange n’existent plus : la poudre éclat les a remplacés en juillet 2025, et ceux des joueurs ont été convertis en poudre éclat. Les échanges se paient maintenant en poudre éclat."
         },
         {
           "question": "Comment obtenir de la poudre éclat ?",

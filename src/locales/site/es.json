@@ -1,5 +1,75 @@
 {
   "hint": "Esta página en español",
+  "home": {
+    "title": "Pokémon TCG Pocket Exchange Center: intercambia cartas en línea",
+    "description": "Intercambia gratis tus cartas de Pokémon TCG Pocket en línea. Di qué cartas buscas y cuáles puedes dar: la web encuentra jugadores de todo el mundo con los que intercambiar.",
+    "heading": "Intercambia tus cartas de Pokémon TCG Pocket en línea",
+    "intro": "Di qué cartas buscas y cuáles puedes dar: la web encuentra a los jugadores que tienen lo que te falta y buscan lo que tienes. Gratis y en todo el mundo.",
+    "cta": "Elegir mis cartas",
+    "signIn": "Ya tengo una cuenta",
+    "facts": {
+      "cards": "{count} cartas",
+      "sets": "{count} expansiones",
+      "free": "Gratis"
+    },
+    "steps": {
+      "heading": "Cómo funciona",
+      "list": [
+        {
+          "title": "Elige las cartas que buscas",
+          "text": "Están todas las cartas de Pokémon TCG Pocket, expansión por expansión."
+        },
+        {
+          "title": "Añade las que puedes dar",
+          "text": "Tus cartas repetidas, una a una o una rareza entera de golpe."
+        },
+        {
+          "title": "Encuentra a otros jugadores",
+          "text": "Mira con quién intercambiar, añádelo como amigo e intercambiad en el juego."
+        }
+      ]
+    },
+    "features": {
+      "heading": "Más que una lista de intercambios",
+      "list": [
+        {
+          "title": "Emparejamiento automático",
+          "text": "Se acabó escribir o leer anuncios: solo intercambios posibles, entre cartas de la misma rareza."
+        },
+        {
+          "title": "Mensajes",
+          "text": "Acuerda un intercambio con el otro jugador sin salir de la web."
+        },
+        {
+          "title": "Códigos QR de amigo",
+          "text": "Escanea el código de un jugador en el juego, en vez de escribir 16 cifras."
+        },
+        {
+          "title": "Sobres para abrir",
+          "text": "Mira qué sobres tienen más cartas de tu lista de deseos."
+        },
+        {
+          "title": "Polvo iris",
+          "text": "Descubre cuánto cuestan tus deseos antes de intercambiar."
+        },
+        {
+          "title": "Avisos por correo",
+          "text": "Recibe las nuevas propuestas por correo, y desactívalo cuando quieras."
+        }
+      ]
+    },
+    "sets": {
+      "heading": "Todas las expansiones de Pokémon TCG Pocket",
+      "text": "Deseos y ofertas de cada expansión, desde Genes Formidables hasta la última."
+    },
+    "faq": {
+      "heading": "Preguntas sobre los intercambios",
+      "more": "Todas las preguntas, y cómo usar la web"
+    },
+    "final": {
+      "heading": "Encuentra las cartas que te faltan"
+    }
+  },
   "help": {
     "title": "Cómo intercambiar cartas en Pokémon TCG Pocket: guía y preguntas",
     "description": "Cómo funcionan los intercambios en Pokémon TCG Pocket: qué cartas se pueden intercambiar, cuánto polvo iris cuestan, qué sustituye a las fichas de intercambio y cómo encontrar jugadores en línea.",
@@ -85,7 +155,7 @@
       "list": [
         {
           "question": "¿Cómo cambio las fichas de intercambio de Pokémon TCG Pocket?",
-          "answer": "Las fichas de intercambio ya no existen: el polvo iris las sustituyó en julio de 2025, y las que tenían los jugadores se convirtieron en polvo iris. Ahora los intercambios se pagan con polvo iris, mira la tabla de arriba."
+          "answer": "Las fichas de intercambio ya no existen: el polvo iris las sustituyó en julio de 2025, y las que tenían los jugadores se convirtieron en polvo iris. Ahora los intercambios se pagan con polvo iris."
         },
         {
           "question": "¿Cómo consigo polvo iris?",

@@ -5,7 +5,7 @@ import { isLogged } from '@/services/store'
 
 // The pages of the app. Each one has a file in src/pages, which holds what search engines and link
 // previews read, except the conversations: GitHub Pages answers 404.html, the same app, for them.
-// The public pages (help…) are outside the app, see src/pages/[...locale].
+// The public pages (home, help…) are outside the app, see src/pages/[...locale].
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -17,8 +17,8 @@ const AccountView = () => import('../views/AccountView.vue')
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/',
-    name: 'home',
+    path: '/start',
+    name: 'start',
     component: () => import('../views/StepView.vue'),
     // Guards return where to go instead of calling next(), deprecated by Vue Router
     beforeEnter: () => (isLogged() ? '/account/proposals' : true),
