@@ -2,24 +2,27 @@ import type { Router } from 'vue-router'
 import { hasUnsavedChanges } from './api'
 import { loadFromServer } from './reload'
 
-// A tab can stay open for weeks (a phone keeps it in the background) and keep running the build it
-// loaded. Its catalogue then misses the cards released since, and it may call routes the server
-// changed: on 2026-11-23, such a tab sent C1 cards without their rarity and every save failed.
+// A tab can run an old build: left open for days, or started again by a phone from its cache, which
+// browsers read without asking the server when they restore a tab. Its catalogue then misses the
+// cards released since, and it may call routes the server changed: on 2026-11-23, an app started on
+// an old build sent cards without their rarity, and every save failed from the first second.
 //
-// So the tab asks which build is online (version.json, written by vite.config.ts) when it comes
-// back to the foreground, and from time to time while the player moves from page to page. Once a
-// newer build is online, the next page change loads it from the server instead. A tab back after a
-// long absence reloads at once: the player has not started anything yet. Neither happens while
-// changes are not saved: the reload would lose them.
+// So the app asks which build is online (version.json, written by vite.config.ts) when it starts,
+// when it comes back to the foreground, and from time to time while the player moves from page to
+// page. Once a newer build is online, the next page change loads it from the server instead. At
+// start and back after a long absence, the page reloads at once: the player has not started
+// anything yet. Nothing happens while changes are not saved: the reload would lose them.
 
 const CHECK_INTERVAL = 10 * 60 * 1000
 const LONG_ABSENCE = 60 * 60 * 1000
+// How long the start waits for the session of a player, loaded at the same time
+const START_WAIT = 10 * 1000
 // The build a reload went for. If the tab still runs an older one afterwards (a cached page),
 // reloading again would loop: it waits for a build newer than that one.
 const RELOADED_FOR = 'reloadedForBuild'
 
 let newerBuild: string | undefined
-let lastCheck = Date.now()
+let lastCheck = -Infinity
 let hiddenAt: number | undefined
 
 const reloadedFor = () => {
@@ -60,11 +63,13 @@ const reloadOn = (url: string) => {
   loadFromServer(url)
 }
 
-// A message, a search or a login being typed would be lost: wait for the next page change then
+// A message, a search or a login being typed would be lost: wait for the next page change then. Only
+// the fields the player changed count, the settings come filled.
+const changedFields = new WeakSet<EventTarget>()
 const TEXT_FIELDS = ['text', 'search', 'email', 'password', 'url', 'tel', 'textarea']
 const isTyping = () =>
   [...document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('textarea, input')].some(
-    (field) => TEXT_FIELDS.includes(field.type) && field.value !== '',
+    (field) => changedFields.has(field) && TEXT_FIELDS.includes(field.type) && field.value !== '',
   )
 
 const onVisibilityChange = async () => {
@@ -78,7 +83,28 @@ const onVisibilityChange = async () => {
   if (away >= LONG_ABSENCE && canReload() && !isTyping()) reloadOn(location.href)
 }
 
+const checkAtStart = async () => {
+  let started = false
+  const onAction = () => (started = true)
+  const actions = ['pointerdown', 'keydown'] as const
+  for (const action of actions) addEventListener(action, onAction, { once: true })
+
+  await check()
+  const giveUpAt = Date.now() + START_WAIT
+  while (newerBuild && !started && !isTyping() && Date.now() < giveUpAt) {
+    if (canReload()) {
+      reloadOn(location.href)
+      break
+    }
+    // the session is not there yet, or this build was already reloaded for
+    await new Promise((resolve) => setTimeout(resolve, 250))
+  }
+  for (const action of actions) removeEventListener(action, onAction)
+}
+
 export const watchNewBuilds = (router: Router) => {
+  document.addEventListener('input', ({ target }) => target && changedFields.add(target))
+  checkAtStart()
   document.addEventListener('visibilitychange', onVisibilityChange)
   // A page back from the back-forward cache may not say it came back to the foreground
   window.addEventListener('pageshow', (event) => {
