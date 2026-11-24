@@ -57,7 +57,7 @@ onMounted(async () => {
   </header>
   <div class="site-separator"></div>
 
-  <main class="container">
+  <main class="app-main container">
     <RouterView />
   </main>
 
@@ -84,7 +84,9 @@ onMounted(async () => {
   box-shadow: 0 2px 8px rgb(0 0 0 / 20%);
 }
 
-main {
+/* Not `main`: that would also be the <main> of a view, whose own rules would then win or lose by the
+   order in which the styles are loaded */
+.app-main {
   display: flex;
   place-items: center;
   padding: 1rem 0;
