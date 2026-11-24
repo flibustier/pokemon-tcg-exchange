@@ -19,9 +19,29 @@ const errorsSdkOnlyWithDsn = (): Plugin => ({
   },
 })
 
+// The time of the build names it. The app knows its own (__BUILD_ID__), and version.json tells
+// which build is online: a tab left open for weeks compares the two (src/services/version.ts).
+// An ISO date, so that a later build compares greater.
+const BUILD_ID = new Date().toISOString()
+
+const publishBuildId = (): Plugin => ({
+  name: 'publish-build-id',
+  apply: 'build',
+  generateBundle() {
+    this.emitFile({
+      type: 'asset',
+      fileName: 'version.json',
+      source: JSON.stringify({ build: BUILD_ID }),
+    })
+  },
+})
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue(), vueDevTools(), errorsSdkOnlyWithDsn()],
+  plugins: [vue(), vueDevTools(), errorsSdkOnlyWithDsn(), publishBuildId()],
+  define: {
+    __BUILD_ID__: JSON.stringify(BUILD_ID),
+  },
   build: {
     // Source maps are sent to Bugsink when deploying (scripts/deploy.sh), never published
     sourcemap: 'hidden',

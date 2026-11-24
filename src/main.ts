@@ -7,6 +7,7 @@ import { routes } from './router'
 import { countPageViews } from './services/analytics'
 import { trackErrors } from './services/errors'
 import { watchTheme } from './services/theme'
+import { watchNewBuilds } from './services/version'
 
 // `export const createApp` is required instead of the original `createApp(App).mount('#app')`
 export const createApp = ViteSSG(
@@ -20,6 +21,7 @@ export const createApp = ViteSSG(
       trackErrors(app, router)
       countPageViews(router)
       watchTheme()
+      watchNewBuilds(router)
     }
   },
 )
