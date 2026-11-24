@@ -7,6 +7,7 @@ import CardsGrid from '@/components/CardsGrid.vue'
 import LoginForm from '@/components/forms/LoginForm.vue'
 import PricesTable from '@/components/PricesTable.vue'
 
+import { t } from '@/services/i18n'
 import { isWantedStepCompleted, isGivingStepCompleted } from '@/services/store'
 
 const stepCompleted = computed(() => {
@@ -26,23 +27,25 @@ const activeStep = ref(1)
     <div class="aside" :class="{ 'hidden-sm': activeStep === 3 }">
       <div class="step-container">
         <div class="step-number" :class="{ active: activeStep === 1 }">1</div>
-        <span class="step-text">Select the cards you are looking for </span>
+        <span class="step-text">{{ t('home.step1') }}</span>
         <span v-if="activeStep > 1">✅</span>
       </div>
       <div class="step-container">
         <div class="step-number" :class="{ active: activeStep === 2 }">2</div>
-        <span class="step-text">Select the cards you can offer</span>
+        <span class="step-text">{{ t('home.step2') }}</span>
         <span v-if="activeStep > 2">✅</span>
       </div>
       <div class="step-container">
         <div class="step-number" :class="{ active: activeStep === 3 }">3</div>
-        <span class="step-text">Enter your ID and match with other players !</span>
+        <span class="step-text">{{ t('home.step3') }}</span>
       </div>
       <div class="buttons">
         <PlainButton v-if="activeStep < 3" :disabled="!stepCompleted" @click="activeStep++">
-          Next Step
+          {{ t('home.next') }}
         </PlainButton>
-        <PrimaryButton v-if="activeStep === 2" @click="activeStep--"> Previous </PrimaryButton>
+        <PrimaryButton v-if="activeStep === 2" @click="activeStep--">
+          {{ t('home.previous') }}
+        </PrimaryButton>
       </div>
       <PricesTable
         id="prices"
@@ -53,10 +56,10 @@ const activeStep = ref(1)
     <client-only>
       <CardsGrid v-if="activeStep < 3" v-model="stepCompleted" :step="activeStep" id="cards-grid" />
       <div v-else class="content">
-        <h2 class="hidden-xl">Enter your ID and match with other players !</h2>
+        <h2 class="hidden-xl">{{ t('home.step3') }}</h2>
         <LoginForm />
         <div class="buttons" style="max-width: 335px">
-          <PrimaryButton @click="activeStep--"> Previous </PrimaryButton>
+          <PrimaryButton @click="activeStep--">{{ t('home.previous') }}</PrimaryButton>
         </div>
       </div>
     </client-only>

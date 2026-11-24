@@ -2,6 +2,8 @@
 import { ref, useId, watch } from 'vue'
 
 import BaseModal from './BaseModal.vue'
+import RichText from '@/components/atoms/RichText'
+import { t } from '@/services/i18n'
 import { renderFriendQRSVG } from '@/services/qr'
 import { formatFriendID, friendQRPayload } from '@/services/utils'
 
@@ -30,21 +32,24 @@ watch(
 
 <template>
   <Teleport to="body">
-    <BaseModal v-model="isVisible" :title="pseudo ? `Add ${pseudo}` : 'Add friend'">
+    <BaseModal
+      v-model="isVisible"
+      :title="pseudo ? t('player.add', { pseudo }) : t('player.addFriend')"
+    >
       <div class="friend-qr">
         <div
           class="qr-code"
           v-html="svg"
           role="img"
-          :aria-label="`QR code for ID ${formatFriendID(friendID)}`"
+          :aria-label="t('player.qrCode', { id: formatFriendID(friendID) })"
         ></div>
         <div class="friend-id">ID {{ formatFriendID(friendID) }}</div>
         <div>
-          <p class="mb-0">In Pokemon TCG Pocket :</p>
+          <p class="mb-0">{{ t('player.inGame') }}</p>
           <ol>
-            <li>open <strong>"Friends"</strong>,</li>
-            <li>tap <strong>"Add Friend"</strong>,</li>
-            <li>then <strong>"Scan Code"</strong>.</li>
+            <li><RichText text="player.openFriends" /></li>
+            <li><RichText text="player.tapAdd" /></li>
+            <li><RichText text="player.scan" /></li>
           </ol>
         </div>
       </div>

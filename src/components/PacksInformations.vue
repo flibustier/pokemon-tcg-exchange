@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { t } from '@/services/i18n'
 import { getWantedCardsAsArray } from '@/services/store'
 
 const countByPack = (array: { packs?: string[]; count: number }[]): Record<string, number> => {
@@ -22,7 +23,7 @@ const countWantedByPack = computed(() =>
 
 <template>
   <div class="prices" v-if="getWantedCardsAsArray.length > 0">
-    <h3>Best packs to open :</h3>
+    <h3>{{ t('packs.title') }}</h3>
 
     <div class="price" v-for="[pack, count] of countWantedByPack" :key="pack">
       <div class="rarity">
@@ -30,10 +31,10 @@ const countWantedByPack = computed(() =>
           :src="`/images/packs/${pack}.webp`"
           :alt="pack"
           height="100px"
-          :title="pack + ' booster pack'"
+          :title="t('packs.name', { pack })"
         />
       </div>
-      <span>{{ count }} cards wanted inside</span>
+      <span>{{ t('packs.wanted', { n: count }) }}</span>
     </div>
   </div>
 </template>

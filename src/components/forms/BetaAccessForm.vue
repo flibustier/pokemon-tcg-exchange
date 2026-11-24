@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 
+import { t } from '@/services/i18n'
 import { getUserInfo, setUserInfo } from '@/services/store'
 import { updateUser } from '@/services/api'
 
@@ -23,7 +24,7 @@ const grantBetaAccess = async (ghUsername: string) => {
 
 <template>
   <div class="form">
-    <h2>Access to Beta features</h2>
+    <h2>{{ t('beta.title') }}</h2>
 
     <GitHubStargazer @success="grantBetaAccess" />
   </div>

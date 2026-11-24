@@ -5,10 +5,12 @@ import { useHead } from '@unhead/vue'
 
 import { fetchUser, saveFailed } from '@/services/api'
 import { pageHead } from '@/services/head'
+import { t } from '@/services/i18n'
 import { isLogged } from '@/services/store'
 
 import PrimaryButton from '@/components/atoms/PrimaryButton.vue'
 import ThemeToggle from '@/components/atoms/ThemeToggle.vue'
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import MenuModal from './components/modals/MenuModal.vue'
 
 const route = useRoute()
@@ -45,9 +47,10 @@ onMounted(async () => {
     <div class="actions">
       <!-- On smaller screens, these are in the menu -->
       <div class="desktop-only actions">
-        <RouterLink to="/help"> Help & FAQ </RouterLink>
+        <RouterLink to="/help">{{ t('app.help') }}</RouterLink>
+        <LanguageSwitcher />
         <ThemeToggle />
-        <PrimaryButton v-if="!isLogged()" to="/login">Sign In</PrimaryButton>
+        <PrimaryButton v-if="!isLogged()" to="/login">{{ t('app.signIn') }}</PrimaryButton>
       </div>
       <MenuModal />
     </div>
@@ -59,7 +62,7 @@ onMounted(async () => {
   </main>
 
   <p v-if="saveFailed" class="save-error" role="alert">
-    Your latest changes could not be saved yet, please stay on this page.
+    {{ t('app.saveFailed') }}
   </p>
 
   <footer class="container"></footer>

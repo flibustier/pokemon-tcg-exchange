@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { t } from '@/services/i18n'
+
 const model = defineModel<number>()
 
 const increase = () => {
@@ -12,14 +14,24 @@ const decrease = () => {
 <template>
   <div class="wrap">
     <div class="btns">
-      <button type="button" aria-label="Decrease" :disabled="(model || 0) < 1" @click="decrease" />
-      <button type="button" aria-label="Increase" class="plus-button" @click="increase" />
+      <button
+        type="button"
+        :aria-label="t('card.decrease')"
+        :disabled="(model || 0) < 1"
+        @click="decrease"
+      />
+      <button
+        type="button"
+        :aria-label="t('card.increase')"
+        class="plus-button"
+        @click="increase"
+      />
     </div>
 
     <input
       v-model="model"
       type="number"
-      aria-label="Number of cards"
+      :aria-label="t('card.count')"
       autocomplete="off"
       step="1"
       min="0"

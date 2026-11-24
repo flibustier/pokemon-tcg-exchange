@@ -18,6 +18,9 @@ export const pageHead = ({ path, meta }: RouteLocationNormalizedLoaded) => {
     title,
     link: [{ rel: 'canonical', href: url }],
     meta: [
+      // The default, said: it replaces the noindex of a private page that sent the visitor here, which
+      // the app would leave otherwise
+      { name: 'robots', content: 'all' },
       { name: 'description', content: description },
       { property: 'og:url', content: url },
       { property: 'og:title', content: title },

@@ -6,6 +6,7 @@ import App from './App.vue'
 import { routes } from './router'
 import { countPageViews } from './services/analytics'
 import { trackErrors } from './services/errors'
+import { startLocale } from './services/i18n'
 import { watchTheme } from './services/theme'
 import { watchNewBuilds } from './services/version'
 
@@ -19,6 +20,9 @@ export const createApp = ViteSSG(
   ({ app, router, isClient }) => {
     if (isClient) {
       trackErrors(app, router)
+      // Waits for the texts, while the files of the page are loaded
+      const texts = startLocale()
+      router.beforeResolve(() => texts)
       countPageViews(router)
       watchTheme()
       watchNewBuilds(router)

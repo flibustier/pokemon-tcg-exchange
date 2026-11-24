@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 import RarityImage from '@/components/atoms/RarityImage.vue'
 
-import { rarities } from '@/services/cards'
+import { rarityName, t } from '@/services/i18n'
 
 const props = defineProps<{
   cards: { rarity: string }[]
@@ -53,7 +53,7 @@ const togglePseudonym = toggle('pseudonymSelection')
 
 <template>
   <div class="filters">
-    <label>Filters</label>
+    <label>{{ t('filters.title') }}</label>
 
     <div
       class="badge"
@@ -63,7 +63,7 @@ const togglePseudonym = toggle('pseudonymSelection')
       }"
       v-for="rarity in rarityOptions"
       :key="rarity"
-      :title="rarities[rarity as keyof typeof rarities].label || ''"
+      :title="rarityName(rarity)"
       @click="toggleRarity(rarity)"
     >
       <RarityImage :rarity />
@@ -72,7 +72,7 @@ const togglePseudonym = toggle('pseudonymSelection')
       v-if="filters.hideUnavailable != undefined"
       class="badge badge--unavailable"
       :class="{ 'is-active': !filters.hideUnavailable }"
-      title="Display restricted cards or cards you’re already looking for"
+      :title="t('filters.showRestricted')"
       @click="filters.hideUnavailable = !filters.hideUnavailable"
     >
       🚫
@@ -81,7 +81,7 @@ const togglePseudonym = toggle('pseudonymSelection')
       v-if="filters.hideEmpty != undefined"
       class="badge badge--unavailable"
       :class="{ 'is-active': !filters.hideEmpty }"
-      title="Display cards you haven’t already selected"
+      :title="t('filters.showEmpty')"
       @click="filters.hideEmpty = !filters.hideEmpty"
     >
       0️⃣
@@ -106,12 +106,12 @@ const togglePseudonym = toggle('pseudonymSelection')
         v-model="filters.cardName"
         class="input-search"
         type="text"
-        placeholder="Search for card name"
+        :placeholder="t('filters.search')"
       />
     </div>
   </div>
   <div class="filters" v-if="pseudonyms">
-    <label class="filters__title">Players</label>
+    <label class="filters__title">{{ t('filters.players') }}</label>
     <div
       class="badge"
       :class="{

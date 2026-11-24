@@ -39,7 +39,7 @@ const isCardManaging = computed(() =>
         <MenuButton route="messages" :with-notification-dot="hasUnreadMessages">
           <MessageIcon />
         </MenuButton>
-        <MenuButton label="Account" route="settings" :with-notification-dot="isAccountIncomplete">
+        <MenuButton route="settings" :with-notification-dot="isAccountIncomplete">
           <GearIcon />
         </MenuButton>
         <MenuButton route="insights"><ChartIcon /></MenuButton>

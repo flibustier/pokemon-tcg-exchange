@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { t } from '@/services/i18n'
 import { toggleTheme } from '@/services/theme'
 
 import MoonIcon from '@/components/icons/MoonIcon.vue'
@@ -9,13 +10,13 @@ import SunIcon from '@/components/icons/SunIcon.vue'
   <!-- Both icons are rendered, the theme's CSS variables show one: the pre-rendered page is right
        before the script runs, whatever the theme. The menu has its own item, see MenuModal. -->
   <button type="button" class="theme-toggle" @click="toggleTheme">
-    <span class="if-light" title="Switch to the dark theme">
+    <span class="if-light" :title="t('theme.toDark')">
       <MoonIcon />
-      <span class="visually-hidden">Switch to the dark theme</span>
+      <span class="visually-hidden">{{ t('theme.toDark') }}</span>
     </span>
-    <span class="if-dark" title="Switch to the light theme">
+    <span class="if-dark" :title="t('theme.toLight')">
       <SunIcon />
-      <span class="visually-hidden">Switch to the light theme</span>
+      <span class="visually-hidden">{{ t('theme.toLight') }}</span>
     </span>
   </button>
 </template>

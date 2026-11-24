@@ -1,6 +1,6 @@
 <template>
   <div class="hr-or">
-    <slot>OR</slot>
+    <slot />
   </div>
 </template>
 

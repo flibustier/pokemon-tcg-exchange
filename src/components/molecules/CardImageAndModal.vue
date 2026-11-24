@@ -2,6 +2,7 @@
 import { useTemplateRef } from 'vue'
 import CardModal from '../modals/CardModal.vue'
 import type { Card } from '@/services/cards'
+import { cardName } from '@/services/i18n'
 
 const modal = useTemplateRef('modal')
 
@@ -13,7 +14,7 @@ defineProps<{
 <template>
   <img
     :src="card.imagePaths.thumbnail"
-    :alt="card.name"
+    :alt="cardName(card)"
     class="card-thumbnail"
     width="135"
     height="188"
