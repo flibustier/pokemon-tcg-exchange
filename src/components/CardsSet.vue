@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { CLOSED_SETS } from '@/../config.json' with { type: 'json' }
 import type { Card } from '@/services/cards'
 import { rarityName, setLogo, setName, t, type SetNames } from '@/services/i18n'
 import { JOKER_RARITIES, jokerKey, jokers } from '@/services/store'
@@ -61,6 +62,7 @@ const toggleJoker = (rarity: string) => {
         loading="lazy"
       />
     </div>
+    <p v-if="CLOSED_SETS.includes(set.code)" class="set-note">{{ t('cards.closedSet') }}</p>
     <JokerToggles
       v-if="jokerToggles.length > 0"
       class="set-jokers"
@@ -88,6 +90,12 @@ const toggleJoker = (rarity: string) => {
 .set {
   scroll-margin-top: var(--header-height);
   width: 100%;
+}
+
+.set-note {
+  margin: -0.5rem 0 1rem;
+  text-align: center;
+  color: var(--color-text-muted);
 }
 
 /* Between two sets: a line, the set's logo, a line */

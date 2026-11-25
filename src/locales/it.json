@@ -172,6 +172,7 @@
   "sets.selectTitle": "Fai clic per scegliere un’altra espansione",
   "sets.noResults": "Nessun risultato :/<br/>Modifica i tuoi filtri",
 
+  "cards.closedSet": "Attenzione: le carte speciali si possono scambiare solo con un’altra carta speciale",
   "jokers.allSets": "In ogni espansione, do tutte le mie",
   "jokers.allSetsOn": "Dai tutte le tue carte di rarità {rarity} in ogni espansione. Fai clic per smettere ovunque",
   "jokers.allSetsOff": "Dai tutte le tue carte di rarità {rarity} in ogni espansione, tranne quelle che cerchi. Le espansioni future partono senza",

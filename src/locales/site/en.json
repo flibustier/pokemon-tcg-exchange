@@ -10,7 +10,7 @@
     "facts": {
       "cards": "{count} cards",
       "sets": "{count} sets",
-      "free": "Free"
+      "free": "Free and <source>open source</source>"
     },
     "steps": {
       "heading": "How it works",

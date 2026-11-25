@@ -1,11 +1,20 @@
 ---
+import BoosterIcon from '@/components/icons/BoosterIcon.vue'
 import CardIcon from '@/components/icons/CardIcon.vue'
 import ExchangeIcon from '@/components/icons/ExchangeIcon.vue'
+import FreeIcon from '@/components/icons/FreeIcon.vue'
 import HeartIcon from '@/components/icons/HeartIcon.vue'
+import LayersIcon from '@/components/icons/LayersIcon.vue'
+import MailIcon from '@/components/icons/MailIcon.vue'
+import MessageIcon from '@/components/icons/MessageIcon.vue'
+import QrCodeIcon from '@/components/icons/QrCodeIcon.vue'
+import RobotIcon from '@/components/icons/RobotIcon.vue'
+import SparklesIcon from '@/components/icons/SparklesIcon.vue'
 import SiteLayout from '@/layouts/SiteLayout.astro'
 import { cards } from '@/services/cards'
 import { logoOf } from '@/services/logos'
 import { formatText, localePath, type Locale } from '@/services/texts'
+import Rich from '@/site/Rich.astro'
 import { nameOf, setPath, sets, type SiteSet } from '@/site/sets'
 import { localizedPaths, useTexts } from '@/site/texts'
 
@@ -29,7 +38,14 @@ const facts = [
 // The pages of the sets are in English only, for now
 const setLink = (set: SiteSet) => (locale === 'en' ? setPath(set) : `/start#${set.code}`)
 
+const SOURCE = 'https://github.com/flibustier/pokemon-tcg-exchange'
+
+const FACT_ICONS = [CardIcon, LayersIcon, FreeIcon]
 const STEP_ICONS = [HeartIcon, CardIcon, ExchangeIcon]
+const FEATURE_ICONS = [RobotIcon, MessageIcon, QrCodeIcon, BoosterIcon, SparklesIcon, MailIcon]
+
+// On the coin of "free"
+const currency = locale === 'en' ? '$' : '€'
 
 // A fan of the art cards of the latest sets
 const fan = sets
@@ -62,9 +78,17 @@ const questions = help.faq.list.slice(0, 4)
         </a>
       </p>
       <ul class="facts">
-        {facts.map((fact) => (
-          <li>{fact}</li>
-        ))}
+        {facts.map((fact, index) => {
+          const Icon = FACT_ICONS[index]
+          return (
+            <li>
+              <Icon {...(Icon === FreeIcon && { currency })} aria-hidden="true" />
+              <span>
+                <Rich text={fact} links={{ source: SOURCE }} />
+              </span>
+            </li>
+          )
+        })}
       </ul>
     </div>
     <div class="fan" aria-hidden="true">
@@ -109,12 +133,20 @@ const questions = help.faq.list.slice(0, 4)
   <section>
     <h2>{home.features.heading}</h2>
     <ul class="features">
-      {home.features.list.map(({ title, text }) => (
-        <li>
-          <h3>{title}</h3>
-          <p>{text}</p>
-        </li>
-      ))}
+      {home.features.list.map(({ title, text }, index) => {
+        const Icon = FEATURE_ICONS[index]
+        return (
+          <li>
+            <span class="feature-icon">
+              <Icon aria-hidden="true" />
+            </span>
+            <div>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </div>
+          </li>
+        )
+      })}
     </ul>
   </section>
 
@@ -241,8 +273,14 @@ const questions = help.faq.list.slice(0, 4)
     color: var(--color-text-muted);
   }
 
-  .facts li::before {
-    content: '✓ ';
+  .facts li {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .facts svg {
+    font-size: 1.5em;
     color: var(--color-teal);
   }
 
@@ -305,7 +343,21 @@ const questions = help.faq.list.slice(0, 4)
     box-shadow: 0 0 0 1px var(--ring-color);
   }
 
+  .features li {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .feature-icon {
+    flex: none;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--color-teal);
+  }
+
+  /* Wider screens still show the first one */
   .after-steps {
+    display: none;
     margin-top: 2rem;
     text-align: center;
   }
@@ -407,6 +459,10 @@ const questions = help.faq.list.slice(0, 4)
     .steps,
     .features {
       grid-template-columns: 1fr;
+    }
+
+    .after-steps {
+      display: block;
     }
 
     section {

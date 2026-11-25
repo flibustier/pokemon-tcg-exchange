@@ -172,6 +172,7 @@
   "sets.selectTitle": "Click to select another set",
   "sets.noResults": "No results :/<br/>Please adjust your filters",
 
+  "cards.closedSet": "Special cards can only be traded for another special card",
   "jokers.allSets": "In every set, I give all my",
   "jokers.allSetsOn": "You give all your {rarity} cards in every set. Click to stop in every set",
   "jokers.allSetsOff": "Give all your {rarity} cards in every set, except the ones you want. Sets to come start without it",
