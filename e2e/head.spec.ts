@@ -5,9 +5,10 @@ import { test, expect, type Page } from '@playwright/test'
 const SITE = 'https://pokemon-tcg.exchange'
 const DEFAULT_TITLE = 'Pokemon TCG Pocket Exchange Center - Trade Your Cards with the World'
 
-const helpTitle = (locale: string): string =>
-  JSON.parse(readFileSync(new URL(`../src/locales/site/${locale}.json`, import.meta.url), 'utf8'))
-    .help.title
+const titleOf = (page: 'home' | 'help', locale: string): string =>
+  JSON.parse(readFileSync(new URL(`../src/locales/site/${locale}.json`, import.meta.url), 'utf8'))[
+    page
+  ].title
 
 const blockOtherHosts = (page: Page) =>
   page.route(
@@ -24,11 +25,12 @@ test.describe('head', () => {
   test.beforeEach(({ page }) => blockOtherHosts(page))
 
   for (const { path, title, lang = 'en' } of [
-    { path: '/', title: DEFAULT_TITLE },
+    { path: '/', title: titleOf('home', 'en') },
+    { path: '/fr/', title: titleOf('home', 'fr'), lang: 'fr' },
     { path: '/login', title: 'Sign in - Pokemon TCG Pocket Exchange Center' },
-    { path: '/help', title: helpTitle('en') },
-    { path: '/es/help', title: helpTitle('es'), lang: 'es' },
-    { path: '/fr/help', title: helpTitle('fr'), lang: 'fr' },
+    { path: '/help', title: titleOf('help', 'en') },
+    { path: '/es/help', title: titleOf('help', 'es'), lang: 'es' },
+    { path: '/fr/help', title: titleOf('help', 'fr'), lang: 'fr' },
   ]) {
     test(`${path} has its own title and address`, async ({ page }) => {
       await page.goto(path)
@@ -59,7 +61,7 @@ test.describe('head', () => {
     })
   }
 
-  for (const path of ['/account/proposals', '/forgotten-password', '/logout', '/nope']) {
+  for (const path of ['/account/proposals', '/forgotten-password', '/start', '/logout', '/nope']) {
     test(`${path} is not for search engines`, async ({ page }) => {
       await page.goto(path)
       await expect(page).toHaveTitle(DEFAULT_TITLE)
@@ -72,7 +74,7 @@ test.describe('head', () => {
     const sitemap = await (await request.get('/sitemap.xml')).text()
     const listed = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(([, address]) => address)
     expect(listed).toEqual(
-      ['/', '/login', '/help', '/es/help', '/fr/help'].map((path) => SITE + path),
+      ['/login', '/', '/es/', '/fr/', '/help', '/es/help', '/fr/help'].map((path) => SITE + path),
     )
     expect(sitemap).toContain(`hreflang="fr" href="${SITE}/fr/help"`)
   })

@@ -1,8 +1,8 @@
 import { DEFAULT_LOCALE, localePath, locales, type Locale } from '@/services/texts'
 
 // The public pages, for the sitemap: those in one language, and those in every language
-const SINGLE = ['/', '/login']
-const TRANSLATED = ['/help']
+const SINGLE = ['/login']
+const TRANSLATED = ['/', '/help']
 
 type PublicPage = { address: string; alternates: { locale: Locale; address: string }[] }
 
