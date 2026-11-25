@@ -22,8 +22,11 @@ const filters = defineModel<{
   required: true,
 })
 
+// Anomalies have no symbol to show on a badge
 const rarityOptions = computed(() => {
-  return Array.from(new Set(props.cards.map(({ rarity }) => (rarity === 'SAR' ? 'SR' : rarity))))
+  const all = new Set(props.cards.map(({ rarity }) => (rarity === 'SAR' ? 'SR' : rarity)))
+  all.delete('AN')
+  return Array.from(all)
 })
 
 const toggle =

@@ -122,7 +122,7 @@
 
   "proposals.loading": "Chargement de tes propositions…",
   "proposals.refresh": "Actualiser",
-  "proposals.match": "Des échanges sont possibles !",
+  "proposals.match": "De nouveaux échanges disponibles !",
   "proposals.message": "Message",
   "proposals.none": "Pas de proposition pour le moment :(<br/>Reviens plus tard !",
 
@@ -172,6 +172,7 @@
   "sets.selectTitle": "Clique pour choisir une autre extension",
   "sets.noResults": "Aucun résultat :/<br/>Ajuste tes filtres",
 
+  "cards.closedSet": "Attention, les cartes spéciales ne seront échangeables que contre une autre carte spéciale",
   "jokers.allSets": "Dans chaque extension, je donne toutes mes",
   "jokers.allSetsOn": "Tu donnes toutes tes cartes de rareté {rarity} dans chaque extension. Clique pour arrêter partout",
   "jokers.allSetsOff": "Donne toutes tes cartes de rareté {rarity} dans chaque extension, sauf celles que tu cherches. Les extensions à venir démarrent sans",
