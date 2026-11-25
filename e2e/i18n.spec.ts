@@ -110,6 +110,7 @@ test.describe('language', () => {
     { languages: ['en-US'], lang: 'en', heading: 'Sign in to your account' },
     { languages: ['es-MX', 'en'], lang: 'es', heading: 'Inicia sesión en tu cuenta' },
     { languages: ['fr-FR', 'en'], lang: 'fr', heading: 'Connecte-toi à ton compte' },
+    { languages: ['it-IT'], lang: 'it', heading: 'Accedi al tuo account' },
     // The app has no Catalan and no German yet: the next language of the browser, or English
     { languages: ['ca', 'es', 'en'], lang: 'es', heading: 'Inicia sesión en tu cuenta' },
     { languages: ['de-DE'], lang: 'en', heading: 'Sign in to your account' },

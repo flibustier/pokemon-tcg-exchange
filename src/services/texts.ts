@@ -1,7 +1,7 @@
 // What the app (i18n.ts) and the pages built by Astro (src/site) share about the texts. Nothing here
 // needs a browser.
 
-export const LOCALES = { en: 'English', es: 'Español', fr: 'Français' } as const
+export const LOCALES = { en: 'English', es: 'Español', fr: 'Français', it: 'Italiano' } as const
 export type Locale = keyof typeof LOCALES
 
 export const DEFAULT_LOCALE: Locale = 'en'
