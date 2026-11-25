@@ -16,17 +16,17 @@ const stubAnalytics = (page: Page) =>
 
 test('counts the pages visited inside the app, not the landing page', async ({ page }) => {
   await stubAnalytics(page)
-  await page.goto('/')
-  await expect(page.locator('.card-grid .card').first()).toBeVisible()
+  await page.goto('/forgotten-password')
+  await expect(page.locator('h1.brand-name')).toBeVisible()
   await page.waitForFunction(() => window.goatcounter?.count)
 
-  await page.getByRole('link', { name: 'Help & FAQ' }).first().click()
-  await expect(page).toHaveURL(/\/help$/, { timeout: 15000 })
-  await page.locator('a.brand').click()
-  await expect(page).toHaveURL(/\/$/, { timeout: 15000 })
+  await page.getByRole('link', { name: 'Sign In' }).first().click()
+  await expect(page).toHaveURL(/\/login$/)
+  await page.goBack()
+  await expect(page).toHaveURL(/\/forgotten-password$/)
 
   const counted = await page.evaluate(() => (window as unknown as { counted?: string[] }).counted)
-  expect(counted).toEqual(['/help', '/'])
+  expect(counted).toEqual(['/login', '/forgotten-password'])
 })
 
 test('counts the landing page without its parameters or player id', async ({ page }) => {

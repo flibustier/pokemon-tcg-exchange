@@ -1,0 +1,91 @@
+/* The header of the app (App.vue) and of the pages built by Astro (Header.astro): a page of the app
+   shows the second until the first is there. */
+.site-header {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  a {
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    padding-right: 1rem;
+    cursor: pointer;
+  }
+
+  .brand:hover {
+    background-color: var(--hover-tint);
+    border-radius: 10px;
+  }
+
+  .brand-name {
+    display: flex;
+    align-items: center;
+    line-height: 1.7rem;
+    font-size: 1.6rem;
+    color: var(--text-primary);
+  }
+
+  #exchange-logo {
+    margin: 0 0.5rem;
+  }
+
+  .actions {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media (max-width: 600px) {
+    #tcg-pocket-logo {
+      height: 75px;
+    }
+
+    #exchange-logo {
+      height: 40px;
+      margin-left: 0;
+      margin-right: 0.25rem;
+    }
+
+    .brand-name {
+      font-size: 1.2rem;
+      line-height: 1.4rem;
+    }
+  }
+
+  /* On smaller screens, these are in the menu */
+  @media (max-width: 1111px) {
+    .desktop-only {
+      display: none;
+    }
+  }
+}
+
+.site-separator {
+  height: 5px;
+  width: 100%;
+  background: linear-gradient(to right, #ff69b4, #4169e1, #40e0d0);
+  background-size: 300% 100%;
+  animation: site-separator 6s infinite;
+}
+
+@keyframes site-separator {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

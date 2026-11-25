@@ -2,8 +2,15 @@ import { readFileSync, readdirSync } from 'node:fs'
 import { test, expect, type Page, type Route } from '@playwright/test'
 
 const LOCALES = new URL('../src/locales/', import.meta.url)
+// The texts of the app are flat, those of the public pages (site/) are not: help.faq.list.0.question
+const flatten = (value: unknown, key = ''): [string, string][] =>
+  typeof value === 'string'
+    ? [[key, value]]
+    : Object.entries(value as object).flatMap(([name, inside]) =>
+        flatten(inside, key ? `${key}.${name}` : name),
+      )
 const readTexts = (file: string): Record<string, string> =>
-  JSON.parse(readFileSync(new URL(file, LOCALES), 'utf8'))
+  Object.fromEntries(flatten(JSON.parse(readFileSync(new URL(file, LOCALES), 'utf8'))))
 
 const session = {
   friend_id: '1234567890123456',
@@ -72,7 +79,6 @@ const signInHeading = (page: Page) => page.locator('.form h2')
 const languageOfPage = (page: Page) => page.locator('html')
 
 test.describe('texts', () => {
-  const english = readTexts('en.json')
   const marks = (text: string) => ({
     placeholders: [...new Set(text.match(/\{\w+\}/g))].sort(),
     tags: (text.match(/<\/?\w+\/?>/g) ?? []).sort(),
@@ -80,15 +86,22 @@ test.describe('texts', () => {
   })
 
   // Missing texts already fail the type check
-  for (const file of readdirSync(LOCALES).filter((name) => name !== 'en.json')) {
-    test(`of ${file} have the keys, placeholders and tags of the English ones`, () => {
-      const texts = readTexts(file)
-      expect(Object.keys(texts).sort()).toEqual(Object.keys(english).sort())
-      for (const [key, text] of Object.entries(texts)) {
-        expect({ key, ...marks(text) }).toEqual({ key, ...marks(english[key]) })
-        expect(text.trim(), key).not.toBe('')
-      }
-    })
+  for (const folder of ['', 'site/']) {
+    const english = readTexts(`${folder}en.json`)
+    const files = readdirSync(new URL(folder, LOCALES)).filter((name) =>
+      /^(?!en)\w+\.json$/.test(name),
+    )
+
+    for (const file of files) {
+      test(`of ${folder}${file} have the keys, placeholders and tags of the English ones`, () => {
+        const texts = readTexts(folder + file)
+        expect(Object.keys(texts).sort()).toEqual(Object.keys(english).sort())
+        for (const [key, text] of Object.entries(texts)) {
+          expect({ key, ...marks(text) }).toEqual({ key, ...marks(english[key]) })
+          expect(text.trim(), key).not.toBe('')
+        }
+      })
+    }
   }
 })
 
@@ -223,5 +236,62 @@ test.describe('in the language of the player', () => {
       'Error: el servidor está ocupado, vuelve a intentarlo',
     )
     expect(bodies).toEqual([{ confirm: 'DELETE' }])
+  })
+})
+
+test.describe('public pages', () => {
+  const hint = (page: Page) => page.locator('.language-hint:visible')
+
+  test('offer the language of the browser, and keep the one picked', async ({ page }) => {
+    await prepare(page, ['fr-FR', 'en'])
+    await page.goto('/help')
+    await expect(hint(page)).toHaveText('Cette page en français →')
+    await hint(page).click()
+    await expect(page).toHaveURL(/\/fr\/help$/)
+    await expect(page.locator('h1')).toHaveText(
+      'Comment échanger des cartes dans Pokémon TCG Pocket',
+    )
+    await expect(hint(page)).toHaveCount(0)
+
+    // Picked: the page opens in it from now on, the app too
+    await page.getByLabel('Langue').first().selectOption('Español')
+    await expect(page).toHaveURL(/\/es\/help$/)
+    await page.goto('/help#costs')
+    await expect(page).toHaveURL(/\/es\/help#costs$/)
+    await page.getByRole('link', { name: 'Iniciar sesión' }).first().click()
+    await expect(signInHeading(page)).toHaveText('Inicia sesión en tu cuenta')
+
+    // And back, from the app
+    await page.getByRole('link', { name: 'Ayuda' }).first().click()
+    await expect(page).toHaveURL(/\/es\/help$/)
+  })
+
+  test('offer nothing in the language of the page', async ({ page }) => {
+    await prepare(page, ['de-DE', 'en', 'fr'])
+    await page.goto('/help')
+    await expect(page.locator('h1')).toBeVisible()
+    await expect(hint(page)).toHaveCount(0)
+  })
+
+  test('do not lose a card changed just before', async ({ page }) => {
+    // the wish list draws every card
+    test.slow()
+    const saves: unknown[] = []
+    await prepare(page, ['en'], {
+      'PUT /user/wishlist': (route) => {
+        saves.push(route.request().postDataJSON())
+        return route.fulfill({ body: 'updated', headers: cors })
+      },
+    })
+    await signIn(page)
+    await page.goto('/account/wishlist')
+    const card = page.locator('#C1 .card').first()
+    await expect(card).toBeVisible({ timeout: 30000 })
+    await expect(page.locator('#A1 .card input').first()).toHaveValue('1')
+
+    await card.locator('.card-image').click()
+    await page.getByRole('link', { name: 'Help & FAQ' }).first().click()
+    await expect(page).toHaveURL(/\/help$/, { timeout: 15000 })
+    expect(saves).toEqual([expect.objectContaining({ id: 'C1-1', count: 1 })])
   })
 })

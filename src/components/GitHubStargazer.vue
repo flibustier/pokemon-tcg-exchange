@@ -84,7 +84,7 @@ const checkStaring = async () => {
 const autoFetch = async () => {
   stargazers.value = await fetchStargazers()
 
-  checkInterval.value = setInterval(checkStaring, CHECK_INTERVAL_MS)
+  checkInterval.value = window.setInterval(checkStaring, CHECK_INTERVAL_MS)
 }
 
 onUnmounted(() => {

@@ -1,0 +1,130 @@
+{
+  "hint": "This page in English",
+  "help": {
+    "title": "How to Trade Cards in Pokemon TCG Pocket: Guide & FAQ",
+    "description": "How trading works in Pokemon TCG Pocket: which cards can be traded, what they cost in Shinedust, what replaced Trade Tokens, and how to find players to trade with online.",
+    "heading": "How to trade cards in Pokemon TCG Pocket",
+    "intro": "Welcome to <site>pokemon-tcg.exchange</site>, the exchange center for Pokemon TCG Pocket players! This guide explains how trading works in the game, and how the site finds you players to trade with online.",
+    "rules": {
+      "heading": "How trading works in the game",
+      "items": [
+        "You can only trade with players on your <strong>friends list</strong>.",
+        "Both cards must have the <strong>same rarity</strong>: a ◊◊ card for another ◊◊ card.",
+        "Some cards <strong>cannot be traded</strong>: ☆☆☆ cards, crown cards and promo cards.",
+        "From ◊◊◊ up, a trade costs <strong>Shinedust</strong>, to both players.",
+        "Every trade uses <strong>trade stamina</strong>, which comes back with time or with trade hourglasses.",
+        "Both players have to accept the trade."
+      ],
+      "costs": "What a trade costs",
+      "rarity": "Rarity",
+      "cost": "Shinedust",
+      "free": "Free",
+      "notTradeable": "Cannot be traded"
+    },
+    "site": {
+      "heading": "How to find players to trade with online",
+      "intro": "The game only lets you trade with friends, and does not help you find them. That is what <site>pokemon-tcg.exchange</site> is for:",
+      "items": [
+        "<strong>Your wishlist:</strong> select the cards you want.",
+        "<strong>Your offers:</strong> select the cards you can give.",
+        "<strong>Your Friend ID:</strong> the players who match with you add you as a friend with it.",
+        "<strong>Your matches:</strong> the site finds the players who give what you want, and want what you give.",
+        "<strong>Your trades:</strong> see the proposals, talk with the other players, and update your lists at any time."
+      ],
+      "outro": "The trade itself is made in the game, between friends. The site is free, and never asks for your game account."
+    },
+    "steps": {
+      "heading": "How to use the site, step by step",
+      "wants": {
+        "title": "Select the cards you want",
+        "text": "Browse every Pokemon TCG Pocket card, and filter by set, rarity or name to find the ones you miss.",
+        "alt": "The cards you are looking for"
+      },
+      "offers": {
+        "title": "Select the cards you can offer",
+        "text": "Add the duplicates you can trade away. The more you offer, the more matches you get. With a <strong>joker</strong>, you give all your cards of one rarity in a set with a single click, except the ones you want.",
+        "alt": "The cards you can offer"
+      },
+      "friendId": {
+        "title": "Enter your Friend ID",
+        "text": "Your Friend ID is a 16-digit number of Pokemon TCG Pocket. To find it:",
+        "items": [
+          "tap your avatar or your name in the game,",
+          "your Friend ID is at the top of your profile,",
+          "enter it on the site, without hyphens."
+        ],
+        "alt": "The Friend ID on the profile screen"
+      },
+      "matches": {
+        "title": "Get matches and proposals",
+        "text": "The site compares your lists with those of the other players. For each match, you see:",
+        "items": [
+          "the cards you can trade, and what they cost in Shinedust,",
+          "the pseudonym and Friend ID of the other player, with a QR code to add them,",
+          "when they last came, and a way to write to them."
+        ],
+        "alt": "Your matches and proposals"
+      },
+      "account": {
+        "title": "Keep your account up to date",
+        "text": "Choose the same pseudonym and icon as in the game, say which rarities you accept to trade, and edit your lists as your collection grows.",
+        "alt": "The settings of your account"
+      }
+    },
+    "packs": {
+      "heading": "Which booster packs to open",
+      "text": "In the Insights menu of your account, the site counts the cards of your wishlist in each booster pack:",
+      "items": [
+        "<strong>see at a glance</strong> which packs hold the most cards you miss,",
+        "<strong>open the right ones first</strong>, and trade for the others."
+      ],
+      "alt": "The best packs for your wishlist"
+    },
+    "faq": {
+      "heading": "Frequently asked questions",
+      "list": [
+        {
+          "question": "How do I exchange Trade Tokens in Pokemon TCG Pocket?",
+          "answer": "Trade Tokens no longer exist: Shinedust replaced them in July 2025, and the tokens the players had were turned into Shinedust. Trades are now paid in Shinedust, see the table above."
+        },
+        {
+          "question": "How do I get Shinedust?",
+          "answer": "You get Shinedust when you obtain a card you already have, and from missions and events."
+        },
+        {
+          "question": "Which cards cannot be traded?",
+          "answer": "Cards with three stars (immersive), crown cards and promo cards cannot be traded. The site shows them with 🚫, and leaves them out of the proposals."
+        },
+        {
+          "question": "Can I trade with any player online?",
+          "answer": "Only with your friends in the game. When the site finds you a match, add the other player with their Friend ID or their QR code, then start the trade in the game."
+        },
+        {
+          "question": "How do I find my Friend ID?",
+          "answer": "Tap your avatar or your name in the game: your Friend ID is at the top of your profile. Enter its 16 digits on the site, without hyphens."
+        },
+        {
+          "question": "Why do First Partners (SP1) cards have their own proposals?",
+          "answer": "Cards of the First Partners special pack are only traded for cards of the same pack, so the site matches them apart."
+        },
+        {
+          "question": "Can I exchange pack points for cards?",
+          "answer": "Yes, in the game: opening packs of a set gives you points, which you spend on a card of that set. Tap a card on the site to see how many points it costs."
+        },
+        {
+          "question": "Can I change my wishlist or my offers later?",
+          "answer": "Yes, at any time from your account. Up-to-date lists give you better matches."
+        },
+        {
+          "question": "How do I delete my account?",
+          "answer": "At the bottom of the Account page. Your lists, your email, your password and your Friend ID are deleted for good."
+        }
+      ]
+    },
+    "contact": {
+      "heading": "Contact us",
+      "text": "A question, an idea, a problem? Write to us at <mail>help@pokemon-tcg.exchange</mail>."
+    },
+    "cta": "Find players to trade with"
+  }
+}

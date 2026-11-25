@@ -4,12 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "astro dev",
     "build": "run-p type-check \"build-only {@}\" --",
-    "preview": "vite preview",
+    "preview": "astro preview --port 4173",
     "test:e2e": "playwright test",
-    "build-only": "vite-ssg build",
-    "type-check": "vue-tsc --build",
+    "build-only": "astro build",
+    "type-check": "astro sync && vue-tsc --build && astro check",
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
     "deploy": "./scripts/deploy.sh",
@@ -23,15 +23,16 @@
     "vue-router": "5.4.0"
   },
   "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@astrojs/vue": "7.1.6",
     "@playwright/test": "1.62.1",
     "@sentry/cli": "3.8.2",
     "@tsconfig/node22": "^22.0.6",
     "@types/node": "^26.6.6",
-    "@unhead/vue": "2.1.17",
-    "@vitejs/plugin-vue": "6.0.10",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.9.0",
     "@vue/tsconfig": "^0.9.1",
+    "astro": "7.4.13",
     "eslint": "^10.14.0",
     "eslint-plugin-playwright": "^2.12.2",
     "eslint-plugin-vue": "^10.12.0",
@@ -39,10 +40,9 @@
     "npm-run-all2": "^9.0.4",
     "pokemon-tcg-pocket-database": "2.13.2",
     "prettier": "^3.9.10",
+    "prettier-plugin-astro": "1.1.2",
     "typescript": "~6.0.3",
-    "vite": "8.3.6",
-    "vite-plugin-vue-devtools": "8.2.1",
-    "vite-ssg": "28.3.0",
+    "vite": "8.3.8",
     "vue-tsc": "3.3.14"
   }
 }

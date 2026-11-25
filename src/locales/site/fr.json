@@ -1,0 +1,130 @@
+{
+  "hint": "Cette page en français",
+  "help": {
+    "title": "Comment échanger des cartes dans Pokémon TCG Pocket : guide et FAQ",
+    "description": "Comment marchent les échanges dans Pokémon TCG Pocket : quelles cartes s’échangent, combien de poudre éclat elles coûtent, ce qui remplace les jetons échange, et comment trouver des joueurs en ligne.",
+    "heading": "Comment échanger des cartes dans Pokémon TCG Pocket",
+    "intro": "Bienvenue sur <site>pokemon-tcg.exchange</site>, le centre d’échange des joueurs de Pokémon TCG Pocket ! Ce guide explique comment marchent les échanges dans le jeu, et comment le site te trouve des joueurs avec qui échanger en ligne.",
+    "rules": {
+      "heading": "Comment marchent les échanges dans le jeu",
+      "items": [
+        "Tu ne peux échanger qu’avec des joueurs de ta <strong>liste d’amis</strong>.",
+        "Les deux cartes doivent avoir la <strong>même rareté</strong> : une carte ◊◊ contre une autre carte ◊◊.",
+        "Certaines cartes <strong>ne s’échangent pas</strong> : les cartes ☆☆☆, les cartes couronne et les cartes promo.",
+        "À partir de ◊◊◊, un échange coûte de la <strong>poudre éclat</strong> aux deux joueurs.",
+        "Chaque échange utilise de l’<strong>endurance d’échange</strong>, qui revient avec le temps ou avec des sabliers échange.",
+        "Les deux joueurs doivent accepter l’échange."
+      ],
+      "costs": "Ce que coûte un échange",
+      "rarity": "Rareté",
+      "cost": "Poudre éclat",
+      "free": "Gratuit",
+      "notTradeable": "Ne s’échange pas"
+    },
+    "site": {
+      "heading": "Comment trouver des joueurs avec qui échanger",
+      "intro": "Le jeu ne permet d’échanger qu’entre amis, et n’aide pas à les trouver. C’est à cela que sert <site>pokemon-tcg.exchange</site> :",
+      "items": [
+        "<strong>Tes souhaits :</strong> choisis les cartes que tu cherches.",
+        "<strong>Tes offres :</strong> choisis les cartes que tu peux donner.",
+        "<strong>Ton ID ami :</strong> les joueurs qui te correspondent t’ajoutent en ami grâce à lui.",
+        "<strong>Tes propositions :</strong> le site trouve les joueurs qui donnent ce que tu cherches, et cherchent ce que tu donnes.",
+        "<strong>Tes échanges :</strong> consulte les propositions, discute avec les autres joueurs, et change tes listes quand tu veux."
+      ],
+      "outro": "L’échange lui-même se fait dans le jeu, entre amis. Le site est gratuit, et ne demande jamais ton compte de jeu."
+    },
+    "steps": {
+      "heading": "Comment utiliser le site, pas à pas",
+      "wants": {
+        "title": "Choisis les cartes que tu cherches",
+        "text": "Parcours toutes les cartes de Pokémon TCG Pocket, et filtre par extension, rareté ou nom pour trouver celles qui te manquent.",
+        "alt": "Les cartes que tu cherches"
+      },
+      "offers": {
+        "title": "Choisis les cartes que tu peux offrir",
+        "text": "Ajoute les doubles que tu peux donner. Plus tu en offres, plus tu as de propositions. Avec un <strong>joker</strong>, tu donnes en un clic toutes tes cartes d’une rareté dans une extension, sauf celles que tu cherches.",
+        "alt": "Les cartes que tu peux offrir"
+      },
+      "friendId": {
+        "title": "Entre ton ID ami",
+        "text": "Ton ID ami est un numéro à 16 chiffres de Pokémon TCG Pocket. Pour le trouver :",
+        "items": [
+          "touche ton avatar ou ton nom dans le jeu,",
+          "ton ID ami est en haut de ton profil,",
+          "entre-le sur le site, sans tirets."
+        ],
+        "alt": "L’ID ami sur l’écran de profil"
+      },
+      "matches": {
+        "title": "Reçois des propositions",
+        "text": "Le site compare tes listes avec celles des autres joueurs. Pour chaque proposition, tu vois :",
+        "items": [
+          "les cartes que vous pouvez échanger, et ce qu’elles coûtent en poudre éclat,",
+          "le pseudo et l’ID ami de l’autre joueur, avec un QR code pour l’ajouter,",
+          "sa dernière visite, et un moyen de lui écrire."
+        ],
+        "alt": "Tes propositions"
+      },
+      "account": {
+        "title": "Garde ton compte à jour",
+        "text": "Choisis le même pseudo et la même icône que dans le jeu, indique les raretés que tu acceptes d’échanger, et modifie tes listes quand ta collection grandit.",
+        "alt": "Les réglages de ton compte"
+      }
+    },
+    "packs": {
+      "heading": "Quels boosters ouvrir",
+      "text": "Dans le menu Statistiques de ton compte, le site compte les cartes de tes souhaits dans chaque booster :",
+      "items": [
+        "<strong>vois en un coup d’œil</strong> quels boosters contiennent le plus de cartes qui te manquent,",
+        "<strong>ouvre les meilleurs d’abord</strong>, et échange pour avoir les autres."
+      ],
+      "alt": "Les meilleurs boosters pour tes souhaits"
+    },
+    "faq": {
+      "heading": "Questions fréquentes",
+      "list": [
+        {
+          "question": "Comment échanger les jetons échange de Pokémon TCG Pocket ?",
+          "answer": "Les jetons échange n’existent plus : la poudre éclat les a remplacés en juillet 2025, et ceux des joueurs ont été convertis en poudre éclat. Les échanges se paient maintenant en poudre éclat, voir le tableau ci-dessus."
+        },
+        {
+          "question": "Comment obtenir de la poudre éclat ?",
+          "answer": "Tu en gagnes quand tu obtiens une carte que tu as déjà, et avec les missions et les événements."
+        },
+        {
+          "question": "Quelles cartes ne s’échangent pas ?",
+          "answer": "Les cartes à trois étoiles (immersives), les cartes couronne et les cartes promo ne s’échangent pas. Le site les affiche avec 🚫, et ne les met pas dans les propositions."
+        },
+        {
+          "question": "Puis-je échanger avec n’importe quel joueur en ligne ?",
+          "answer": "Seulement avec tes amis dans le jeu. Quand le site te trouve une proposition, ajoute l’autre joueur avec son ID ami ou son QR code, puis lance l’échange dans le jeu."
+        },
+        {
+          "question": "Où trouver mon ID ami ?",
+          "answer": "Touche ton avatar ou ton nom dans le jeu : ton ID ami est en haut de ton profil. Entre ses 16 chiffres sur le site, sans tirets."
+        },
+        {
+          "question": "Pourquoi les cartes Premiers Partenaires (SP1) ont-elles leurs propres propositions ?",
+          "answer": "Les cartes du booster spécial Premiers Partenaires ne s’échangent que contre des cartes du même booster, le site les associe donc à part."
+        },
+        {
+          "question": "Puis-je échanger des points booster contre des cartes ?",
+          "answer": "Oui, dans le jeu : ouvrir des boosters d’une extension donne des points, à dépenser pour une carte de cette extension. Touche une carte sur le site pour voir combien de points elle coûte."
+        },
+        {
+          "question": "Puis-je changer mes souhaits ou mes offres plus tard ?",
+          "answer": "Oui, quand tu veux depuis ton compte. Des listes à jour donnent de meilleures propositions."
+        },
+        {
+          "question": "Comment supprimer mon compte ?",
+          "answer": "En bas de la page Compte. Tes listes, ton e-mail, ton mot de passe et ton ID ami sont supprimés pour toujours."
+        }
+      ]
+    },
+    "contact": {
+      "heading": "Nous contacter",
+      "text": "Une question, une idée, un problème ? Écris-nous à <mail>help@pokemon-tcg.exchange</mail>."
+    },
+    "cta": "Trouver des joueurs"
+  }
+}

@@ -91,21 +91,19 @@ const submit = async () => {
   }
 }
 
-if (!import.meta.env.SSR) {
-  onMounted(async () => {
-    const searchParams = new URLSearchParams(window.location.search)
-    const email = searchParams.get('email')
-    const token = searchParams.get('token')
+onMounted(async () => {
+  const searchParams = new URLSearchParams(window.location.search)
+  const email = searchParams.get('email')
+  const token = searchParams.get('token')
 
-    if (email && token) {
-      await setLogin(email, '', token)
-      const success = await fetchUser()
-      if (success) {
-        redirect()
-      }
+  if (email && token) {
+    await setLogin(email, '', token)
+    const success = await fetchUser()
+    if (success) {
+      redirect()
     }
-  })
-}
+  }
+})
 </script>
 
 <template>

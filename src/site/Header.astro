@@ -1,0 +1,325 @@
+---
+import { DEFAULT_LOCALE, LOCALE_KEY, localePath, type Locale } from '@/services/texts'
+import { useTexts } from './texts'
+
+import CardIcon from '@/components/icons/CardIcon.vue'
+import ChartIcon from '@/components/icons/ChartIcon.vue'
+import CrossIcon from '@/components/icons/CrossIcon.vue'
+import ExchangeIcon from '@/components/icons/ExchangeIcon.vue'
+import GearIcon from '@/components/icons/GearIcon.vue'
+import GlobeIcon from '@/components/icons/GlobeIcon.vue'
+import HeartIcon from '@/components/icons/HeartIcon.vue'
+import MessageIcon from '@/components/icons/MessageIcon.vue'
+import MoonIcon from '@/components/icons/MoonIcon.vue'
+import QuestionIcon from '@/components/icons/QuestionIcon.vue'
+import SunIcon from '@/components/icons/SunIcon.vue'
+import UserIcon from '@/components/icons/UserIcon.vue'
+
+interface Props {
+  locale?: Locale
+  // The languages of the page, for the switcher
+  alternates?: { locale: Locale; name: string; href: string }[]
+}
+
+const { locale = DEFAULT_LOCALE, alternates = [] } = Astro.props
+const { app } = useTexts(locale)
+const help = localePath(locale, '/help')
+
+// The language picked is kept for the app and for the next visit (LanguageHint.astro). In the HTML, so
+// that it works before any script is there.
+const PICK = `try{localStorage.setItem('${LOCALE_KEY}',this.selectedOptions[0].lang)}catch(e){}location.assign(this.value)`
+
+const account = [
+  { href: '/account/wishlist', Icon: HeartIcon, label: app('menu.wishlist') },
+  { href: '/account/offers', Icon: CardIcon, label: app('menu.offers') },
+  { href: '/account/proposals', Icon: ExchangeIcon, label: app('menu.proposals') },
+  { href: '/account/messages', Icon: MessageIcon, label: app('menu.messages') },
+  { href: '/account/settings', Icon: GearIcon, label: app('menu.settings') },
+  { href: '/account/insights', Icon: ChartIcon, label: app('menu.insights') },
+]
+---
+
+<header class="site-header">
+  <a class="brand" href={localePath(locale, '/')}>
+    <span class="brand-name">
+      <img
+        alt="Pokemon Trading Card Game Pocket"
+        class="logo"
+        src="/images/tcgpocketlogo_en.png"
+        height="100"
+        id="tcg-pocket-logo"
+      />
+      <img alt="" class="logo" src="/images/exchange.png" id="exchange-logo" height="60" />
+      Pocket Exchange Center
+    </span>
+  </a>
+
+  <div class="actions">
+    <div class="desktop-only actions">
+      <a href={help}>{app('app.help')}</a>
+      {alternates.length > 0 && (
+        <select
+          class="language"
+          aria-label={app('app.language')}
+          autocomplete="off"
+          onchange={PICK}
+        >
+          {alternates.map((alternate) => (
+            <option
+              value={alternate.href}
+              lang={alternate.locale}
+              selected={alternate.locale === locale}
+            >
+              {alternate.name}
+            </option>
+          ))}
+        </select>
+      )}
+      <button type="button" class="theme-toggle">
+        <span class="if-light" title={app('theme.toDark')}>
+          <MoonIcon />
+          <span class="visually-hidden">{app('theme.toDark')}</span>
+        </span>
+        <span class="if-dark" title={app('theme.toLight')}>
+          <SunIcon />
+          <span class="visually-hidden">{app('theme.toLight')}</span>
+        </span>
+      </button>
+      <a class="sign-in signed-out-only" href="/login">
+        {app('app.signIn')}
+      </a>
+      <a class="sign-in signed-in-only" href="/account/proposals">
+        {app('menu.proposals')}
+      </a>
+    </div>
+
+    <button type="button" class="burger" aria-label={app('app.menu')}>
+      <svg viewBox="0 0 100 80" width="24" height="24" fill="currentColor">
+        <rect width="100" height="15" rx="8"></rect>
+        <rect y="30" width="100" height="15" rx="8"></rect>
+        <rect y="60" width="100" height="15" rx="8"></rect>
+      </svg>
+    </button>
+  </div>
+</header>
+<div class="site-separator"></div>
+
+<dialog class="site-menu" aria-label={app('app.menu')}>
+  <button type="button" class="close" aria-label={app('modal.close')}>
+    <CrossIcon />
+  </button>
+  <nav>
+    <a class="signed-out-only" href="/login">
+      <UserIcon />
+      {app('app.signIn')}
+    </a>
+    {account.map(({ href, Icon, label }) => (
+      <a class="signed-in-only" href={href}>
+        <Icon />
+        {label}
+      </a>
+    ))}
+    <a href={help}>
+      <QuestionIcon />
+      {app('app.help')}
+    </a>
+    <button type="button" class="theme-toggle-item">
+      <span class="if-light">
+        <MoonIcon />
+        {app('theme.dark')}
+      </span>
+      <span class="if-dark">
+        <SunIcon />
+        {app('theme.light')}
+      </span>
+    </button>
+    {alternates.length > 0 && (
+      <label>
+        <GlobeIcon />
+        <select
+          class="language"
+          aria-label={app('app.language')}
+          autocomplete="off"
+          onchange={PICK}
+        >
+          {alternates.map((alternate) => (
+            <option
+              value={alternate.href}
+              lang={alternate.locale}
+              selected={alternate.locale === locale}
+            >
+              {alternate.name}
+            </option>
+          ))}
+        </select>
+      </label>
+    )}
+  </nav>
+</dialog>
+
+<script>
+  import { toggleTheme, watchTheme } from '@/services/theme'
+
+  watchTheme()
+  for (const button of document.querySelectorAll('.theme-toggle, .theme-toggle-item')) {
+    button.addEventListener('click', toggleTheme)
+  }
+
+  const menu = document.querySelector<HTMLDialogElement>('.site-menu')
+  document.querySelector('.site-header .burger')?.addEventListener('click', () => menu?.showModal())
+  menu?.querySelector('.close')?.addEventListener('click', () => menu.close())
+</script>
+
+<style>
+  .language {
+    padding: 0.25rem;
+    border: none;
+    border-radius: 10px;
+    background: none;
+    color: var(--text-primary);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .language:hover {
+    background-color: var(--hover-tint);
+  }
+
+  .language option {
+    color: var(--color-text);
+    background-color: var(--color-surface);
+  }
+
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: var(--text-primary);
+    cursor: pointer;
+
+    :global(svg) {
+      display: block;
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  .theme-toggle:hover {
+    background-color: var(--hover-tint);
+  }
+
+  .language:focus-visible,
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .site-header .sign-in {
+    background-color: var(--color-surface);
+    padding: 10px 40px;
+    border-radius: 25px;
+    font-size: 16px;
+    box-shadow: 0 0 0 2px var(--accent);
+    text-align: center;
+  }
+
+  .site-header .sign-in:hover {
+    background-color: var(--color-surface-soft);
+  }
+
+  :global(html[data-signed-in]) .signed-out-only,
+  :global(html:not([data-signed-in])) .signed-in-only {
+    display: none;
+  }
+
+  .burger {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--color-text);
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  @media (max-width: 1111px) {
+    .burger {
+      display: flex;
+    }
+  }
+
+  .site-menu {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    padding: 1rem;
+    border: none;
+    color: var(--text-primary);
+    background: var(--color-background);
+
+    .close {
+      display: block;
+      margin-left: auto;
+      padding: 0.5rem;
+      border: none;
+      background: none;
+      color: inherit;
+      cursor: pointer;
+      scale: 2;
+    }
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    a,
+    label,
+    .theme-toggle-item {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0.25rem;
+      border: none;
+      background: none;
+      color: inherit;
+      font-size: 1.4rem;
+      font-weight: 500;
+      text-align: left;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .theme-toggle-item :global(svg) {
+      margin-right: 1.5rem;
+      vertical-align: middle;
+    }
+
+    :global(svg) {
+      width: 28px;
+      height: 28px;
+      stroke: currentColor;
+    }
+
+    .language {
+      margin-left: -0.5rem;
+      font-size: 1.4rem;
+    }
+  }
+</style>

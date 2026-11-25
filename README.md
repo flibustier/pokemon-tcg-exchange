@@ -38,11 +38,11 @@ Pokémon TCG Exchange is built for fans of the Pokémon Trading Card Game Pocket
 
 ## Project Setup
 
-This project is built with **Vue 3** and **Vite**. The cards database is provided by [pokemon-tcg-pocket-database](https://github.com/flibustier/pokemon-tcg-pocket-database).
+This project is built with **Astro** and **Vue 3**: Astro writes the public pages (`src/pages`, `src/site`), and the app (`src/main.ts`) takes over the pages of a player. The cards database is provided by [pokemon-tcg-pocket-database](https://github.com/flibustier/pokemon-tcg-pocket-database).
 
 ### Translations
 
-The texts are in `src/locales`, one file per language, and the card names come from the cards database. To add a language, copy `en.json`, translate its texts, then add a line to `LOCALES` and to `loaders` in `src/services/i18n.ts`. The type check tells which texts are missing, and `e2e/i18n.spec.ts` checks the placeholders (`{name}`) and tags (`<link>…</link>`).
+The texts of the app are in `src/locales`, those of the public pages in `src/locales/site`, one file per language. The card names come from the cards database. To add a language, copy both `en.json`, translate their texts, then add a line to `LOCALES` (`src/services/texts.ts`), to `loaders` (`src/services/i18n.ts`) and to `SITE` and `APP` (`src/site/texts.ts`). The type check tells which texts are missing, and `e2e/i18n.spec.ts` checks the placeholders (`{name}`) and tags (`<link>…</link>`).
 
 ### Recommended IDE Setup
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { LOCALES, locale, setLocale, t, type Locale } from '@/services/i18n'
+import { locale, setLocale, t } from '@/services/i18n'
+import { LOCALES, type Locale } from '@/services/texts'
 
 const pick = (event: Event) => setLocale((event.target as HTMLSelectElement).value as Locale)
 </script>
