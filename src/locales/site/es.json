@@ -10,7 +10,7 @@
     "facts": {
       "cards": "{count} cartas",
       "sets": "{count} expansiones",
-      "free": "Gratis"
+      "free": "Gratis y de <source>código abierto</source>"
     },
     "steps": {
       "heading": "Cómo funciona",

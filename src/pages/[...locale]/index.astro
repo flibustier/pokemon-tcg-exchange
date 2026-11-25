@@ -14,6 +14,7 @@ import SiteLayout from '@/layouts/SiteLayout.astro'
 import { cards } from '@/services/cards'
 import { logoOf } from '@/services/logos'
 import { formatText, localePath, type Locale } from '@/services/texts'
+import Rich from '@/site/Rich.astro'
 import { nameOf, setPath, sets, type SiteSet } from '@/site/sets'
 import { localizedPaths, useTexts } from '@/site/texts'
 
@@ -36,6 +37,8 @@ const facts = [
 
 // The pages of the sets are in English only, for now
 const setLink = (set: SiteSet) => (locale === 'en' ? setPath(set) : `/start#${set.code}`)
+
+const SOURCE = 'https://github.com/flibustier/pokemon-tcg-exchange'
 
 const FACT_ICONS = [CardIcon, LayersIcon, FreeIcon]
 const STEP_ICONS = [HeartIcon, CardIcon, ExchangeIcon]
@@ -80,7 +83,9 @@ const questions = help.faq.list.slice(0, 4)
           return (
             <li>
               <Icon {...(Icon === FreeIcon && { currency })} aria-hidden="true" />
-              {fact}
+              <span>
+                <Rich text={fact} links={{ source: SOURCE }} />
+              </span>
             </li>
           )
         })}
