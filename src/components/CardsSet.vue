@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 import type { Card } from '@/services/cards'
-import { rarityName, setName, t, type SetNames } from '@/services/i18n'
+import { rarityName, setLogo, setName, t, type SetNames } from '@/services/i18n'
 import { JOKER_RARITIES, jokerKey, jokers } from '@/services/store'
 
 import CardTile from './CardTile.vue'
@@ -53,7 +53,7 @@ const toggleJoker = (rarity: string) => {
   <section v-show="visibleIds.size > 0" class="set" :id="set.code">
     <div class="set-divider">
       <img
-        :src="set.imagePath"
+        :src="setLogo(set)"
         :alt="setName(set)"
         :title="setName(set)"
         width="192"

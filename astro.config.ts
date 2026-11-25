@@ -5,7 +5,7 @@ import vue from '@astrojs/vue'
 import type { AstroIntegration } from 'astro'
 import { defineConfig } from 'astro/config'
 
-import { cardNames, errorsSdkOnlyWithDsn } from './build/plugins'
+import { cardNames, errorsSdkOnlyWithDsn, setLogos } from './build/plugins'
 
 // The time of the build names it. The app knows its own (__BUILD_ID__), and version.json
 // (src/pages/version.json.ts) tells which build is online: a tab left open for weeks compares the two
@@ -37,7 +37,7 @@ export default defineConfig({
   vite: {
     // VITE_API_URL points the front at another server (src/services/api.ts)
     envPrefix: ['PUBLIC_', 'VITE_'],
-    plugins: [errorsSdkOnlyWithDsn(), cardNames()],
+    plugins: [errorsSdkOnlyWithDsn(), cardNames(), setLogos()],
     define: {
       __BUILD_ID__: JSON.stringify(BUILD_ID),
     },

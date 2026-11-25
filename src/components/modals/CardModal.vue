@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import BaseModal from '@/components/modals/BaseModal.vue'
 import { rarities, type Card } from '@/services/cards'
-import { cardName, t } from '@/services/i18n'
+import { cardName, cardSetLogo, t } from '@/services/i18n'
 
 defineProps<{
   card: Card
@@ -30,7 +30,7 @@ defineExpose({ showModal })
       />
       <div class="column">
         <img
-          :src="card.imagePaths.set"
+          :src="cardSetLogo(card)"
           :alt="card.set"
           class="responsive-image"
           width="256"

@@ -13,7 +13,7 @@ import {
 import { areJokersLoaded } from '@/services/api'
 import { cards, allSets, rarities } from '@/services/cards'
 import type { Card } from '@/services/cards'
-import { rarityName, searchable, searchableName, setName, t } from '@/services/i18n'
+import { rarityName, searchable, searchableName, setLogo, setName, t } from '@/services/i18n'
 import { debounce } from '@/services/utils'
 
 import RichText from './atoms/RichText'
@@ -217,7 +217,7 @@ onUnmounted(() => {
       <div class="set-logo" v-if="currentSet">
         <a v-if="previousSet" :href="'#' + previousSet.code">
           <img
-            :src="previousSet.imagePath"
+            :src="setLogo(previousSet)"
             :alt="setName(previousSet)"
             width="136"
             height="60"
@@ -228,7 +228,7 @@ onUnmounted(() => {
         <div v-else class="bumper"></div>
 
         <img
-          :src="currentSet.imagePath"
+          :src="setLogo(currentSet)"
           :alt="setName(currentSet)"
           class="set-current-logo"
           width="192"
@@ -241,7 +241,7 @@ onUnmounted(() => {
         <a v-if="nextSet" :href="'#' + nextSet.code">
           <img src="/images/double-arrow-right.png" alt="»" width="47" height="50" />
           <img
-            :src="nextSet.imagePath"
+            :src="setLogo(nextSet)"
             :alt="setName(nextSet)"
             width="136"
             height="60"

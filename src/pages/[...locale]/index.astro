@@ -4,6 +4,7 @@ import ExchangeIcon from '@/components/icons/ExchangeIcon.vue'
 import HeartIcon from '@/components/icons/HeartIcon.vue'
 import SiteLayout from '@/layouts/SiteLayout.astro'
 import { cards } from '@/services/cards'
+import { logoOf } from '@/services/logos'
 import { formatText, localePath, type Locale } from '@/services/texts'
 import { nameOf, setPath, sets, type SiteSet } from '@/site/sets'
 import { localizedPaths, useTexts } from '@/site/texts'
@@ -125,7 +126,7 @@ const questions = help.faq.list.slice(0, 4)
         <li>
           <a href={setLink(set)} title={nameOf(set, locale)}>
             <img
-              src={set.imagePath}
+              src={logoOf(set, locale)}
               alt={nameOf(set, locale)}
               width="192"
               height="85"

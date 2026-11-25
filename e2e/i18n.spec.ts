@@ -295,6 +295,22 @@ test.describe('public pages', () => {
     expect(saves).toEqual([expect.objectContaining({ id: 'C1-1', count: 1 })])
   })
 
+  test('show the logo of a set in their language, or the English one', async ({ page }) => {
+    await prepare(page, ['fr'])
+    await page.goto('/fr/')
+    const logos = page.locator('.sets img')
+    await expect(page.locator('.sets img[src$="_A1_fr_FR.webp"]')).toHaveCount(1)
+
+    // The database may have no French logo for the latest sets: each one shown exists
+    for (const logo of await logos.all()) {
+      await expect(logo).toHaveAttribute('src', /_(fr_FR|en_US)\.webp$/)
+      await logo.scrollIntoViewIfNeeded()
+      await expect
+        .poll(() => logo.evaluate((image) => (image as HTMLImageElement).naturalWidth))
+        .toBeGreaterThan(0)
+    }
+  })
+
   test('lead to the cards to choose, and a player to their proposals', async ({ page }) => {
     // /start draws every card
     test.slow()
