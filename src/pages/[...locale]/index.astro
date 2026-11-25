@@ -5,7 +5,7 @@ import HeartIcon from '@/components/icons/HeartIcon.vue'
 import SiteLayout from '@/layouts/SiteLayout.astro'
 import { cards } from '@/services/cards'
 import { formatText, localePath, type Locale } from '@/services/texts'
-import { nameOf, sets } from '@/site/sets'
+import { nameOf, setPath, sets, type SiteSet } from '@/site/sets'
 import { localizedPaths, useTexts } from '@/site/texts'
 
 export const getStaticPaths = localizedPaths
@@ -24,6 +24,9 @@ const facts = [
   formatText(locale, home.facts.sets, { count: number.format(sets.length) }),
   home.facts.free,
 ]
+
+// The pages of the sets are in English only, for now
+const setLink = (set: SiteSet) => (locale === 'en' ? setPath(set) : `/start#${set.code}`)
 
 const STEP_ICONS = [HeartIcon, CardIcon, ExchangeIcon]
 
@@ -120,7 +123,7 @@ const questions = help.faq.list.slice(0, 4)
     <ul class="sets">
       {sets.map((set) => (
         <li>
-          <a href={`/start#${set.code}`} title={nameOf(set, locale)}>
+          <a href={setLink(set)} title={nameOf(set, locale)}>
             <img
               src={set.imagePath}
               alt={nameOf(set, locale)}

@@ -1,0 +1,103 @@
+---
+import SiteLayout from '@/layouts/SiteLayout.astro'
+import { demandOf, hasTotals } from '@/site/demand'
+import { isTradeable, setPath, sets } from '@/site/sets'
+
+const number = new Intl.NumberFormat('en')
+const date = new Intl.DateTimeFormat('en', { dateStyle: 'long', timeZone: 'UTC' })
+
+const rows = sets.map((set) => {
+  const demands = set.cards.filter(isTradeable).map(demandOf)
+  return {
+    ...set,
+    released: date.format(new Date(set.releaseDate)),
+    wanted: demands.reduce((sum, { wanted }) => sum + wanted, 0),
+    offered: demands.reduce((sum, { offered }) => sum + offered, 0),
+  }
+})
+---
+
+<SiteLayout
+  title="Pokemon TCG Pocket Sets: Cards to Trade in Every Expansion"
+  description="Every Pokemon TCG Pocket set, with the cards players want and offer in trades: from Genetic Apex to the latest expansion."
+  path="/sets/"
+  locale="en"
+  translated={false}
+>
+  <h1>Trade cards of every Pokemon TCG Pocket set</h1>
+  <p class="intro">
+    Choose a set to see the cards players look for, the ones they can give, and what each trade
+    costs.
+  </p>
+  <ul>
+    {rows.map((set) => (
+      <li>
+        <a href={setPath(set)}>
+          <img src={set.imagePath} alt="" width="192" height="85" loading="lazy" decoding="async" />
+          <strong>{set.name.en}</strong>
+          <span>
+            {set.code} · {set.released}
+          </span>
+          {hasTotals && (
+            <span>
+              {number.format(set.wanted)} wishes · {number.format(set.offered)} offers
+            </span>
+          )}
+        </a>
+      </li>
+    ))}
+  </ul>
+</SiteLayout>
+
+<style>
+  h1 {
+    margin-top: 1rem;
+    font-size: 2.1rem;
+    line-height: 1.2;
+  }
+
+  .intro {
+    margin: 0.75rem 0 1.5rem;
+    font-size: 1.15rem;
+    color: var(--color-text-muted);
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    padding: 1rem;
+    border-radius: 12px;
+    background: var(--color-surface-soft);
+    box-shadow: 0 0 0 1px var(--ring-color);
+    color: var(--color-text-muted);
+    text-align: center;
+    text-decoration: none;
+  }
+
+  a:hover {
+    background: var(--color-surface-hover);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+
+  strong {
+    margin-top: 0.5rem;
+    font-weight: bold;
+    color: var(--text-primary);
+  }
+
+  img {
+    max-width: 160px;
+    height: 70px;
+    object-fit: contain;
+  }
+</style>

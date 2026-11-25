@@ -1,0 +1,354 @@
+---
+import SiteLayout from '@/layouts/SiteLayout.astro'
+import { rarities, type Card } from '@/services/cards'
+import { useTexts } from '@/site/texts'
+import { demandOf, hasTotals, totalsDate } from '@/site/demand'
+import Rarity from '@/site/Rarity.astro'
+import { isTradeable, setPath, sets, slugOf, type SiteSet } from '@/site/sets'
+
+export const getStaticPaths = () =>
+  sets.map((set, index) => ({
+    params: { set: slugOf(set) },
+    // The latest set comes first
+    props: { set, newer: sets[index - 1], older: sets[index + 1] },
+  }))
+
+interface Props {
+  set: SiteSet
+  newer?: SiteSet
+  older?: SiteSet
+}
+
+const { set, newer, older } = Astro.props
+const { app } = useTexts('en')
+const name = set.name.en
+
+const number = new Intl.NumberFormat('en')
+const date = new Intl.DateTimeFormat('en', { dateStyle: 'long', timeZone: 'UTC' })
+
+type RarityCode = keyof typeof rarities
+
+const rows = set.cards.map((card) => {
+  const rarity = card.rarity as RarityCode
+  return { card, rarity, ...rarities[rarity], tradeable: isTradeable(card), ...demandOf(card) }
+})
+const tradeable = rows.filter((row) => row.tradeable)
+const total = (key: 'wanted' | 'offered') => tradeable.reduce((sum, row) => sum + row[key], 0)
+
+const top = (key: 'wanted' | 'offered') =>
+  [...tradeable]
+    .sort((a, b) => b[key] - a[key])
+    .filter((row) => row[key] > 0)
+    .slice(0, 12)
+
+const players = (count: number) => `${number.format(count)} ${count === 1 ? 'player' : 'players'}`
+
+// The only cards whose totals are shown
+const lists = [
+  {
+    heading: `Most wanted ${name} cards`,
+    cards: top('wanted').map((row) => ({ ...row, total: `Wanted by ${players(row.wanted)}` })),
+  },
+  {
+    heading: `${name} cards players offer the most`,
+    cards: top('offered').map((row) => ({ ...row, total: `Offered by ${players(row.offered)}` })),
+  },
+]
+
+// The rarities of the set, the most common first
+const groups = (Object.keys(rarities) as RarityCode[])
+  .map((rarity) => ({ rarity, rows: rows.filter((row) => row.rarity === rarity) }))
+  .filter((group) => group.rows.length > 0)
+
+const packs = [...new Set(set.cards.flatMap((card) => card.packs ?? []))]
+
+const padded = (card: Card) => String(card.number).padStart(3, '0')
+---
+
+<SiteLayout
+  title={`Trade ${name} (${set.code}) Cards - Pokemon TCG Pocket`}
+  description={`Trade ${name} cards in Pokemon TCG Pocket: the most wanted ones, those players offer, and what each of the ${set.cards.length} cards costs in Shinedust.`}
+  path={setPath(set)}
+  locale="en"
+  translated={false}
+>
+  <nav class="crumbs">
+    <a href="/sets/">All sets</a>
+  </nav>
+
+  <div class="head">
+    <img src={set.imagePath} alt="" width="192" height="85" />
+    <div>
+      <h1>Trade {name} cards</h1>
+      <p>
+        {name} ({set.code}) came out in Pokemon TCG Pocket on{' '}
+        {date.format(new Date(set.releaseDate))}. It has {number.format(set.cards.length)} cards,
+        and {number.format(tradeable.length)} of them can be traded.{' '}
+        {hasTotals && (
+          <>
+            Players of this site wish for them {number.format(total('wanted'))} times, and offer
+            them {number.format(total('offered'))} times.
+          </>
+        )}
+      </p>
+      {set.code === 'SP1' && (
+        <p>Cards of this special pack are only traded for cards of the same pack.</p>
+      )}
+      <p>
+        <a class="cta" href={`/start#${set.code}`}>
+          Choose the cards I want
+        </a>
+      </p>
+    </div>
+  </div>
+
+  {hasTotals && (
+    <>
+      {lists.map(
+        (list) =>
+          list.cards.length > 0 && (
+            <section>
+              <h2>{list.heading}</h2>
+              <ul class="cards">
+                {list.cards.map(({ card, rarity, total }) => (
+                  <li>
+                    <img
+                      src={card.imagePaths.thumbnail}
+                      alt={card.name}
+                      width="200"
+                      height="280"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <strong>{card.name}</strong>
+                    <span class="symbols">
+                      <Rarity rarity={rarity} />
+                    </span>
+                    <span>{total}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ),
+      )}
+      <p class="note">
+        Players active in the last 45 days, on {date.format(totalsDate)}. A card may be offered with
+        a joker: all the cards of its rarity in the set.
+      </p>
+    </>
+  )}
+
+  {packs.length > 0 && (
+    <section>
+      <h2>{name} booster packs</h2>
+      <ul class="packs">
+        {packs.map((pack) => (
+          <li>
+            <img
+              src={`/images/packs/${pack}.webp`}
+              alt=""
+              width="100"
+              height="160"
+              loading="lazy"
+              decoding="async"
+            />
+            <span>
+              {pack}: {set.cards.filter((card) => card.packs?.includes(pack)).length} cards
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <section>
+    <h2>Every {name} card</h2>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Card</th>
+          <th scope="col">Name</th>
+          <th scope="col">Shinedust</th>
+          <th scope="col">Pack points</th>
+        </tr>
+      </thead>
+      {groups.map((group) => (
+        <tbody>
+          <tr>
+            <th colspan={4} scope="rowgroup" class="symbols">
+              <Rarity rarity={group.rarity} /> {app(`rarity.${group.rarity}`)}
+            </th>
+          </tr>
+          {group.rows.map((row) => (
+            <tr>
+              <td>{padded(row.card)}</td>
+              <td>{row.card.name}</td>
+              <td>
+                {row.tradeable
+                  ? row.tradePrice
+                    ? number.format(row.tradePrice)
+                    : 'Free'
+                  : 'Not tradable'}
+              </td>
+              <td>{'points' in row ? number.format(row.points) : '–'}</td>
+            </tr>
+          ))}
+        </tbody>
+      ))}
+    </table>
+  </section>
+
+  <nav class="siblings">
+    {older ? <a href={setPath(older)}>← {older.name.en}</a> : <span />}
+    {newer && <a href={setPath(newer)}>{newer.name.en} →</a>}
+  </nav>
+</SiteLayout>
+
+<style>
+  .crumbs {
+    margin-bottom: 1rem;
+  }
+
+  a {
+    color: var(--text-primary);
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    img {
+      max-width: 192px;
+      height: auto;
+    }
+  }
+
+  h1 {
+    margin-bottom: 0.5rem;
+    font-size: 2.1rem;
+    line-height: 1.2;
+  }
+
+  h2 {
+    margin: 2.5rem 0 1rem;
+    font-size: 1.6rem;
+    line-height: 1.3;
+    color: var(--color-teal);
+  }
+
+  p + p {
+    margin-top: 0.75rem;
+  }
+
+  .cta {
+    display: inline-block;
+    padding: 10px 30px;
+    border-radius: 25px;
+    background: var(--accent);
+    color: #0b2a4a;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .cta:hover {
+    background: var(--accent-hover);
+  }
+
+  .cards,
+  .packs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.75rem;
+      border-radius: 12px;
+      background: var(--color-surface-soft);
+      box-shadow: 0 0 0 1px var(--ring-color);
+      text-align: center;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+
+    strong {
+      margin-top: 0.5rem;
+      font-weight: bold;
+    }
+  }
+
+  .packs img {
+    max-width: 90px;
+  }
+
+  .symbols :global(img) {
+    display: inline-block;
+    margin-right: 2px;
+    border-radius: 0;
+    vertical-align: middle;
+  }
+
+  table {
+    width: 100%;
+    max-width: 800px;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 0.3rem 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+  }
+
+  th {
+    font-weight: bold;
+  }
+
+  tbody th {
+    padding-top: 1.25rem;
+  }
+
+  th:nth-child(n + 3),
+  td:nth-child(n + 3) {
+    text-align: right;
+  }
+
+  .note {
+    margin-top: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .siblings {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+
+  @media (max-width: 600px) {
+    .head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .cards {
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    }
+
+    th,
+    td {
+      padding: 0.3rem 0.25rem;
+    }
+  }
+</style>
