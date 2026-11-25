@@ -38,7 +38,7 @@
     "eslint-plugin-vue": "^10.12.0",
     "jiti": "^2.7.0",
     "npm-run-all2": "^9.0.4",
-    "pokemon-tcg-pocket-database": "2.13.2",
+    "pokemon-tcg-pocket-database": "2.14.0",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "1.1.2",
     "typescript": "~6.0.3",
