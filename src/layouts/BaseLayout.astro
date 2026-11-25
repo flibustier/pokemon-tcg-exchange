@@ -94,8 +94,23 @@ const image = absolute('/images/open-graph.png')
       })()
     </script>
     <script is:inline>
-      // GoatCounter counts the landing page without its parameters: a sign-in link carries the
-      // email address and a token, which must not end up in the statistics. A conversation is
+      // A sign-in link carries an email address and a token, which opens the account. They leave the
+      // address before any other script runs: GoatCounter sends the parameters apart from the path,
+      // and they would stay in the history. LoginForm takes them from there (services/signInLink.ts).
+      ;(function () {
+        if (!new URLSearchParams(location.search).has('token')) return
+        if (/^\/login\b/.test(location.pathname)) {
+          window.signInLink = location.search
+          try {
+            // A reload (a newer build…) must find them again
+            sessionStorage.setItem('signInLink', location.search)
+          } catch (e) {}
+        }
+        history.replaceState(history.state, '', location.pathname + location.hash)
+      })()
+    </script>
+    <script is:inline>
+      // GoatCounter counts the landing page without its parameters. A conversation is
       // counted by its pattern, as on navigation, so no player id goes in either. The path comes from
       // the address, not from the canonical link GoatCounter prefers: a visitor of an account page is
       // sent to the sign-in page, with the links of the first one still there.

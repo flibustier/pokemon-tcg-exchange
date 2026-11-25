@@ -3,6 +3,7 @@ import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 import { createUser, fetchUser, sendMagicLink } from '@/services/api'
 import { serverText, t } from '@/services/i18n'
+import { forgetSignInLink, getSignInLink } from '@/services/signInLink'
 import { isCardsIncomplete, setLogin } from '@/services/store'
 
 const props = defineProps({
@@ -53,6 +54,7 @@ const formIncomplete = computed(() => {
 })
 
 const redirect = () => {
+  forgetSignInLink()
   window.location.replace(isCardsIncomplete.value ? '/account/wishlist' : '/account/proposals')
 }
 
@@ -92,9 +94,7 @@ const submit = async () => {
 }
 
 onMounted(async () => {
-  const searchParams = new URLSearchParams(window.location.search)
-  const email = searchParams.get('email')
-  const token = searchParams.get('token')
+  const { email, token } = getSignInLink()
 
   if (email && token) {
     await setLogin(email, '', token)
