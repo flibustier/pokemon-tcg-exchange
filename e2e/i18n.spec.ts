@@ -240,6 +240,67 @@ test.describe('in the language of the player', () => {
   })
 })
 
+test.describe('the language of the mails', () => {
+  // The session of a player whose mails are in this language, and what the app sends to change it
+  const openSettings = async (page: Page, known: object) => {
+    const sent: unknown[] = []
+    await prepare(page, ['fr-FR'], {
+      'GET /user/session': (route) =>
+        route.fulfill({ json: { ...session, ...known }, headers: cors }),
+      'PUT /user/locale': (route) => {
+        sent.push(route.request().postDataJSON())
+        return route.fulfill({ body: 'updated', headers: cors })
+      },
+    })
+    await signIn(page)
+    const loaded = page.waitForResponse((response) => response.url().endsWith('/user/session'))
+    await page.goto('/account/settings')
+    await loaded
+    await expect(page.getByRole('heading', { name: 'Réglages' })).toBeVisible()
+    return sent
+  }
+
+  test('becomes the one of the site', async ({ page }) => {
+    const sent = await openSettings(page, { locale: null })
+    await expect.poll(() => sent).toEqual([{ locale: 'fr' }])
+
+    await page.getByLabel('Langue', { exact: true }).selectOption('Español')
+    await expect.poll(() => sent).toEqual([{ locale: 'fr' }, { locale: 'es' }])
+  })
+
+  for (const [name, known] of [
+    ['is not sent again', { locale: 'fr' }],
+    ['is not sent to a server that does not know it', {}],
+  ] as const) {
+    test(name, async ({ page }) => {
+      const sent = await openSettings(page, known)
+      // A moment for a request that must not come
+      // eslint-disable-next-line playwright/no-wait-for-timeout
+      await page.waitForTimeout(500)
+      expect(sent).toEqual([])
+    })
+  }
+
+  test('is sent by a new player', async ({ page }) => {
+    const signups: { locale?: string }[] = []
+    await prepare(page, ['it-IT'], {
+      'POST /user': (route) => {
+        signups.push(route.request().postDataJSON())
+        return route.fulfill({ body: 'User already exists', status: 401, headers: cors })
+      },
+    })
+    await page.goto('/login')
+    await page.getByRole('link', { name: 'Crea un account' }).click()
+    await page.getByLabel('ID amico').fill('1234567890123456')
+    await page.getByLabel('Indirizzo e-mail').fill('sacha@test.fr')
+    await page.getByLabel('Password').fill('pikachu-pikachu')
+    await page.locator('button[type=submit]').click()
+
+    await expect(page.getByText('esiste già un account con questa e-mail')).toBeVisible()
+    expect(signups.map((signup) => signup.locale)).toEqual(['it'])
+  })
+})
+
 test.describe('public pages', () => {
   const hint = (page: Page) => page.locator('.language-hint:visible')
 
