@@ -4,6 +4,7 @@ import type { Discussion } from '@/types'
 
 import { debouncedUpdateUser } from './api'
 import { cardsById } from './cards'
+import { forgetSignInLink } from './signInLink'
 import { isEqual } from './utils'
 
 const storage = localStorage
@@ -270,6 +271,8 @@ export const changeLoginEmail = (email: string) => {
 }
 
 export const setLogOut = () => {
+  // Signing out must not sign in again with the link of the same tab
+  forgetSignInLink()
   storage.removeItem(ObjectName.LogIn)
   storage.removeItem(ObjectName.WantedCards)
   storage.removeItem(ObjectName.GivingCards)
