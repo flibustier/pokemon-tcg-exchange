@@ -1,0 +1,4 @@
+
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="ed2d1945-a81c-58eb-ac33-241cfd6881db")}catch(e){}}();
+import{P as e,h as t,o as n,ot as r,s as i,w as a}from"./runtime-core.esm-bundler.DEHZkkHD.js";import{t as o}from"./CenteredLayout.DYh8wjO4.js";import{I as s,ct as c,t as l}from"./_plugin-vue_export-helper.XSin05vP.js";var u=t({__name:`LogoutView`,setup(e,{expose:t}){t(),s(),window.location.replace(`/`);let n={CenteredLayout:o,get t(){return c}};return Object.defineProperty(n,"__isScriptSetup",{enumerable:!1,value:!0}),n}});function d(t,o,s,c,l,u){return a(),i(c.CenteredLayout,null,{default:e(()=>[n(`h1`,null,r(c.t(`logout.title`)),1)]),_:1})}var f=l(u,[[`render`,d]]);export{f as default};
+//# debugId=ed2d1945-a81c-58eb-ac33-241cfd6881db

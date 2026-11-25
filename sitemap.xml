@@ -1,12 +1,145 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url>
-        <loc>https://pokemon-tcg.exchange/</loc>
-    </url>
-    <url>
-        <loc>https://pokemon-tcg.exchange/help</loc>
-    </url>
-    <url>
-        <loc>https://pokemon-tcg.exchange/login</loc>
-    </url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://pokemon-tcg.exchange/login</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/dual-fusion</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/special-pack-first-partners</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/deluxe-pack-mega</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/team-rockets-ambition</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/ruler-of-the-skies</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/everyday-wonders</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/paradox-drive</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/pulsing-aura</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/mega-shine</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/paldean-wonders</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/fantastical-parade</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/crimson-blaze</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/mega-rising</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/deluxe-pack-ex</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/secluded-springs</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/wisdom-of-sea-and-sky</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/eevee-grove</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/extradimensional-crisis</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/celestial-guardians</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/shining-revelry</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/triumphant-light</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/space-time-smackdown</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/mythical-island</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/sets/genetic-apex</loc>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokemon-tcg.exchange/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokemon-tcg.exchange/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pokemon-tcg.exchange/fr/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://pokemon-tcg.exchange/it/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pokemon-tcg.exchange/"/>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/es/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokemon-tcg.exchange/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokemon-tcg.exchange/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pokemon-tcg.exchange/fr/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://pokemon-tcg.exchange/it/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pokemon-tcg.exchange/"/>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/fr/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokemon-tcg.exchange/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokemon-tcg.exchange/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pokemon-tcg.exchange/fr/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://pokemon-tcg.exchange/it/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pokemon-tcg.exchange/"/>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/it/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokemon-tcg.exchange/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokemon-tcg.exchange/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pokemon-tcg.exchange/fr/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://pokemon-tcg.exchange/it/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pokemon-tcg.exchange/"/>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/help</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokemon-tcg.exchange/help"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokemon-tcg.exchange/es/help"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pokemon-tcg.exchange/fr/help"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://pokemon-tcg.exchange/it/help"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pokemon-tcg.exchange/help"/>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/es/help</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokemon-tcg.exchange/help"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokemon-tcg.exchange/es/help"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pokemon-tcg.exchange/fr/help"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://pokemon-tcg.exchange/it/help"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pokemon-tcg.exchange/help"/>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/fr/help</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokemon-tcg.exchange/help"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokemon-tcg.exchange/es/help"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pokemon-tcg.exchange/fr/help"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://pokemon-tcg.exchange/it/help"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pokemon-tcg.exchange/help"/>
+  </url>
+  <url>
+    <loc>https://pokemon-tcg.exchange/it/help</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokemon-tcg.exchange/help"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokemon-tcg.exchange/es/help"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://pokemon-tcg.exchange/fr/help"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://pokemon-tcg.exchange/it/help"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pokemon-tcg.exchange/help"/>
+  </url>
 </urlset>

@@ -1,0 +1,4 @@
+
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="9346606c-3a85-503f-80f4-34e65adcec5b")}catch(e){}}();
+import{D as e,h as t,l as n,w as r}from"./runtime-core.esm-bundler.DEHZkkHD.js";import{t as i}from"./_plugin-vue_export-helper.XSin05vP.js";var a=t({__name:`PlainButton`,props:{disabled:{type:Boolean}},emits:[`click`],setup(e,{expose:t,emit:n}){t();let r={emit:n};return Object.defineProperty(r,"__isScriptSetup",{enumerable:!1,value:!0}),r}}),o=[`disabled`];function s(t,i,a,s,c,l){return r(),n(`button`,{class:`next-button`,onClick:i[0]||=e=>s.emit(`click`),disabled:a.disabled},[e(t.$slots,`default`,{},void 0,!0)],8,o)}var c=i(a,[[`render`,s],[`__scopeId`,`data-v-6115a7c5`]]);export{c as t};
+//# debugId=9346606c-3a85-503f-80f4-34e65adcec5b
